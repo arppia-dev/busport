@@ -1,0 +1,19 @@
+"use client"
+
+import React from "react"
+import { Layout as AntLayout } from "antd"
+import styles from "./login.module.css"
+
+const { Content } = AntLayout
+
+export default function LoginLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <AntLayout className={styles.loginContainer}>
+      <Content className={styles.loginContent}>{children}</Content>
+    </AntLayout>
+  )
+}

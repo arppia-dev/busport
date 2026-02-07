@@ -1,0 +1,40 @@
+.logo {
+  height: 64px;
+  padding: 2em;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.logoImage {
+  width: 100%;
+  filter: invert(1) brightness(10);
+}
+
+.content {
+  margin: 20px;
+  border-radius: 8px;
+  min-height: calc(100vh - 140px);
+}
+
+.footer {
+  text-align: center;
+  background: white;
+  border-top: 1px solid #e8e8e8;
+}
+
+.dashboardPage {
+  width: 100%;
+}
+
+.statsRow {
+  margin-bottom: 24px;
+}
+
+.tableRow {
+  margin-bottom: 24px;
+}
