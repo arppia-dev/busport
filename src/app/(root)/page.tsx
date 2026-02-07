@@ -75,7 +75,7 @@ export default function DashboardPage() {
               title="Buses Activos"
               value={12}
               prefix={<BugOutlined />}
-              valueStyle={{ color: "#667eea" }}
+              styles={{ content: { color: "#667eea" } }}
             />
           </Card>
         </Col>
@@ -85,7 +85,7 @@ export default function DashboardPage() {
               title="Pasajeros Hoy"
               value={1238}
               prefix={<UserOutlined />}
-              valueStyle={{ color: "#52c41a" }}
+              styles={{ content: { color: "#52c41a" } }}
             />
           </Card>
         </Col>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
               title="Ingresos"
               value={45230}
               prefix={<DollarOutlined />}
-              valueStyle={{ color: "#faad14" }}
+              styles={{ content: { color: "#faad14" } }}
             />
           </Card>
         </Col>
@@ -105,7 +105,7 @@ export default function DashboardPage() {
               title="Rutas Completadas"
               value={89}
               prefix={<CheckCircleOutlined />}
-              valueStyle={{ color: "#1890ff" }}
+              styles={{ content: { color: "#1890ff" } }}
             />
           </Card>
         </Col>

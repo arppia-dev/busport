@@ -29,6 +29,7 @@ import {
   theme,
   Typography
 } from "antd"
+import Link from "next/link"
 import { useState } from "react"
 import styles from "./page.module.css"
 
@@ -50,12 +51,12 @@ export default function DashboardLayout({
     {
       key: "1",
       icon: <DashboardOutlined />,
-      label: "Monitor"
+      label: <Link href="/">Monitor</Link>
     },
     {
       key: "2",
       icon: <RocketOutlined />,
-      label: "Viajes"
+      label: <Link href="/trips">Viajes</Link>
     },
     {
       key: "3",

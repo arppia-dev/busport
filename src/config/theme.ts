@@ -51,6 +51,9 @@ export const themeConfig: ThemeConfig = {
       darkItemColor: "rgba(255, 255, 255, 0.80)",
       darkItemBg: SIDEBAR_BG,
       darkSubMenuItemBg: darken(COLOR_PRIMARY, 60)
+    },
+    Table: {
+      rowExpandedBg: "rgba(225,210,210,0.02)"
     }
   }
 }
