@@ -1,38 +1,36 @@
 "use client"
 
+import { useTheme } from "@/components/ThemeProvider"
 import {
-  BugOutlined,
   CarOutlined,
-  CarryOutOutlined,
   ControlOutlined,
   DashboardOutlined,
   DownOutlined,
-  HomeOutlined,
   LineChartOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  OrderedListOutlined,
   RocketOutlined,
   SettingOutlined,
-  SlidersOutlined,
   UserOutlined
 } from "@ant-design/icons"
 import {
   Layout as AntLayout,
-  Avatar,
   Button,
   Dropdown,
   Flex,
   Menu,
   MenuProps,
   Space,
-  theme
+  Switch,
+  theme,
+  Typography
 } from "antd"
 import { useState } from "react"
 import styles from "./page.module.css"
 
 const { Header, Sider, Content, Footer } = AntLayout
+const { Text } = Typography
 
 export default function DashboardLayout({
   children
@@ -40,6 +38,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const [collapsed, setCollapsed] = useState(false)
+  const { isDark, setIsDark } = useTheme()
   const {
     token: { colorBgContainer }
   } = theme.useToken()
@@ -157,19 +156,26 @@ export default function DashboardLayout({
               }
               onClick={() => setCollapsed(!collapsed)}
             />
-
-            <Dropdown
-              menu={{ items: items }}
-              placement="bottomRight"
-              trigger={["click"]}
-            >
-              <a onClick={(e) => e.preventDefault()}>
-                <Space style={{ color: "#000" }}>
-                  Bienvenido, SAIRO CARVA (Usuario)
-                  <DownOutlined />
-                </Space>
-              </a>
-            </Dropdown>
+            <Space>
+              <Switch
+                checked={isDark}
+                onChange={(checked) => setIsDark(checked)}
+                checkedChildren="Dark"
+                unCheckedChildren="Light"
+              />
+              <Dropdown
+                menu={{ items: items }}
+                placement="bottomRight"
+                trigger={["click"]}
+              >
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <Text>Bienvenido, SAIRO CARVA (Usuario)</Text>
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+            </Space>
           </Flex>
         </Header>
 
