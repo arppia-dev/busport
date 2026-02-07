@@ -10,13 +10,16 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  MoonOutlined,
   RocketOutlined,
   SettingOutlined,
+  SunOutlined,
   UserOutlined
 } from "@ant-design/icons"
 import {
   Layout as AntLayout,
   Button,
+  Divider,
   Dropdown,
   Flex,
   Menu,
@@ -160,8 +163,8 @@ export default function DashboardLayout({
               <Switch
                 checked={isDark}
                 onChange={(checked) => setIsDark(checked)}
-                checkedChildren="Dark"
-                unCheckedChildren="Light"
+                checkedChildren={<MoonOutlined />}
+                unCheckedChildren={<SunOutlined />}
               />
               <Dropdown
                 menu={{ items: items }}
@@ -181,6 +184,7 @@ export default function DashboardLayout({
 
         <Content className={styles.content}>{children}</Content>
 
+        <Divider size="small"></Divider>
         <Footer className={styles.footer}>
           BusPort © 2026 - Sistema de Gestión de Buses
         </Footer>
