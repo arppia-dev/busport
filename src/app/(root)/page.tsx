@@ -20,7 +20,7 @@ const { Title, Text } = Typography
 
 export default function DashboardPage() {
   const {
-    token: { colorBgContainer, paddingLG }
+    token: { colorBgContainer, padding }
   } = theme.useToken()
 
   const columns = [
@@ -90,15 +90,15 @@ export default function DashboardPage() {
         <Col span={24} style={{ flex: 8 }}>
           <div style={{ height: "100%" }}>
             <OpenLayersMap
-              center={[-79.5199, 8.9824]}
+              center={[-79.510298, 9.008566]}
               zoom={13}
               coords={[
                 {
                   node: "Bus-001",
                   date: new Date(),
                   coords: {
-                    latitude: 8.9924,
-                    longitude: -79.5299,
+                    latitude: 9.008566,
+                    longitude: -79.510298,
                     accuracy: 10
                   }
                 },
@@ -155,8 +155,8 @@ export default function DashboardPage() {
           <div
             style={{
               height: "100%",
-              paddingTop: paddingLG,
-              paddingBottom: paddingLG
+              paddingTop: padding,
+              paddingBottom: padding
             }}
           >
             <Header
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingInline: paddingLG,
+                paddingInline: padding,
                 background: colorBgContainer
               }}
             >
@@ -175,7 +175,7 @@ export default function DashboardPage() {
             <Divider style={{ margin: 0 }} />
             <Content
               style={{
-                padding: `${paddingLG / 2}px`,
+                padding: padding,
                 background: colorBgContainer
               }}
             >

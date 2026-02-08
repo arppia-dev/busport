@@ -44,7 +44,7 @@ export default function DashboardLayout({
   const [collapsed, setCollapsed] = useState(false)
   const { isDark, setIsDark } = useTheme()
   const {
-    token: { colorBgContainer }
+    token: { colorBgContainer, padding }
   } = theme.useToken()
 
   const menuItems: MenuProps["items"] = [
@@ -183,7 +183,9 @@ export default function DashboardLayout({
           </Flex>
         </Header>
 
-        <Content className={styles.content}>{children}</Content>
+        <Content className={styles.content} style={{ padding: padding }}>
+          {children}
+        </Content>
 
         <Divider size="small"></Divider>
         <Footer className={styles.footer}>
