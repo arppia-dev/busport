@@ -109,18 +109,23 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
   }, [coords])
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      ref={mapRef}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "650px"
+      }}
+    >
       <div
-        ref={mapRef}
         style={{
-          width: "100%",
-          height: "650px"
+          position: "absolute",
+          top: 12,
+          right: 12,
+          zIndex: 1000
         }}
-      />
-
-      <div style={{ position: "absolute", top: 12, right: 12, zIndex: 1000 }}>
+      >
         <Button
-          type="primary"
           size="large"
           onClick={async () => {
             if (!mapRef.current) return
