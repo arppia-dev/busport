@@ -1,6 +1,7 @@
 "use client"
 
-import { EyeOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
+import { EyeOutlined } from "@ant-design/icons"
+import type { TableColumnsType } from "antd"
 import {
   Badge,
   Button,
@@ -8,12 +9,11 @@ import {
   Layout,
   Space,
   Table,
-  Tag,
   Tabs,
+  Tag,
   theme,
   Typography
 } from "antd"
-import type { TableColumnsType } from "antd"
 import styles from "./page.module.css"
 
 const { Header, Content } = Layout
@@ -283,7 +283,7 @@ export default function TripsPage() {
   } = theme.useToken()
 
   return (
-    <Layout style={{ background: colorBgContainer }}>
+    <Layout style={{ background: colorBgContainer, height: "100%" }}>
       <Header
         style={{
           display: "flex",

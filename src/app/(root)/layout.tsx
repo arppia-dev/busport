@@ -1,11 +1,13 @@
 "use client"
 
 import { useTheme } from "@/components/ThemeProvider"
+import { getBreadcrumbData } from "@/utils/getBreadcrumbData"
 import {
   CarOutlined,
   ControlOutlined,
   DashboardOutlined,
   DownOutlined,
+  HomeOutlined,
   LineChartOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
@@ -18,6 +20,7 @@ import {
 } from "@ant-design/icons"
 import {
   Layout as AntLayout,
+  Breadcrumb,
   Button,
   Divider,
   Dropdown,
@@ -30,6 +33,7 @@ import {
   Typography
 } from "antd"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 import styles from "./page.module.css"
 
@@ -41,6 +45,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const breadcrumbItems = getBreadcrumbData(pathname)
   const [collapsed, setCollapsed] = useState(false)
   const { isDark, setIsDark } = useTheme()
   const {
@@ -149,17 +155,30 @@ export default function DashboardLayout({
           style={{ background: colorBgContainer }}
         >
           <Flex justify="space-between" align="center">
-            <Button
-              type="text"
-              icon={
-                collapsed ? (
-                  <MenuUnfoldOutlined style={{ fontSize: "1.2rem" }} />
-                ) : (
-                  <MenuFoldOutlined style={{ fontSize: "1.2rem" }} />
-                )
-              }
-              onClick={() => setCollapsed(!collapsed)}
-            />
+            <Flex align="center" gap={padding}>
+              <Button
+                type="text"
+                icon={
+                  collapsed ? (
+                    <MenuUnfoldOutlined style={{ fontSize: "1.2rem" }} />
+                  ) : (
+                    <MenuFoldOutlined style={{ fontSize: "1.2rem" }} />
+                  )
+                }
+                onClick={() => setCollapsed(!collapsed)}
+              />
+              {breadcrumbItems.length > 1 && (
+                <Breadcrumb
+                  items={[
+                    {
+                      title: <HomeOutlined />,
+                      href: "/"
+                    },
+                    ...breadcrumbItems.slice(1)
+                  ]}
+                />
+              )}
+            </Flex>
             <Space>
               <Switch
                 checked={isDark}
