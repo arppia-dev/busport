@@ -1,12 +1,13 @@
 "use client"
 
-import { Row, Col, Card, Statistic, Table, Tag } from "antd"
+import OpenLayersMap from "@/components/OpenLayersMap"
 import {
   BugOutlined,
-  UserOutlined,
+  CheckCircleOutlined,
   DollarOutlined,
-  CheckCircleOutlined
+  UserOutlined
 } from "@ant-design/icons"
+import { Card, Col, Row, Statistic, Tag } from "antd"
 import styles from "./page.module.css"
 
 export default function DashboardPage() {
@@ -68,41 +69,55 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.dashboardPage}>
-      <Row gutter={[16, 16]} className={styles.statsRow}>
-        <Col xs={24} sm={12} lg={6}>
+      <Row
+        gutter={[16, 16]}
+        className={styles.statsRow}
+        justify={"space-between"}
+      >
+        <Col xs={24} sm={12} lg={4}>
           <Card>
             <Statistic
-              title="Buses Activos"
+              title="En Curso"
               value={12}
               prefix={<BugOutlined />}
               styles={{ content: { color: "#667eea" } }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={4}>
           <Card>
             <Statistic
-              title="Pasajeros Hoy"
+              title="Recién Finalizadas"
               value={1238}
               prefix={<UserOutlined />}
               styles={{ content: { color: "#52c41a" } }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={4}>
           <Card>
             <Statistic
-              title="Ingresos"
+              title="Total"
               value={45230}
               prefix={<DollarOutlined />}
               styles={{ content: { color: "#faad14" } }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={4}>
           <Card>
             <Statistic
-              title="Rutas Completadas"
+              title="Rutas"
+              value={89}
+              prefix={<CheckCircleOutlined />}
+              styles={{ content: { color: "#1890ff" } }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={4}>
+          <Card>
+            <Statistic
+              title="Empresas"
               value={89}
               prefix={<CheckCircleOutlined />}
               styles={{ content: { color: "#1890ff" } }}
@@ -111,11 +126,68 @@ export default function DashboardPage() {
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]} className={styles.tableRow}>
+      <Row style={{ minHeight: "100%" }}>
         <Col span={24}>
-          <Card title="Buses en Servicio">
-            <Table columns={columns} dataSource={data} pagination={false} />
-          </Card>
+          <OpenLayersMap
+            center={[-79.5199, 8.9824]}
+            zoom={13}
+            coords={[
+              {
+                node: "Bus-001",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9924,
+                  longitude: -79.5299,
+                  accuracy: 10
+                }
+              },
+              {
+                node: "Bus-002",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9954,
+                  longitude: -79.532,
+                  accuracy: 10
+                }
+              },
+              {
+                node: "Bus-003",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9694,
+                  longitude: -79.508,
+                  accuracy: 10
+                }
+              },
+              {
+                node: "Bus-004",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9944,
+                  longitude: -79.506,
+                  accuracy: 10
+                }
+              },
+              {
+                node: "Bus-005",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9704,
+                  longitude: -79.534,
+                  accuracy: 10
+                }
+              },
+              {
+                node: "Bus-006",
+                date: new Date(),
+                coords: {
+                  latitude: 8.9714,
+                  longitude: -79.507,
+                  accuracy: 10
+                }
+              }
+            ]}
+          />
         </Col>
       </Row>
     </div>
