@@ -2,15 +2,27 @@
 
 import OpenLayersMap from "@/components/OpenLayersMap"
 import {
-  BugOutlined,
-  CheckCircleOutlined,
-  DollarOutlined,
-  UserOutlined
-} from "@ant-design/icons"
-import { Card, Col, Row, Statistic, Tag } from "antd"
+  Col,
+  Divider,
+  Flex,
+  Layout,
+  Row,
+  Select,
+  Space,
+  Tag,
+  theme,
+  Typography
+} from "antd"
 import styles from "./page.module.css"
 
+const { Header, Content } = Layout
+const { Title, Text } = Typography
+
 export default function DashboardPage() {
+  const {
+    token: { colorBgContainer, paddingLG }
+  } = theme.useToken()
+
   const columns = [
     {
       title: "Ruta",
@@ -70,124 +82,152 @@ export default function DashboardPage() {
   return (
     <div className={styles.dashboardPage}>
       <Row
-        gutter={[16, 16]}
-        className={styles.statsRow}
-        justify={"space-between"}
+        style={{
+          height: "calc(100vh - 64px - 40px)",
+          flexDirection: "column"
+        }}
       >
-        <Col xs={24} sm={12} lg={4}>
-          <Card>
-            <Statistic
-              title="En Curso"
-              value={12}
-              prefix={<BugOutlined />}
-              styles={{ content: { color: "#667eea" } }}
+        <Col span={24} style={{ flex: 8 }}>
+          <div style={{ height: "100%" }}>
+            <OpenLayersMap
+              center={[-79.5199, 8.9824]}
+              zoom={13}
+              coords={[
+                {
+                  node: "Bus-001",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9924,
+                    longitude: -79.5299,
+                    accuracy: 10
+                  }
+                },
+                {
+                  node: "Bus-002",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9954,
+                    longitude: -79.532,
+                    accuracy: 10
+                  }
+                },
+                {
+                  node: "Bus-003",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9694,
+                    longitude: -79.508,
+                    accuracy: 10
+                  }
+                },
+                {
+                  node: "Bus-004",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9944,
+                    longitude: -79.506,
+                    accuracy: 10
+                  }
+                },
+                {
+                  node: "Bus-005",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9704,
+                    longitude: -79.534,
+                    accuracy: 10
+                  }
+                },
+                {
+                  node: "Bus-006",
+                  date: new Date(),
+                  coords: {
+                    latitude: 8.9714,
+                    longitude: -79.507,
+                    accuracy: 10
+                  }
+                }
+              ]}
             />
-          </Card>
+          </div>
         </Col>
-        <Col xs={24} sm={12} lg={4}>
-          <Card>
-            <Statistic
-              title="Recién Finalizadas"
-              value={1238}
-              prefix={<UserOutlined />}
-              styles={{ content: { color: "#52c41a" } }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={4}>
-          <Card>
-            <Statistic
-              title="Total"
-              value={45230}
-              prefix={<DollarOutlined />}
-              styles={{ content: { color: "#faad14" } }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={4}>
-          <Card>
-            <Statistic
-              title="Rutas"
-              value={89}
-              prefix={<CheckCircleOutlined />}
-              styles={{ content: { color: "#1890ff" } }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={4}>
-          <Card>
-            <Statistic
-              title="Empresas"
-              value={89}
-              prefix={<CheckCircleOutlined />}
-              styles={{ content: { color: "#1890ff" } }}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      <Row style={{ minHeight: "100%" }}>
-        <Col span={24}>
-          <OpenLayersMap
-            center={[-79.5199, 8.9824]}
-            zoom={13}
-            coords={[
-              {
-                node: "Bus-001",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9924,
-                  longitude: -79.5299,
-                  accuracy: 10
-                }
-              },
-              {
-                node: "Bus-002",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9954,
-                  longitude: -79.532,
-                  accuracy: 10
-                }
-              },
-              {
-                node: "Bus-003",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9694,
-                  longitude: -79.508,
-                  accuracy: 10
-                }
-              },
-              {
-                node: "Bus-004",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9944,
-                  longitude: -79.506,
-                  accuracy: 10
-                }
-              },
-              {
-                node: "Bus-005",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9704,
-                  longitude: -79.534,
-                  accuracy: 10
-                }
-              },
-              {
-                node: "Bus-006",
-                date: new Date(),
-                coords: {
-                  latitude: 8.9714,
-                  longitude: -79.507,
-                  accuracy: 10
-                }
-              }
-            ]}
-          />
+        <Col span={24} style={{ flex: 2 }}>
+          <div
+            style={{
+              height: "100%",
+              paddingTop: paddingLG,
+              paddingBottom: paddingLG
+            }}
+          >
+            <Header
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingInline: paddingLG,
+                background: colorBgContainer
+              }}
+            >
+              <Title level={5} style={{ margin: 0 }}>
+                Viajes
+              </Title>
+            </Header>
+            <Divider style={{ margin: 0 }} />
+            <Content
+              style={{
+                padding: `${paddingLG / 2}px`,
+                background: colorBgContainer
+              }}
+            >
+              <Space size={"large"}>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 300 }}
+                  onChange={(value: string) => {
+                    console.log(`selected ${value}`)
+                  }}
+                  options={[
+                    { value: "all", label: "Todas las Empresas" },
+                    { value: "empresa1", label: "Empresa 1" },
+                    { value: "empresa2", label: "Empresa 2" },
+                    { value: "empresa3", label: "Empresa 3" }
+                  ]}
+                />
+                <Flex gap={100} justify="space-between">
+                  <Flex orientation="vertical">
+                    <Title level={4} style={{ margin: 0 }}>
+                      12
+                    </Title>
+                    <Text>En curso</Text>
+                  </Flex>
+                  <Flex orientation="vertical">
+                    <Title level={4} style={{ margin: 0 }}>
+                      12
+                    </Title>
+                    <Text>Recién finalizadas</Text>
+                  </Flex>
+                  <Flex orientation="vertical">
+                    <Title level={4} style={{ margin: 0 }}>
+                      12
+                    </Title>
+                    <Text>Total</Text>
+                  </Flex>
+                  <Flex orientation="vertical">
+                    <Title level={4} style={{ margin: 0 }}>
+                      12
+                    </Title>
+                    <Text>Rutas</Text>
+                  </Flex>
+                  <Flex orientation="vertical">
+                    <Title level={4} style={{ margin: 0 }}>
+                      12
+                    </Title>
+                    <Text>Empresas</Text>
+                  </Flex>
+                </Flex>
+              </Space>
+            </Content>
+          </div>
         </Col>
       </Row>
     </div>
