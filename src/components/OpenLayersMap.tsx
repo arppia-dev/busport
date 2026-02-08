@@ -34,8 +34,10 @@ interface Props {
 const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<Map | null>(null)
+  const viewRef = useRef<View | null>(null)
   const pointFeature = useRef<Feature>(new Feature())
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [scale, setScale] = useState(0.01 * (zoom ?? 2 / 2))
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -58,6 +60,12 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     })
 
     mapInstance.current = map
+    viewRef.current = view
+
+    view.on("change:resolution", () => {
+      const currentZoom = view.getZoom() || 2
+      setScale(0.01 * (currentZoom / 2))
+    })
 
     return () => {
       map.setTarget(undefined)
@@ -87,7 +95,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
         new Style({
           image: new Icon({
             src: "./point.svg",
-            scale: 0.05,
+            scale: scale,
             anchor: [0.1, 0.1]
           })
         })
@@ -108,6 +116,36 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     map.getView().setCenter(positions[0])
   }, [coords])
 
+  useEffect(() => {
+    if (!mapInstance.current) return
+
+    const map = mapInstance.current
+    const vectorLayer = map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer instanceof VectorLayer) as VectorLayer
+
+    if (!vectorLayer) return
+
+    const vectorSource = vectorLayer.getSource() as VectorSource
+    const features = vectorSource.getFeatures()
+
+    features.forEach((feature) => {
+      const style = feature.getStyle()
+      if (style) {
+        feature.setStyle(
+          new Style({
+            image: new Icon({
+              src: "./point.svg",
+              scale: scale,
+              anchor: [0.1, 0.1]
+            })
+          })
+        )
+      }
+    })
+  }, [scale])
+
   return (
     <div
       ref={mapRef}
@@ -117,6 +155,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
         height: "100%"
       }}
     >
+      <div>ZOOM: {scale}</div>
       <div
         style={{
           position: "absolute",
