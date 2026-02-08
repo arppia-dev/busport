@@ -96,7 +96,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
           image: new Icon({
             src: "./point.svg",
             scale: scale,
-            anchor: [0.1, 0.1]
+            anchor: [0.5, 1]
           })
         })
       )
@@ -138,7 +138,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
             image: new Icon({
               src: "./point.svg",
               scale: scale,
-              anchor: [0.1, 0.1]
+              anchor: [0.5, 1]
             })
           })
         )
@@ -155,7 +155,6 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
         height: "100%"
       }}
     >
-      <div>ZOOM: {scale}</div>
       <div
         style={{
           position: "absolute",
