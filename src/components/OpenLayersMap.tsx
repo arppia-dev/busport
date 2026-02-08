@@ -37,7 +37,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
   const viewRef = useRef<View | null>(null)
   const pointFeature = useRef<Feature>(new Feature())
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [scale, setScale] = useState(0.01 * (zoom ?? 2 / 2))
+  const [scale, setScale] = useState(1 / (zoom ?? 2))
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -64,7 +64,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
 
     view.on("change:resolution", () => {
       const currentZoom = view.getZoom() || 2
-      setScale(0.01 * (currentZoom / 2))
+      setScale(1 / currentZoom)
     })
 
     return () => {
