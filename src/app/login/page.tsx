@@ -20,7 +20,12 @@ export default function LoginPage() {
         <div className={styles.cardInner}>
           <div className={styles.leftPane}>
             <div className={styles.loginHeader}>
-              <Title level={2}>BusPort</Title>
+              <Title level={2} style={{ color: "#fff" }}>
+                BusPort
+              </Title>
+              <Title level={3} style={{ color: "#fff" }}>
+                Sistema de Gestión de Buses
+              </Title>
             </div>
           </div>
 
@@ -31,31 +36,31 @@ export default function LoginPage() {
               onFinish={onFinish}
               autoComplete="off"
             >
-          <Form.Item
-            name="username"
-            rules={[
-              { required: true, message: "Por favor ingresa tu usuario" }
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="Usuario"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Por favor ingresa tu usuario" }
+                ]}
+              >
+                <Input
+                  prefix={<UserOutlined />}
+                  placeholder="Usuario"
+                  size="large"
+                />
+              </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[
-              { required: true, message: "Por favor ingresa tu contraseña" }
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Contraseña"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Por favor ingresa tu contraseña" }
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  placeholder="Contraseña"
+                  size="large"
+                />
+              </Form.Item>
 
               <Form.Item>
                 <Button type="primary" htmlType="submit" block size="large">
