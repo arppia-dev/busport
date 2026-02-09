@@ -67,12 +67,24 @@ export default function DashboardLayout({
     {
       key: "3",
       icon: <UserOutlined />,
-      label: "Clientes"
+      label: <Link href="/clients">Clientes</Link>
     },
     {
       key: "4",
       icon: <ControlOutlined />,
-      label: "Planificaciones"
+      label: "Planificaciones",
+      children: [
+        {
+          key: "4.1",
+          icon: <ControlOutlined />,
+          label: <Link href="/planning/routes">Viajes con Ruta</Link>
+        },
+        {
+          key: "4.2",
+          icon: <ControlOutlined />,
+          label: <Link href="/planning/seats">Reserva de Asiento</Link>
+        }
+      ]
     },
     {
       key: "5",
