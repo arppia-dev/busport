@@ -97,6 +97,43 @@ interface Ruta {
 }
 
 const rutasData: Ruta[] = [
+  // Ruta sin reservas para mostrar N/A
+  {
+    key: "7",
+    codigo: "R700",
+    titulo: "Ruta 700",
+    hor: "15:00",
+    estado: "Borrador",
+    empresa: "Transporte Plus",
+    reservados: { reservado: 3, capacidad: 45 },
+    dias: {
+      lunes: 0,
+      martes: 0,
+      miercoles: 0,
+      jueves: 0,
+      viernes: 0,
+      sabado: 2,
+      domingo: 1
+    }
+  },
+  {
+    key: "8",
+    codigo: "R800",
+    titulo: "Ruta 800",
+    hor: "16:30",
+    estado: "Publicada",
+    empresa: "Viajes Seguros",
+    reservados: { reservado: 20, capacidad: 45 },
+    dias: {
+      lunes: 4,
+      martes: 4,
+      miercoles: 4,
+      jueves: 4,
+      viernes: 0,
+      sabado: 0,
+      domingo: 0
+    }
+  },
   {
     key: "1",
     codigo: "R101",
@@ -104,15 +141,15 @@ const rutasData: Ruta[] = [
     hor: "07:00",
     estado: "Publicada",
     empresa: "Transporte Plus",
-    reservados: { reservado: 25, capacidad: 40 },
+    reservados: { reservado: 97, capacidad: 45 },
     dias: {
-      lunes: 3,
-      martes: 4,
-      miercoles: 5,
-      jueves: 2,
-      viernes: 4,
+      lunes: 14,
+      martes: 21,
+      miercoles: 23,
+      jueves: 20,
+      viernes: 15,
       sabado: 3,
-      domingo: 4
+      domingo: 1
     }
   },
   {
@@ -122,15 +159,15 @@ const rutasData: Ruta[] = [
     hor: "08:30",
     estado: "Borrador",
     empresa: "Viajes Seguros",
-    reservados: { reservado: 18, capacidad: 30 },
+    reservados: { reservado: 94, capacidad: 45 },
     dias: {
-      lunes: 2,
-      martes: 3,
-      miercoles: 2,
-      jueves: 3,
-      viernes: 2,
-      sabado: 3,
-      domingo: 3
+      lunes: 18,
+      martes: 21,
+      miercoles: 18,
+      jueves: 20,
+      viernes: 17,
+      sabado: 0,
+      domingo: 0
     }
   },
   {
@@ -438,9 +475,62 @@ export default function ClientsPage() {
                               />
                             </Flex>
                           ),
-                          dataIndex: ["dias", dia.key],
                           key: dia.key,
-                          width: 100
+                          width: 110,
+                          render: (_: any, record: Ruta) => {
+                            const cantidad =
+                              record.dias[dia.key as keyof typeof record.dias]
+                            const capacidad = record.reservados.capacidad
+                            if (cantidad === undefined || capacidad === 0) {
+                              return (
+                                <span
+                                  style={{ color: "#bbb", fontStyle: "italic" }}
+                                >
+                                  N/A
+                                </span>
+                              )
+                            }
+                            if (cantidad === 0) {
+                              return (
+                                <span
+                                  style={{ color: "#bbb", fontStyle: "italic" }}
+                                >
+                                  N/A
+                                </span>
+                              )
+                            }
+                            const porcentaje = Math.round(
+                              (cantidad / capacidad) * 100
+                            )
+                            let bg = "#e6ffed"
+                            let color = "#389e0d"
+                            if (porcentaje > 50) {
+                              bg = "#fff1f0"
+                              color = "#cf1322"
+                            } else if (porcentaje > 40) {
+                              bg = "#fffbe6"
+                              color = "#d48806"
+                            }
+                            return (
+                              <span
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  background: bg,
+                                  borderRadius: 6,
+                                  padding: "2px 0"
+                                }}
+                              >
+                                <span style={{ fontWeight: 500, color }}>
+                                  {porcentaje}%
+                                </span>
+                                <span style={{ fontSize: 12, color: "#888" }}>
+                                  {cantidad} reservas
+                                </span>
+                              </span>
+                            )
+                          }
                         }))
                       }
                     ]}
