@@ -1,8 +1,9 @@
 "use client"
 
-import type { TableColumnsType } from "antd"
-import { DownloadOutlined } from "@ant-design/icons"
+import { DownloadOutlined, EditOutlined } from "@ant-design/icons"
+import type { DatePickerProps, TableColumnsType } from "antd"
 import {
+  DatePicker,
   Divider,
   Flex,
   Layout,
@@ -14,6 +15,8 @@ import {
   theme,
   Typography
 } from "antd"
+import dayjs from "dayjs"
+import { useState } from "react"
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
@@ -97,7 +100,6 @@ interface Ruta {
 }
 
 const rutasData: Ruta[] = [
-  // Ruta sin reservas para mostrar N/A
   {
     key: "7",
     codigo: "R700",
@@ -244,9 +246,6 @@ const rutasData: Ruta[] = [
   }
 ]
 
-import { useMemo, useState } from "react"
-import { EditOutlined } from "@ant-design/icons"
-
 const diasSemana = [
   { key: "lunes", label: "lun." },
   { key: "martes", label: "mar." },
@@ -300,23 +299,40 @@ const empleadosColumns: TableColumnsType<Empleado> = [
   }
 ]
 
-export default function ClientsPage() {
-  const [selectedWeek, setSelectedWeek] = useState(() => {
-    const today = new Date()
-    const dayOfWeek = today.getDay()
-    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
-    const monday = new Date(today)
-    monday.setDate(today.getDate() + diffToMonday)
-    return monday.toISOString()
-  })
-  const mondayDate = useMemo(() => {
-    return new Date(selectedWeek)
-  }, [selectedWeek])
-  const diasConFecha = useMemo(() => getFechasSemana(mondayDate), [mondayDate])
+const weekFormat = "DD/MMM"
 
+export default function ClientsPage() {
   const {
     token: { colorPrimary, colorBgContainer, padding }
   } = theme.useToken()
+
+  const customWeekStartEndFormat: DatePickerProps["format"] = (value) =>
+    `${dayjs(value).startOf("week").format(weekFormat)} - ${dayjs(value)
+      .endOf("week")
+      .format(weekFormat)}`
+
+  // Estado para la semana seleccionada y los días con fecha
+  const [semanaSeleccionada, setSemanaSeleccionada] = useState<Date>(() => {
+    // Por defecto, el lunes de la semana actual
+    const hoy = new Date()
+    const diaSemana = hoy.getDay() === 0 ? 6 : hoy.getDay() - 1 // 0=domingo
+    const lunes = new Date(hoy)
+    lunes.setDate(hoy.getDate() - diaSemana)
+    return lunes
+  })
+  const [diasConFecha, setDiasConFecha] = useState(() =>
+    getFechasSemana(semanaSeleccionada)
+  )
+
+  // Handler para el cambio de semana en el DatePicker
+  const handleWeekChange: DatePickerProps["onChange"] = (date) => {
+    if (!date) return
+    // Asegurarse de que date es un objeto dayjs
+    const dateValue = Array.isArray(date) ? date[0] : date
+    const monday = dayjs(dateValue).startOf("week").toDate()
+    setSemanaSeleccionada(monday)
+    setDiasConFecha(getFechasSemana(monday))
+  }
 
   return (
     <Layout style={{ background: colorBgContainer, height: "100%" }}>
@@ -343,50 +359,12 @@ export default function ClientsPage() {
               children: (
                 <Flex orientation="vertical" gap={padding}>
                   <Space>
-                    <Select
-                      placeholder="Seleccionar semana"
+                    <DatePicker
+                      defaultValue={dayjs(semanaSeleccionada)}
+                      format={customWeekStartEndFormat}
+                      onChange={handleWeekChange}
+                      picker="week"
                       style={{ width: 250 }}
-                      options={Array.from({ length: 5 }, (_, i) => {
-                        const today = new Date()
-                        const dayOfWeek = today.getDay()
-                        const diffToMonday =
-                          dayOfWeek === 0 ? -6 : 1 - dayOfWeek
-                        const currentMonday = new Date(today)
-                        currentMonday.setDate(today.getDate() + diffToMonday)
-                        const weekMonday = new Date(currentMonday)
-                        weekMonday.setDate(
-                          currentMonday.getDate() + (1 - i) * 7
-                        )
-                        const weekEnd = new Date(weekMonday)
-                        weekEnd.setDate(weekMonday.getDate() + 6)
-                        const pad = (n: number) => n.toString().padStart(2, "0")
-                        const meses = [
-                          "Ene",
-                          "Feb",
-                          "Mar",
-                          "Abr",
-                          "May",
-                          "Jun",
-                          "Jul",
-                          "Ago",
-                          "Sep",
-                          "Oct",
-                          "Nov",
-                          "Dic"
-                        ]
-                        const startDay = pad(weekMonday.getDate())
-                        const startMonth = meses[weekMonday.getMonth()]
-                        const startYear = weekMonday.getFullYear()
-                        const endDay = pad(weekEnd.getDate())
-                        const endMonth = meses[weekEnd.getMonth()]
-                        const endYear = weekEnd.getFullYear()
-                        return {
-                          label: `${startDay} ${startMonth}/${startYear} - ${endDay} ${endMonth}/${endYear}`,
-                          value: weekMonday.toISOString()
-                        }
-                      })}
-                      value={selectedWeek}
-                      onChange={setSelectedWeek}
                     />
                     <Select
                       placeholder="Seleccionar empresa"
