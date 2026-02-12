@@ -381,6 +381,10 @@ export default function ClientsPage() {
                         title: "Título de la Ruta",
                         key: "titulo",
                         width: 220,
+                        filters: Array.from(
+                          new Set(rutasData.map((r) => r.titulo))
+                        ).map((titulo) => ({ text: titulo, value: titulo })),
+                        onFilter: (value, record) => record.titulo === value,
                         render: (_: any, record: Ruta) => (
                           <span>
                             {record.codigo} - {record.titulo} - {record.hor}
@@ -391,6 +395,11 @@ export default function ClientsPage() {
                         title: "",
                         key: "estado",
                         width: 50,
+                        filters: [
+                          { text: "Publicada", value: "Publicada" },
+                          { text: "Borrador", value: "Borrador" }
+                        ],
+                        onFilter: (value, record) => record.estado === value,
                         render: (_: any, record: Ruta) => (
                           <Tag
                             color={
@@ -405,7 +414,11 @@ export default function ClientsPage() {
                         title: "Empresa",
                         dataIndex: "empresa",
                         key: "empresa",
-                        width: 180
+                        width: 180,
+                        filters: Array.from(
+                          new Set(rutasData.map((r) => r.empresa))
+                        ).map((empresa) => ({ text: empresa, value: empresa })),
+                        onFilter: (value, record) => record.empresa === value
                       },
                       {
                         title: "Reservados",
