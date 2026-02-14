@@ -154,7 +154,7 @@ export default function ClientsPage() {
           items={[
             {
               key: "1",
-              label: <Text>Clientes</Text>,
+              label: <Text>Empresas</Text>,
               children: (
                 <Table<Cliente>
                   columns={clientesColumns}
