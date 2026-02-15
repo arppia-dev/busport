@@ -1,19 +1,19 @@
-"use client"
+'use client'
 
-import Feature from "ol/Feature"
-import Map from "ol/Map"
-import View from "ol/View"
-import Point from "ol/geom/Point"
-import TileLayer from "ol/layer/Tile"
-import VectorLayer from "ol/layer/Vector"
-import "ol/ol.css"
-import { fromLonLat } from "ol/proj"
-import OSM from "ol/source/OSM"
-import VectorSource from "ol/source/Vector"
-import { Icon, Style } from "ol/style"
-import React, { useEffect, useRef, useState } from "react"
-import { Button } from "antd"
-import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons"
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import Feature from 'ol/Feature'
+import Map from 'ol/Map'
+import View from 'ol/View'
+import Point from 'ol/geom/Point'
+import TileLayer from 'ol/layer/Tile'
+import VectorLayer from 'ol/layer/Vector'
+import 'ol/ol.css'
+import { fromLonLat } from 'ol/proj'
+import OSM from 'ol/source/OSM'
+import VectorSource from 'ol/source/Vector'
+import { Icon, Style } from 'ol/style'
+import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
   node: string
@@ -62,7 +62,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     mapInstance.current = map
     viewRef.current = view
 
-    view.on("change:resolution", () => {
+    view.on('change:resolution', () => {
       const currentZoom = view.getZoom() || 2
       setScale(1 / currentZoom)
     })
@@ -76,8 +76,8 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     const handler = () => {
       setIsFullscreen(Boolean(document.fullscreenElement))
     }
-    document.addEventListener("fullscreenchange", handler)
-    return () => document.removeEventListener("fullscreenchange", handler)
+    document.addEventListener('fullscreenchange', handler)
+    return () => document.removeEventListener('fullscreenchange', handler)
   }, [])
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
       feature.setStyle(
         new Style({
           image: new Icon({
-            src: "./point.svg",
+            src: './point.svg',
             scale: scale,
             anchor: [0.5, 1]
           })
@@ -136,7 +136,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
         feature.setStyle(
           new Style({
             image: new Icon({
-              src: "./point.svg",
+              src: './point.svg',
               scale: scale,
               anchor: [0.5, 1]
             })
@@ -150,14 +150,14 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     <div
       ref={mapRef}
       style={{
-        position: "relative",
-        width: "100%",
-        height: "100%"
+        position: 'relative',
+        width: '100%',
+        height: '100%'
       }}
     >
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 12,
           right: 12,
           zIndex: 1000
@@ -175,7 +175,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
               }
             } catch (e) {
               // eslint-disable-next-line no-console
-              console.error("Fullscreen error", e)
+              console.error('Fullscreen error', e)
             }
           }}
           icon={

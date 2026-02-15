@@ -1,37 +1,44 @@
-import { BreadcrumbProps } from "antd"
-import { BreadcrumbItemType } from "antd/es/breadcrumb/Breadcrumb"
+import { BreadcrumbItemType } from 'antd/es/breadcrumb/Breadcrumb'
 
 type ItemType = BreadcrumbItemType
 
+/**
+ * Generates breadcrumb items for a given pathname.
+ * The root path returns only 'Inicio'.
+ * Each segment is capitalized and linked, except the last one.
+ *
+ * @param pathname The current URL path (e.g. '/clients/planning')
+ * @returns Array of breadcrumb items for Ant Design Breadcrumb component
+ */
 export function getBreadcrumbData(pathname: string): ItemType[] {
-  // Si es la raíz, retorna solo "Inicio"
-  if (pathname === "/") {
+  // If it's the root, return only 'Inicio'
+  if (pathname === '/') {
     return [
       {
-        title: "Inicio",
-        href: "/"
+        title: 'Inicio',
+        href: '/'
       }
     ]
   }
 
-  // Dividir el path en segmentos y filtrar vacíos
-  const segments = pathname.split("/").filter(Boolean)
+  // Split the path into segments and filter empty ones
+  const segments = pathname.split('/').filter(Boolean)
 
-  // Crear items del breadcrumb
+  // Create breadcrumb items
   const items: ItemType[] = [
     {
-      title: "Inicio",
-      href: "/"
+      title: 'Inicio',
+      href: '/'
     }
   ]
 
-  // Construir segmentos acumulativos
-  let accumulatedPath = ""
+  // Build cumulative segments
+  let accumulatedPath = ''
   segments.forEach((segment, index) => {
     accumulatedPath += `/${segment}`
     const label = segment.charAt(0).toUpperCase() + segment.slice(1)
 
-    // El último item no debe ser link
+    // The last item should not be a link
     if (index === segments.length - 1) {
       items.push({
         title: label

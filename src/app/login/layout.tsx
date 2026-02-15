@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import React from "react"
-import { Layout as AntLayout } from "antd"
-import styles from "./login.module.css"
+import React from 'react'
+import { Layout as AntLayout } from 'antd'
+import styles from './login.module.css'
 
 const { Content } = AntLayout
 

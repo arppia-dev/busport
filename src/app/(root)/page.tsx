@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import OpenLayersMap from "@/components/OpenLayersMap"
+import OpenLayersMap from '@/components/OpenLayersMap'
 import {
   Col,
   Divider,
@@ -12,8 +12,8 @@ import {
   Tag,
   theme,
   Typography
-} from "antd"
-import styles from "./page.module.css"
+} from 'antd'
+import styles from './page.module.css'
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
@@ -25,30 +25,30 @@ export default function DashboardPage() {
 
   const columns = [
     {
-      title: "Ruta",
-      dataIndex: "route",
-      key: "route"
+      title: 'Ruta',
+      dataIndex: 'route',
+      key: 'route'
     },
     {
-      title: "Bus",
-      dataIndex: "bus",
-      key: "bus"
+      title: 'Bus',
+      dataIndex: 'bus',
+      key: 'bus'
     },
     {
-      title: "Pasajeros",
-      dataIndex: "passengers",
-      key: "passengers",
-      align: "center" as const
+      title: 'Pasajeros',
+      dataIndex: 'passengers',
+      key: 'passengers',
+      align: 'center' as const
     },
     {
-      title: "Estado",
-      dataIndex: "status",
-      key: "status",
+      title: 'Estado',
+      dataIndex: 'status',
+      key: 'status',
       render: (status: string) => {
         const colors = {
-          "En ruta": "blue",
-          Disponible: "green",
-          Mantenimiento: "red"
+          'En ruta': 'blue',
+          Disponible: 'green',
+          Mantenimiento: 'red'
         }
         return <Tag color={colors[status as keyof typeof colors]}>{status}</Tag>
       }
@@ -57,25 +57,25 @@ export default function DashboardPage() {
 
   const data = [
     {
-      key: "1",
-      route: "Ruta 1 - Centro",
-      bus: "BS-001",
+      key: '1',
+      route: 'Ruta 1 - Centro',
+      bus: 'BS-001',
       passengers: 45,
-      status: "En ruta"
+      status: 'En ruta'
     },
     {
-      key: "2",
-      route: "Ruta 2 - Norte",
-      bus: "BS-002",
+      key: '2',
+      route: 'Ruta 2 - Norte',
+      bus: 'BS-002',
       passengers: 50,
-      status: "En ruta"
+      status: 'En ruta'
     },
     {
-      key: "3",
-      route: "Ruta 3 - Sur",
-      bus: "BS-003",
+      key: '3',
+      route: 'Ruta 3 - Sur',
+      bus: 'BS-003',
       passengers: 38,
-      status: "Disponible"
+      status: 'Disponible'
     }
   ]
 
@@ -83,18 +83,18 @@ export default function DashboardPage() {
     <div className={styles.dashboardPage}>
       <Row
         style={{
-          height: "calc(100vh - 64px - 40px)",
-          flexDirection: "column"
+          height: 'calc(100vh - 64px - 40px)',
+          flexDirection: 'column'
         }}
       >
         <Col span={24} style={{ flex: 8 }}>
-          <div style={{ height: "100%" }}>
+          <div style={{ height: '100%' }}>
             <OpenLayersMap
               center={[-79.510298, 9.008566]}
               zoom={13}
               coords={[
                 {
-                  node: "Bus-001",
+                  node: 'Bus-001',
                   date: new Date(),
                   coords: {
                     latitude: 9.008566,
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                   }
                 },
                 {
-                  node: "Bus-002",
+                  node: 'Bus-002',
                   date: new Date(),
                   coords: {
                     latitude: 8.9954,
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                   }
                 },
                 {
-                  node: "Bus-003",
+                  node: 'Bus-003',
                   date: new Date(),
                   coords: {
                     latitude: 8.9694,
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                   }
                 },
                 {
-                  node: "Bus-004",
+                  node: 'Bus-004',
                   date: new Date(),
                   coords: {
                     latitude: 8.9944,
@@ -130,7 +130,7 @@ export default function DashboardPage() {
                   }
                 },
                 {
-                  node: "Bus-005",
+                  node: 'Bus-005',
                   date: new Date(),
                   coords: {
                     latitude: 8.9704,
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                   }
                 },
                 {
-                  node: "Bus-006",
+                  node: 'Bus-006',
                   date: new Date(),
                   coords: {
                     latitude: 8.9714,
@@ -154,16 +154,16 @@ export default function DashboardPage() {
         <Col span={24} style={{ flex: 2 }}>
           <div
             style={{
-              height: "100%",
+              height: '100%',
               paddingTop: padding,
               paddingBottom: padding
             }}
           >
             <Header
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 paddingInline: padding,
                 background: colorBgContainer
               }}
@@ -179,7 +179,7 @@ export default function DashboardPage() {
                 background: colorBgContainer
               }}
             >
-              <Space size={"large"}>
+              <Space size={'large'}>
                 <Select
                   defaultValue="all"
                   style={{ width: 300 }}
@@ -187,10 +187,10 @@ export default function DashboardPage() {
                     console.log(`selected ${value}`)
                   }}
                   options={[
-                    { value: "all", label: "Todas las Empresas" },
-                    { value: "empresa1", label: "Empresa 1" },
-                    { value: "empresa2", label: "Empresa 2" },
-                    { value: "empresa3", label: "Empresa 3" }
+                    { value: 'all', label: 'Todas las Empresas' },
+                    { value: 'empresa1', label: 'Empresa 1' },
+                    { value: 'empresa2', label: 'Empresa 2' },
+                    { value: 'empresa3', label: 'Empresa 3' }
                   ]}
                 />
                 <Flex gap={100} justify="space-between">

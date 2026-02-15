@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import React from "react"
-import { Form, Input, Button, Card, Typography } from "antd"
-import { UserOutlined, LockOutlined } from "@ant-design/icons"
-import styles from "./login.module.css"
+import React from 'react'
+import { Form, Input, Button, Card, Typography } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import styles from './login.module.css'
 
 const { Title } = Typography
 
@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [form] = Form.useForm()
 
   const onFinish = (values: { username: string; password: string }) => {
-    console.log("Login attempt:", values)
+    console.log('Login attempt:', values)
   }
 
   return (
@@ -20,10 +20,10 @@ export default function LoginPage() {
         <div className={styles.cardInner}>
           <div className={styles.leftPane}>
             <div className={styles.loginHeader}>
-              <Title level={2} style={{ color: "#fff" }}>
+              <Title level={2} style={{ color: '#fff' }}>
                 BusPort
               </Title>
-              <Title level={3} style={{ color: "#fff" }}>
+              <Title level={3} style={{ color: '#fff' }}>
                 Sistema de Gestión de Buses
               </Title>
             </div>
@@ -39,7 +39,7 @@ export default function LoginPage() {
               <Form.Item
                 name="username"
                 rules={[
-                  { required: true, message: "Por favor ingresa tu usuario" }
+                  { required: true, message: 'Por favor ingresa tu usuario' }
                 ]}
               >
                 <Input
@@ -52,7 +52,7 @@ export default function LoginPage() {
               <Form.Item
                 name="password"
                 rules={[
-                  { required: true, message: "Por favor ingresa tu contraseña" }
+                  { required: true, message: 'Por favor ingresa tu contraseña' }
                 ]}
               >
                 <Input.Password

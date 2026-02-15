@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { DownloadOutlined, EditOutlined } from "@ant-design/icons"
-import type { DatePickerProps, TableColumnsType } from "antd"
+import { DownloadOutlined, EditOutlined } from '@ant-design/icons'
+import type { DatePickerProps, TableColumnsType } from 'antd'
 import {
   DatePicker,
   Divider,
@@ -14,9 +14,9 @@ import {
   Tag,
   theme,
   Typography
-} from "antd"
-import dayjs from "dayjs"
-import { useState } from "react"
+} from 'antd'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
@@ -39,111 +39,111 @@ interface Empleado {
 }
 
 const clientesData: Cliente[] = [
-  { key: "1", nombreEmpresa: "Transporte Plus", codigoEmpresa: "TP001" },
-  { key: "2", nombreEmpresa: "Viajes Seguros", codigoEmpresa: "VS002" },
-  { key: "3", nombreEmpresa: "Viajes Express", codigoEmpresa: "VE003" }
+  { key: '1', nombreEmpresa: 'Transporte Plus', codigoEmpresa: 'TP001' },
+  { key: '2', nombreEmpresa: 'Viajes Seguros', codigoEmpresa: 'VS002' },
+  { key: '3', nombreEmpresa: 'Viajes Express', codigoEmpresa: 'VE003' }
 ]
 
 const empleadosData: Empleado[] = [
   {
-    key: "1",
-    codigoInterno: "E001",
-    nombrePasajero: "Carlos García",
-    empresa: "Transporte Plus",
-    tituloRuta: "Ruta 101",
-    estadoReserva: "Confirmada",
-    fechaReserva: "10/02/2026",
-    reservaEn: "10/02/2026 06:11"
+    key: '1',
+    codigoInterno: 'E001',
+    nombrePasajero: 'Carlos García',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 101',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '10/02/2026',
+    reservaEn: '10/02/2026 06:11'
   },
   {
-    key: "2",
-    codigoInterno: "E002",
-    nombrePasajero: "María López",
-    empresa: "Viajes Seguros",
-    tituloRuta: "Ruta 205",
-    estadoReserva: "Pendiente",
-    fechaReserva: "11/02/2026",
-    reservaEn: "11/02/2026 08:45"
+    key: '2',
+    codigoInterno: 'E002',
+    nombrePasajero: 'María López',
+    empresa: 'Viajes Seguros',
+    tituloRuta: 'Ruta 205',
+    estadoReserva: 'Pendiente',
+    fechaReserva: '11/02/2026',
+    reservaEn: '11/02/2026 08:45'
   },
   {
-    key: "3",
-    codigoInterno: "E003",
-    nombrePasajero: "Juan Pérez",
-    empresa: "Transporte Plus",
-    tituloRuta: "Ruta 312",
-    estadoReserva: "Cancelada",
-    fechaReserva: "09/02/2026",
-    reservaEn: "09/02/2026 17:30"
+    key: '3',
+    codigoInterno: 'E003',
+    nombrePasajero: 'Juan Pérez',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 312',
+    estadoReserva: 'Cancelada',
+    fechaReserva: '09/02/2026',
+    reservaEn: '09/02/2026 17:30'
   },
   {
-    key: "4",
-    codigoInterno: "E004",
-    nombrePasajero: "Ana Torres",
-    empresa: "Viajes Express",
-    tituloRuta: "Ruta 700",
-    estadoReserva: "Confirmada",
-    fechaReserva: "08/02/2026",
-    reservaEn: "08/02/2026 12:00"
+    key: '4',
+    codigoInterno: 'E004',
+    nombrePasajero: 'Ana Torres',
+    empresa: 'Viajes Express',
+    tituloRuta: 'Ruta 700',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '08/02/2026',
+    reservaEn: '08/02/2026 12:00'
   },
   {
-    key: "5",
-    codigoInterno: "E005",
-    nombrePasajero: "Luis Fernández",
-    empresa: "Transporte Plus",
-    tituloRuta: "Ruta 410",
-    estadoReserva: "Pendiente",
-    fechaReserva: "07/02/2026",
-    reservaEn: "07/02/2026 09:30"
+    key: '5',
+    codigoInterno: 'E005',
+    nombrePasajero: 'Luis Fernández',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 410',
+    estadoReserva: 'Pendiente',
+    fechaReserva: '07/02/2026',
+    reservaEn: '07/02/2026 09:30'
   },
   {
-    key: "6",
-    codigoInterno: "E006",
-    nombrePasajero: "Sofía Ramírez",
-    empresa: "Viajes Seguros",
-    tituloRuta: "Ruta 520",
-    estadoReserva: "Confirmada",
-    fechaReserva: "06/02/2026",
-    reservaEn: "06/02/2026 15:20"
+    key: '6',
+    codigoInterno: 'E006',
+    nombrePasajero: 'Sofía Ramírez',
+    empresa: 'Viajes Seguros',
+    tituloRuta: 'Ruta 520',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '06/02/2026',
+    reservaEn: '06/02/2026 15:20'
   },
   {
-    key: "7",
-    codigoInterno: "E007",
-    nombrePasajero: "Pedro Castillo",
-    empresa: "Viajes Express",
-    tituloRuta: "Ruta 601",
-    estadoReserva: "Cancelada",
-    fechaReserva: "05/02/2026",
-    reservaEn: "05/02/2026 18:45"
+    key: '7',
+    codigoInterno: 'E007',
+    nombrePasajero: 'Pedro Castillo',
+    empresa: 'Viajes Express',
+    tituloRuta: 'Ruta 601',
+    estadoReserva: 'Cancelada',
+    fechaReserva: '05/02/2026',
+    reservaEn: '05/02/2026 18:45'
   },
   {
-    key: "8",
-    codigoInterno: "E008",
-    nombrePasajero: "Lucía Gómez",
-    empresa: "Transporte Plus",
-    tituloRuta: "Ruta 101",
-    estadoReserva: "Confirmada",
-    fechaReserva: "04/02/2026",
-    reservaEn: "04/02/2026 07:10"
+    key: '8',
+    codigoInterno: 'E008',
+    nombrePasajero: 'Lucía Gómez',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 101',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '04/02/2026',
+    reservaEn: '04/02/2026 07:10'
   },
   {
-    key: "9",
-    codigoInterno: "E009",
-    nombrePasajero: "Miguel Ruiz",
-    empresa: "Viajes Seguros",
-    tituloRuta: "Ruta 205",
-    estadoReserva: "Pendiente",
-    fechaReserva: "03/02/2026",
-    reservaEn: "03/02/2026 10:55"
+    key: '9',
+    codigoInterno: 'E009',
+    nombrePasajero: 'Miguel Ruiz',
+    empresa: 'Viajes Seguros',
+    tituloRuta: 'Ruta 205',
+    estadoReserva: 'Pendiente',
+    fechaReserva: '03/02/2026',
+    reservaEn: '03/02/2026 10:55'
   },
   {
-    key: "10",
-    codigoInterno: "E010",
-    nombrePasajero: "Valentina Herrera",
-    empresa: "Viajes Express",
-    tituloRuta: "Ruta 312",
-    estadoReserva: "Confirmada",
-    fechaReserva: "02/02/2026",
-    reservaEn: "02/02/2026 16:40"
+    key: '10',
+    codigoInterno: 'E010',
+    nombrePasajero: 'Valentina Herrera',
+    empresa: 'Viajes Express',
+    tituloRuta: 'Ruta 312',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '02/02/2026',
+    reservaEn: '02/02/2026 16:40'
   }
 ]
 
@@ -152,7 +152,7 @@ interface Ruta {
   codigo: string
   titulo: string
   hor: string
-  estado: "Publicada" | "Borrador"
+  estado: 'Publicada' | 'Borrador'
   empresa: string
   reservados: {
     reservado: number
@@ -171,12 +171,12 @@ interface Ruta {
 
 const rutasData: Ruta[] = [
   {
-    key: "7",
-    codigo: "R700",
-    titulo: "Ruta 700",
-    hor: "15:00",
-    estado: "Borrador",
-    empresa: "Transporte Plus",
+    key: '7',
+    codigo: 'R700',
+    titulo: 'Ruta 700',
+    hor: '15:00',
+    estado: 'Borrador',
+    empresa: 'Transporte Plus',
     reservados: { reservado: 3, capacidad: 45 },
     dias: {
       lunes: 0,
@@ -189,12 +189,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "8",
-    codigo: "R800",
-    titulo: "Ruta 800",
-    hor: "16:30",
-    estado: "Publicada",
-    empresa: "Viajes Seguros",
+    key: '8',
+    codigo: 'R800',
+    titulo: 'Ruta 800',
+    hor: '16:30',
+    estado: 'Publicada',
+    empresa: 'Viajes Seguros',
     reservados: { reservado: 20, capacidad: 45 },
     dias: {
       lunes: 4,
@@ -207,12 +207,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "1",
-    codigo: "R101",
-    titulo: "Ruta 101",
-    hor: "07:00",
-    estado: "Publicada",
-    empresa: "Transporte Plus",
+    key: '1',
+    codigo: 'R101',
+    titulo: 'Ruta 101',
+    hor: '07:00',
+    estado: 'Publicada',
+    empresa: 'Transporte Plus',
     reservados: { reservado: 97, capacidad: 45 },
     dias: {
       lunes: 14,
@@ -225,12 +225,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "2",
-    codigo: "R205",
-    titulo: "Ruta 205",
-    hor: "08:30",
-    estado: "Borrador",
-    empresa: "Viajes Seguros",
+    key: '2',
+    codigo: 'R205',
+    titulo: 'Ruta 205',
+    hor: '08:30',
+    estado: 'Borrador',
+    empresa: 'Viajes Seguros',
     reservados: { reservado: 94, capacidad: 45 },
     dias: {
       lunes: 18,
@@ -243,12 +243,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "3",
-    codigo: "R312",
-    titulo: "Ruta 312",
-    hor: "09:15",
-    estado: "Publicada",
-    empresa: "Viajes Express",
+    key: '3',
+    codigo: 'R312',
+    titulo: 'Ruta 312',
+    hor: '09:15',
+    estado: 'Publicada',
+    empresa: 'Viajes Express',
     reservados: { reservado: 32, capacidad: 45 },
     dias: {
       lunes: 5,
@@ -261,12 +261,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "4",
-    codigo: "R410",
-    titulo: "Ruta 410",
-    hor: "10:00",
-    estado: "Borrador",
-    empresa: "Transporte Plus",
+    key: '4',
+    codigo: 'R410',
+    titulo: 'Ruta 410',
+    hor: '10:00',
+    estado: 'Borrador',
+    empresa: 'Transporte Plus',
     reservados: { reservado: 10, capacidad: 25 },
     dias: {
       lunes: 1,
@@ -279,12 +279,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "5",
-    codigo: "R520",
-    titulo: "Ruta 520",
-    hor: "11:45",
-    estado: "Publicada",
-    empresa: "Viajes Seguros",
+    key: '5',
+    codigo: 'R520',
+    titulo: 'Ruta 520',
+    hor: '11:45',
+    estado: 'Publicada',
+    empresa: 'Viajes Seguros',
     reservados: { reservado: 28, capacidad: 35 },
     dias: {
       lunes: 4,
@@ -297,12 +297,12 @@ const rutasData: Ruta[] = [
     }
   },
   {
-    key: "6",
-    codigo: "R601",
-    titulo: "Ruta 601",
-    hor: "13:00",
-    estado: "Borrador",
-    empresa: "Viajes Express",
+    key: '6',
+    codigo: 'R601',
+    titulo: 'Ruta 601',
+    hor: '13:00',
+    estado: 'Borrador',
+    empresa: 'Viajes Express',
     reservados: { reservado: 12, capacidad: 20 },
     dias: {
       lunes: 2,
@@ -317,17 +317,17 @@ const rutasData: Ruta[] = [
 ]
 
 const diasSemana = [
-  { key: "lunes", label: "lun." },
-  { key: "martes", label: "mar." },
-  { key: "miercoles", label: "mié." },
-  { key: "jueves", label: "jue." },
-  { key: "viernes", label: "vie." },
-  { key: "sabado", label: "sáb." },
-  { key: "domingo", label: "dom." }
+  { key: 'lunes', label: 'lun.' },
+  { key: 'martes', label: 'mar.' },
+  { key: 'miercoles', label: 'mié.' },
+  { key: 'jueves', label: 'jue.' },
+  { key: 'viernes', label: 'vie.' },
+  { key: 'sabado', label: 'sáb.' },
+  { key: 'domingo', label: 'dom.' }
 ]
 
 function getFechasSemana(monday: Date) {
-  const pad = (n: number) => n.toString().padStart(2, "0")
+  const pad = (n: number) => n.toString().padStart(2, '0')
   return diasSemana.map((dia, idx) => {
     const d = new Date(monday)
     d.setDate(monday.getDate() + idx)
@@ -340,9 +340,9 @@ function getFechasSemana(monday: Date) {
 
 const empleadosColumns: TableColumnsType<Empleado> = [
   {
-    title: "Código Interno",
-    dataIndex: "codigoInterno",
-    key: "codigoInterno",
+    title: 'Código Interno',
+    dataIndex: 'codigoInterno',
+    key: 'codigoInterno',
     width: 100,
     filters: Array.from(new Set(empleadosData.map((e) => e.codigoInterno))).map(
       (codigo) => ({ text: codigo, value: codigo })
@@ -350,9 +350,9 @@ const empleadosColumns: TableColumnsType<Empleado> = [
     onFilter: (value, record) => record.codigoInterno === value
   },
   {
-    title: "Nombre del Pasajero",
-    dataIndex: "nombrePasajero",
-    key: "nombrePasajero",
+    title: 'Nombre del Pasajero',
+    dataIndex: 'nombrePasajero',
+    key: 'nombrePasajero',
     width: 180,
     filters: Array.from(
       new Set(empleadosData.map((e) => e.nombrePasajero))
@@ -360,9 +360,9 @@ const empleadosColumns: TableColumnsType<Empleado> = [
     onFilter: (value, record) => record.nombrePasajero === value
   },
   {
-    title: "Empresa",
-    dataIndex: "empresa",
-    key: "empresa",
+    title: 'Empresa',
+    dataIndex: 'empresa',
+    key: 'empresa',
     width: 150,
     filters: Array.from(new Set(empleadosData.map((e) => e.empresa))).map(
       (empresa) => ({ text: empresa, value: empresa })
@@ -370,9 +370,9 @@ const empleadosColumns: TableColumnsType<Empleado> = [
     onFilter: (value, record) => record.empresa === value
   },
   {
-    title: "Título de la Ruta",
-    dataIndex: "tituloRuta",
-    key: "tituloRuta",
+    title: 'Título de la Ruta',
+    dataIndex: 'tituloRuta',
+    key: 'tituloRuta',
     width: 150,
     filters: Array.from(new Set(empleadosData.map((e) => e.tituloRuta))).map(
       (ruta) => ({ text: ruta, value: ruta })
@@ -380,41 +380,41 @@ const empleadosColumns: TableColumnsType<Empleado> = [
     onFilter: (value, record) => record.tituloRuta === value
   },
   {
-    title: "Estado de la Reserva",
-    dataIndex: "estadoReserva",
-    key: "estadoReserva",
+    title: 'Estado de la Reserva',
+    dataIndex: 'estadoReserva',
+    key: 'estadoReserva',
     width: 150,
     filters: Array.from(new Set(empleadosData.map((e) => e.estadoReserva))).map(
       (estado) => ({ text: estado, value: estado })
     ),
     onFilter: (value, record) => record.estadoReserva === value,
     render: (estado: string) => {
-      let color = "default"
-      if (estado === "Confirmada") color = "green"
-      else if (estado === "Pendiente") color = "orange"
-      else if (estado === "Cancelada") color = "red"
+      let color = 'default'
+      if (estado === 'Confirmada') color = 'green'
+      else if (estado === 'Pendiente') color = 'orange'
+      else if (estado === 'Cancelada') color = 'red'
       return <Tag color={color}>{estado}</Tag>
     }
   },
   {
-    title: "Fecha de la Reserva",
-    dataIndex: "fechaReserva",
-    key: "fechaReserva",
+    title: 'Fecha de la Reserva',
+    dataIndex: 'fechaReserva',
+    key: 'fechaReserva',
     width: 140
   },
-  { title: "Reserva en", dataIndex: "reservaEn", key: "reservaEn", width: 160 }
+  { title: 'Reserva en', dataIndex: 'reservaEn', key: 'reservaEn', width: 160 }
 ]
 
-const weekFormat = "DD/MMM"
+const weekFormat = 'DD/MMM'
 
 export default function ClientsPage() {
   const {
     token: { colorPrimary, colorBgContainer, padding }
   } = theme.useToken()
 
-  const customWeekStartEndFormat: DatePickerProps["format"] = (value) =>
-    `${dayjs(value).startOf("week").format(weekFormat)} - ${dayjs(value)
-      .endOf("week")
+  const customWeekStartEndFormat: DatePickerProps['format'] = (value) =>
+    `${dayjs(value).startOf('week').format(weekFormat)} - ${dayjs(value)
+      .endOf('week')
       .format(weekFormat)}`
 
   // Estado para la semana seleccionada y los días con fecha
@@ -431,22 +431,22 @@ export default function ClientsPage() {
   )
 
   // Handler para el cambio de semana en el DatePicker
-  const handleWeekChange: DatePickerProps["onChange"] = (date) => {
+  const handleWeekChange: DatePickerProps['onChange'] = (date) => {
     if (!date) return
     // Asegurarse de que date es un objeto dayjs
     const dateValue = Array.isArray(date) ? date[0] : date
-    const monday = dayjs(dateValue).startOf("week").toDate()
+    const monday = dayjs(dateValue).startOf('week').toDate()
     setSemanaSeleccionada(monday)
     setDiasConFecha(getFechasSemana(monday))
   }
 
   return (
-    <Layout style={{ background: colorBgContainer, height: "100%" }}>
+    <Layout style={{ background: colorBgContainer, height: '100%' }}>
       <Header
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           paddingInline: 24,
           background: colorBgContainer
         }}
@@ -460,7 +460,7 @@ export default function ClientsPage() {
         <Tabs
           items={[
             {
-              key: "1",
+              key: '1',
               label: <Text>Por Rutas</Text>,
               children: (
                 <Flex orientation="vertical" gap={padding}>
@@ -484,8 +484,8 @@ export default function ClientsPage() {
                   <Table<Ruta>
                     columns={[
                       {
-                        title: "Título de la Ruta",
-                        key: "titulo",
+                        title: 'Título de la Ruta',
+                        key: 'titulo',
                         width: 220,
                         filters: Array.from(
                           new Set(rutasData.map((r) => r.titulo))
@@ -498,18 +498,18 @@ export default function ClientsPage() {
                         )
                       },
                       {
-                        title: "",
-                        key: "estado",
+                        title: '',
+                        key: 'estado',
                         width: 50,
                         filters: [
-                          { text: "Publicada", value: "Publicada" },
-                          { text: "Borrador", value: "Borrador" }
+                          { text: 'Publicada', value: 'Publicada' },
+                          { text: 'Borrador', value: 'Borrador' }
                         ],
                         onFilter: (value, record) => record.estado === value,
                         render: (_: any, record: Ruta) => (
                           <Tag
                             color={
-                              record.estado === "Publicada" ? "green" : "orange"
+                              record.estado === 'Publicada' ? 'green' : 'orange'
                             }
                           >
                             {record.estado}
@@ -517,9 +517,9 @@ export default function ClientsPage() {
                         )
                       },
                       {
-                        title: "Empresa",
-                        dataIndex: "empresa",
-                        key: "empresa",
+                        title: 'Empresa',
+                        dataIndex: 'empresa',
+                        key: 'empresa',
                         width: 180,
                         filters: Array.from(
                           new Set(rutasData.map((r) => r.empresa))
@@ -527,9 +527,9 @@ export default function ClientsPage() {
                         onFilter: (value, record) => record.empresa === value
                       },
                       {
-                        title: "Reservados",
-                        dataIndex: "reservados",
-                        key: "reservados",
+                        title: 'Reservados',
+                        dataIndex: 'reservados',
+                        key: 'reservados',
                         width: 140,
                         render: (reservados: {
                           reservado: number
@@ -537,8 +537,8 @@ export default function ClientsPage() {
                         }) => (
                           <span
                             style={{
-                              display: "flex",
-                              alignItems: "center",
+                              display: 'flex',
+                              alignItems: 'center',
                               gap: 6
                             }}
                           >
@@ -546,29 +546,29 @@ export default function ClientsPage() {
                             <EditOutlined
                               style={{
                                 fontSize: 15,
-                                color: "#1677ff",
-                                cursor: "pointer"
+                                color: '#1677ff',
+                                cursor: 'pointer'
                               }}
                             />
                           </span>
                         )
                       },
                       {
-                        title: "Días de la Semana",
+                        title: 'Días de la Semana',
                         children: diasConFecha.map((dia) => ({
                           title: (
                             <Flex orientation="vertical">
                               <Text
                                 style={{
-                                  display: "flex",
-                                  alignItems: "center",
+                                  display: 'flex',
+                                  alignItems: 'center',
                                   gap: 4
                                 }}
                               >
                                 {dia.label} - {dia.fecha}
                               </Text>
                               <DownloadOutlined
-                                style={{ fontSize: 14, cursor: "pointer" }}
+                                style={{ fontSize: 14, cursor: 'pointer' }}
                               />
                             </Flex>
                           ),
@@ -581,7 +581,7 @@ export default function ClientsPage() {
                             if (cantidad === undefined || capacidad === 0) {
                               return (
                                 <span
-                                  style={{ color: "#bbb", fontStyle: "italic" }}
+                                  style={{ color: '#bbb', fontStyle: 'italic' }}
                                 >
                                   N/A
                                 </span>
@@ -590,7 +590,7 @@ export default function ClientsPage() {
                             if (cantidad === 0) {
                               return (
                                 <span
-                                  style={{ color: "#bbb", fontStyle: "italic" }}
+                                  style={{ color: '#bbb', fontStyle: 'italic' }}
                                 >
                                   N/A
                                 </span>
@@ -599,30 +599,30 @@ export default function ClientsPage() {
                             const porcentaje = Math.round(
                               (cantidad / capacidad) * 100
                             )
-                            let bg = "#e6ffed"
-                            let color = "#389e0d"
+                            let bg = '#e6ffed'
+                            let color = '#389e0d'
                             if (porcentaje > 50) {
-                              bg = "#fff1f0"
-                              color = "#cf1322"
+                              bg = '#fff1f0'
+                              color = '#cf1322'
                             } else if (porcentaje > 40) {
-                              bg = "#fffbe6"
-                              color = "#d48806"
+                              bg = '#fffbe6'
+                              color = '#d48806'
                             }
                             return (
                               <span
                                 style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  alignItems: "center",
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
                                   background: bg,
                                   borderRadius: 6,
-                                  padding: "2px 0"
+                                  padding: '2px 0'
                                 }}
                               >
                                 <span style={{ fontWeight: 500, color }}>
                                   {porcentaje}%
                                 </span>
-                                <span style={{ fontSize: 12, color: "#888" }}>
+                                <span style={{ fontSize: 12, color: '#888' }}>
                                   {cantidad} reservas
                                 </span>
                               </span>
@@ -637,7 +637,7 @@ export default function ClientsPage() {
                       total: rutasData.length,
                       showSizeChanger: true,
                       showQuickJumper: true,
-                      pageSizeOptions: ["5", "10", "20", "50"]
+                      pageSizeOptions: ['5', '10', '20', '50']
                     }}
                     scroll={{ x: 1200 }}
                   />
@@ -645,7 +645,7 @@ export default function ClientsPage() {
               )
             },
             {
-              key: "2",
+              key: '2',
               label: <Text>Por Personas</Text>,
               children: (
                 <Flex orientation="vertical" gap={padding}>
@@ -674,7 +674,7 @@ export default function ClientsPage() {
                       total: empleadosData.length,
                       showSizeChanger: true,
                       showQuickJumper: true,
-                      pageSizeOptions: ["5", "10", "20", "50"]
+                      pageSizeOptions: ['5', '10', '20', '50']
                     }}
                     scroll={{ x: 900 }}
                   />

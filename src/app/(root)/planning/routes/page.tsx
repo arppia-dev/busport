@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   ArrowRightOutlined,
@@ -8,8 +8,8 @@ import {
   PlusOutlined,
   SettingOutlined,
   TeamOutlined
-} from "@ant-design/icons"
-import type { TableColumnsType } from "antd"
+} from '@ant-design/icons'
+import type { TableColumnsType } from 'antd'
 import {
   Button,
   Divider,
@@ -20,7 +20,7 @@ import {
   Tag,
   theme,
   Typography
-} from "antd"
+} from 'antd'
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
@@ -45,7 +45,7 @@ interface Empleado {
 interface Route {
   key: string
   codigo: string
-  estado: "In" | "Out"
+  estado: 'In' | 'Out'
   nombre: string
   empresa: string
   dias: string[]
@@ -56,173 +56,173 @@ interface Route {
 }
 
 const clientesData: Cliente[] = [
-  { key: "1", nombreEmpresa: "Transporte Plus", codigoEmpresa: "TP001" },
-  { key: "2", nombreEmpresa: "Viajes Seguros", codigoEmpresa: "VS002" },
-  { key: "3", nombreEmpresa: "Viajes Express", codigoEmpresa: "VE003" }
+  { key: '1', nombreEmpresa: 'Transporte Plus', codigoEmpresa: 'TP001' },
+  { key: '2', nombreEmpresa: 'Viajes Seguros', codigoEmpresa: 'VS002' },
+  { key: '3', nombreEmpresa: 'Viajes Express', codigoEmpresa: 'VE003' }
 ]
 
 const empleadosData: Empleado[] = [
   {
-    key: "1",
-    id: "E001",
-    nombre: "Carlos García",
-    empresa: "Transporte Plus",
-    cargo: "Conductor",
-    correo: "carlos@plus.com",
-    rutas: "Ruta 101, Ruta 312",
-    acceso: "Activo"
+    key: '1',
+    id: 'E001',
+    nombre: 'Carlos García',
+    empresa: 'Transporte Plus',
+    cargo: 'Conductor',
+    correo: 'carlos@plus.com',
+    rutas: 'Ruta 101, Ruta 312',
+    acceso: 'Activo'
   },
   {
-    key: "2",
-    id: "E002",
-    nombre: "María López",
-    empresa: "Viajes Seguros",
-    cargo: "Administradora",
-    correo: "maria@seguros.com",
-    rutas: "Ruta 205",
-    acceso: "Bloqueado"
+    key: '2',
+    id: 'E002',
+    nombre: 'María López',
+    empresa: 'Viajes Seguros',
+    cargo: 'Administradora',
+    correo: 'maria@seguros.com',
+    rutas: 'Ruta 205',
+    acceso: 'Bloqueado'
   },
   {
-    key: "3",
-    id: "E003",
-    nombre: "Juan Pérez",
-    empresa: "Transporte Plus",
-    cargo: "Supervisor",
-    correo: "juan@plus.com",
-    rutas: "Ruta 312",
-    acceso: "Activo"
+    key: '3',
+    id: 'E003',
+    nombre: 'Juan Pérez',
+    empresa: 'Transporte Plus',
+    cargo: 'Supervisor',
+    correo: 'juan@plus.com',
+    rutas: 'Ruta 312',
+    acceso: 'Activo'
   }
 ]
 
 const routesData: Route[] = [
   {
-    key: "1",
-    codigo: "R101",
-    estado: "In",
-    nombre: "Centro a Aeropuerto",
-    empresa: "Transporte Plus",
-    dias: ["Lun", "Mar", "Mie", "Jue", "Vie"],
-    salida: "06:30:00",
-    conductor: "Carlos García",
-    automovil: "*",
+    key: '1',
+    codigo: 'R101',
+    estado: 'In',
+    nombre: 'Centro a Aeropuerto',
+    empresa: 'Transporte Plus',
+    dias: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie'],
+    salida: '06:30:00',
+    conductor: 'Carlos García',
+    automovil: '*',
     publicado: { conductor: false, cliente: false }
   },
   {
-    key: "2",
-    codigo: "R205",
-    estado: "Out",
-    nombre: "Terminal Sur a Estación Central",
-    empresa: "Viajes Seguros",
-    dias: ["Lun", "Mie", "Vie", "Dom"],
-    salida: "07:00:00",
-    conductor: "María López",
-    automovil: "BUS-2025",
+    key: '2',
+    codigo: 'R205',
+    estado: 'Out',
+    nombre: 'Terminal Sur a Estación Central',
+    empresa: 'Viajes Seguros',
+    dias: ['Lun', 'Mie', 'Vie', 'Dom'],
+    salida: '07:00:00',
+    conductor: 'María López',
+    automovil: 'BUS-2025',
     publicado: { conductor: true, cliente: false }
   },
   {
-    key: "3",
-    codigo: "R312",
-    estado: "In",
-    nombre: "Estación Central a Universidad",
-    empresa: "Viajes Express",
-    dias: ["Mar", "Jue", "Vie"],
-    salida: "08:15:00",
-    conductor: "Juan Pérez",
-    automovil: "BUS-312",
+    key: '3',
+    codigo: 'R312',
+    estado: 'In',
+    nombre: 'Estación Central a Universidad',
+    empresa: 'Viajes Express',
+    dias: ['Mar', 'Jue', 'Vie'],
+    salida: '08:15:00',
+    conductor: 'Juan Pérez',
+    automovil: 'BUS-312',
     publicado: { conductor: false, cliente: true }
   },
   {
-    key: "4",
-    codigo: "R410",
-    estado: "Out",
-    nombre: "Aeropuerto a Centro",
-    empresa: "Transporte Plus",
-    dias: ["Sab", "Dom"],
-    salida: "09:00:00",
-    conductor: "Carlos García",
-    automovil: "VAN-410",
+    key: '4',
+    codigo: 'R410',
+    estado: 'Out',
+    nombre: 'Aeropuerto a Centro',
+    empresa: 'Transporte Plus',
+    dias: ['Sab', 'Dom'],
+    salida: '09:00:00',
+    conductor: 'Carlos García',
+    automovil: 'VAN-410',
     publicado: { conductor: false, cliente: false }
   },
   {
-    key: "5",
-    codigo: "R520",
-    estado: "In",
-    nombre: "Universidad a Terminal Sur",
-    empresa: "Viajes Seguros",
-    dias: ["Lun", "Mar", "Mie", "Jue", "Vie"],
-    salida: "10:30:00",
-    conductor: "María López",
-    automovil: "BUS-520",
+    key: '5',
+    codigo: 'R520',
+    estado: 'In',
+    nombre: 'Universidad a Terminal Sur',
+    empresa: 'Viajes Seguros',
+    dias: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie'],
+    salida: '10:30:00',
+    conductor: 'María López',
+    automovil: 'BUS-520',
     publicado: { conductor: true, cliente: true }
   },
   {
-    key: "6",
-    codigo: "R601",
-    estado: "Out",
-    nombre: "Centro a Estación Central",
-    empresa: "Viajes Express",
-    dias: ["Vie", "Sab"],
-    salida: "11:45:00",
-    conductor: "Juan Pérez",
-    automovil: "VAN-601",
+    key: '6',
+    codigo: 'R601',
+    estado: 'Out',
+    nombre: 'Centro a Estación Central',
+    empresa: 'Viajes Express',
+    dias: ['Vie', 'Sab'],
+    salida: '11:45:00',
+    conductor: 'Juan Pérez',
+    automovil: 'VAN-601',
     publicado: { conductor: false, cliente: true }
   },
   {
-    key: "7",
-    codigo: "R702",
-    estado: "In",
-    nombre: "Terminal Sur a Universidad",
-    empresa: "Transporte Plus",
-    dias: ["Mar", "Jue", "Sab"],
-    salida: "12:00:00",
-    conductor: "Carlos García",
-    automovil: "BUS-702",
+    key: '7',
+    codigo: 'R702',
+    estado: 'In',
+    nombre: 'Terminal Sur a Universidad',
+    empresa: 'Transporte Plus',
+    dias: ['Mar', 'Jue', 'Sab'],
+    salida: '12:00:00',
+    conductor: 'Carlos García',
+    automovil: 'BUS-702',
     publicado: { conductor: true, cliente: false }
   }
 ]
 
-const diasSemana = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]
+const diasSemana = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
 
 const clientesColumns: TableColumnsType<Cliente> = [
   {
-    title: "Nombre de la empresa",
-    dataIndex: "nombreEmpresa",
-    key: "nombreEmpresa",
+    title: 'Nombre de la empresa',
+    dataIndex: 'nombreEmpresa',
+    key: 'nombreEmpresa',
     width: 200
   },
   {
-    title: "Código de la empresa",
-    dataIndex: "codigoEmpresa",
-    key: "codigoEmpresa",
+    title: 'Código de la empresa',
+    dataIndex: 'codigoEmpresa',
+    key: 'codigoEmpresa',
     width: 150
   }
 ]
 
 const empleadosColumns: TableColumnsType<Empleado> = [
-  { title: "ID", dataIndex: "id", key: "id", width: 80 },
-  { title: "Nombre", dataIndex: "nombre", key: "nombre", width: 150 },
-  { title: "Empresa", dataIndex: "empresa", key: "empresa", width: 150 },
-  { title: "Cargo", dataIndex: "cargo", key: "cargo", width: 120 },
+  { title: 'ID', dataIndex: 'id', key: 'id', width: 80 },
+  { title: 'Nombre', dataIndex: 'nombre', key: 'nombre', width: 150 },
+  { title: 'Empresa', dataIndex: 'empresa', key: 'empresa', width: 150 },
+  { title: 'Cargo', dataIndex: 'cargo', key: 'cargo', width: 120 },
   {
-    title: "Correo electrónico",
-    dataIndex: "correo",
-    key: "correo",
+    title: 'Correo electrónico',
+    dataIndex: 'correo',
+    key: 'correo',
     width: 180
   },
-  { title: "Rutas", dataIndex: "rutas", key: "rutas", width: 120 },
+  { title: 'Rutas', dataIndex: 'rutas', key: 'rutas', width: 120 },
   {
-    title: "Acceso",
-    dataIndex: "acceso",
-    key: "acceso",
+    title: 'Acceso',
+    dataIndex: 'acceso',
+    key: 'acceso',
     render: (acceso: string) => {
-      let color = "blue"
-      if (acceso === "Activo") color = "green"
-      if (acceso === "Bloqueado") color = "red"
+      let color = 'blue'
+      if (acceso === 'Activo') color = 'green'
+      if (acceso === 'Bloqueado') color = 'red'
       return <Tag color={color}>{acceso}</Tag>
     },
     filters: [
-      { text: "Activo", value: "Activo" },
-      { text: "Bloqueado", value: "Bloqueado" }
+      { text: 'Activo', value: 'Activo' },
+      { text: 'Bloqueado', value: 'Bloqueado' }
     ],
     onFilter: (value, record) => record.acceso === value,
     width: 100
@@ -231,34 +231,34 @@ const empleadosColumns: TableColumnsType<Empleado> = [
 
 const routesColumns: TableColumnsType<Route> = [
   {
-    title: "Código de Ruta",
-    dataIndex: "codigo",
-    key: "codigo",
+    title: 'Código de Ruta',
+    dataIndex: 'codigo',
+    key: 'codigo',
     render: (codigo: string, record: Route) => (
-      <Tag color={record.estado === "In" ? "green" : "gold"}>{codigo}</Tag>
+      <Tag color={record.estado === 'In' ? 'green' : 'gold'}>{codigo}</Tag>
     ),
     width: 50
   },
   {
-    title: "Título de la Ruta",
-    dataIndex: "nombre",
-    key: "nombre",
+    title: 'Título de la Ruta',
+    dataIndex: 'nombre',
+    key: 'nombre',
     width: 200
   },
   {
-    title: "Empresa",
-    dataIndex: "empresa",
-    key: "empresa",
+    title: 'Empresa',
+    dataIndex: 'empresa',
+    key: 'empresa',
     width: 150
   },
   {
-    title: "Días de la Semana",
-    dataIndex: "dias",
-    key: "dias",
+    title: 'Días de la Semana',
+    dataIndex: 'dias',
+    key: 'dias',
     render: (dias: string[]) => (
       <Space>
         {diasSemana.map((dia) => (
-          <Tag color={dias.includes(dia) ? "green" : "default"} key={dia}>
+          <Tag color={dias.includes(dia) ? 'green' : 'default'} key={dia}>
             {dia}
           </Tag>
         ))}
@@ -267,60 +267,60 @@ const routesColumns: TableColumnsType<Route> = [
     width: 300
   },
   {
-    title: "Primera Salida",
-    dataIndex: "salida",
-    key: "salida",
+    title: 'Primera Salida',
+    dataIndex: 'salida',
+    key: 'salida',
     width: 50
   },
   {
-    title: "Conductor",
-    dataIndex: "conductor",
-    key: "conductor",
+    title: 'Conductor',
+    dataIndex: 'conductor',
+    key: 'conductor',
     width: 150
   },
   {
-    title: "Automóvil",
-    dataIndex: "automovil",
-    key: "automovil",
-    render: (auto: string) => (auto === "*" ? <span>*</span> : auto),
+    title: 'Automóvil',
+    dataIndex: 'automovil',
+    key: 'automovil',
+    render: (auto: string) => (auto === '*' ? <span>*</span> : auto),
     width: 50
   },
   {
-    title: "Publicado",
-    dataIndex: "publicado",
-    key: "publicado",
+    title: 'Publicado',
+    dataIndex: 'publicado',
+    key: 'publicado',
     render: (pub: boolean, record: Route) => <Switch checked={pub} />,
     width: 50
   },
   {
-    title: "Vista",
-    key: "vista",
+    title: 'Vista',
+    key: 'vista',
     render: (record: Route) => (
       <Space>
         <Button
           icon={<CarOutlined />}
           size="small"
-          type={record.publicado.conductor ? "primary" : "default"}
+          type={record.publicado.conductor ? 'primary' : 'default'}
           onClick={() => alert(`Vista previa de la ruta ${record.codigo}`)}
         />
         <Button
           icon={<TeamOutlined />}
           size="small"
-          type={record.publicado.cliente ? "primary" : "default"}
+          type={record.publicado.cliente ? 'primary' : 'default'}
         />
       </Space>
     ),
     width: 50
   },
   {
-    title: "Acciones",
-    key: "acciones",
+    title: 'Acciones',
+    key: 'acciones',
     render: () => <Button icon={<SettingOutlined />} size="small" />,
     width: 50
   },
   {
-    title: "",
-    key: "otra",
+    title: '',
+    key: 'otra',
     render: () => <Button icon={<ArrowRightOutlined />} size="small" />,
     width: 50
   }
@@ -332,12 +332,12 @@ export default function RoutesPage() {
   } = theme.useToken()
 
   return (
-    <Layout style={{ background: colorBgContainer, height: "100%" }}>
+    <Layout style={{ background: colorBgContainer, height: '100%' }}>
       <Header
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           paddingInline: 24,
           background: colorBgContainer
         }}
@@ -361,7 +361,7 @@ export default function RoutesPage() {
             total: routesData.length,
             showSizeChanger: true,
             showQuickJumper: true,
-            pageSizeOptions: ["5", "10", "20", "50"]
+            pageSizeOptions: ['5', '10', '20', '50']
           }}
           scroll={{ x: 1200 }}
         />

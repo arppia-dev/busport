@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { themeConfig } from "@/config/theme"
-import { ConfigProvider, theme as antdTheme } from "antd"
-import React, { createContext, useContext, useEffect, useState } from "react"
+import { themeConfig } from '@/config/theme'
+import { ConfigProvider, theme as antdTheme } from 'antd'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 type ThemeContextType = {
   isDark: boolean
@@ -19,8 +19,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("isDark")
-      if (saved !== null) setIsDark(saved === "true")
+      const saved = localStorage.getItem('isDark')
+      if (saved !== null) setIsDark(saved === 'true')
     } catch (e) {
       // ignore
     }
@@ -28,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("isDark", String(isDark))
+      localStorage.setItem('isDark', String(isDark))
     } catch (e) {
       // ignore
     }

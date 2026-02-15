@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useTheme } from "@/components/ThemeProvider"
-import { getBreadcrumbData } from "@/utils/getBreadcrumbData"
+import { useTheme } from '@/components/ThemeProvider'
+import { getBreadcrumbData } from '@/utils/getBreadcrumbData'
 import {
   CarOutlined,
   ControlOutlined,
@@ -17,7 +17,7 @@ import {
   SettingOutlined,
   SunOutlined,
   UserOutlined
-} from "@ant-design/icons"
+} from '@ant-design/icons'
 import {
   Layout as AntLayout,
   Breadcrumb,
@@ -31,11 +31,11 @@ import {
   Switch,
   theme,
   Typography
-} from "antd"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useState } from "react"
-import styles from "./page.module.css"
+} from 'antd'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import styles from './page.module.css'
 
 const { Header, Sider, Content, Footer } = AntLayout
 const { Text } = Typography
@@ -53,87 +53,87 @@ export default function DashboardLayout({
     token: { colorBgContainer, padding }
   } = theme.useToken()
 
-  const menuItems: MenuProps["items"] = [
+  const menuItems: MenuProps['items'] = [
     {
-      key: "1",
+      key: '1',
       icon: <DashboardOutlined />,
       label: <Link href="/">Monitor</Link>
     },
     {
-      key: "2",
+      key: '2',
       icon: <RocketOutlined />,
       label: <Link href="/trips">Viajes</Link>
     },
     {
-      key: "3",
+      key: '3',
       icon: <UserOutlined />,
       label: <Link href="/clients">Clientes</Link>
     },
     {
-      key: "4",
+      key: '4',
       icon: <ControlOutlined />,
-      label: "Planificaciones",
+      label: 'Planificaciones',
       children: [
         {
-          key: "4.1",
+          key: '4.1',
           icon: <ControlOutlined />,
           label: <Link href="/planning/routes">Viajes con Ruta</Link>
         },
         {
-          key: "4.2",
+          key: '4.2',
           icon: <ControlOutlined />,
           label: <Link href="/planning/seats">Reserva de Asiento</Link>
         }
       ]
     },
     {
-      key: "5",
+      key: '5',
       icon: <CarOutlined />,
-      label: "Transporte",
+      label: 'Transporte',
       children: [
         {
-          key: "5.1",
+          key: '5.1',
           icon: <UserOutlined />,
-          label: "Conductores"
+          label: 'Conductores'
         },
         {
-          key: "5.2",
+          key: '5.2',
           icon: <CarOutlined />,
-          label: "Carros"
+          label: 'Carros'
         }
       ]
     },
     {
-      key: "7",
+      key: '7',
       icon: <LineChartOutlined />,
-      label: "Reportes"
+      label: 'Reportes'
     }
   ]
 
-  const items: MenuProps["items"] = [
+  const items: MenuProps['items'] = [
     {
-      key: "profile",
+      key: 'profile',
       icon: <UserOutlined />,
-      label: "Mi Perfil"
+      label: 'Mi Perfil'
     },
     {
-      key: "settings",
+      key: 'settings',
       icon: <SettingOutlined />,
-      label: "Configuración"
+      label: 'Configuración'
     },
     {
-      type: "divider"
+      type: 'divider'
     },
     {
-      key: "logout",
+      key: 'logout',
       icon: <LogoutOutlined />,
-      label: "Cerrar sesión",
+      label: 'Cerrar sesión',
       danger: true
     }
   ]
 
   return (
-    <AntLayout className={styles.dashboardLayout} style={{ minHeight: "100%" }}>
+    <AntLayout className={styles.dashboardLayout} style={{ minHeight: '100%' }}>
       <Sider
         trigger={null}
         collapsible
@@ -156,7 +156,7 @@ export default function DashboardLayout({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={['1']}
           items={menuItems}
         />
       </Sider>
@@ -172,9 +172,9 @@ export default function DashboardLayout({
                 type="text"
                 icon={
                   collapsed ? (
-                    <MenuUnfoldOutlined style={{ fontSize: "1.2rem" }} />
+                    <MenuUnfoldOutlined style={{ fontSize: '1.2rem' }} />
                   ) : (
-                    <MenuFoldOutlined style={{ fontSize: "1.2rem" }} />
+                    <MenuFoldOutlined style={{ fontSize: '1.2rem' }} />
                   )
                 }
                 onClick={() => setCollapsed(!collapsed)}
@@ -184,7 +184,7 @@ export default function DashboardLayout({
                   items={[
                     {
                       title: <HomeOutlined />,
-                      href: "/"
+                      href: '/'
                     },
                     ...breadcrumbItems.slice(1)
                   ]}
@@ -201,7 +201,7 @@ export default function DashboardLayout({
               <Dropdown
                 menu={{ items: items }}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
               >
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
