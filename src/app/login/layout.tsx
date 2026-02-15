@@ -12,8 +12,8 @@ export default function LoginLayout({
   children: React.ReactNode
 }) {
   return (
-    <AntLayout className={styles.loginContainer}>
-      <Content className={styles.loginContent}>{children}</Content>
+    <AntLayout style={{ minHeight: '100%' }}>
+      <Content>{children}</Content>
     </AntLayout>
   )
 }

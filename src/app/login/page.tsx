@@ -1,76 +1,79 @@
 'use client'
 
-import React from 'react'
-import { Form, Input, Button, Card, Typography } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import styles from './login.module.css'
+import LoginForm from '@/components/LoginForm'
+import { darken } from '@/utils/colors'
+import {
+  Card,
+  Col,
+  ConfigProvider,
+  Row,
+  Space,
+  theme,
+  ThemeConfig,
+  Typography
+} from 'antd'
 
-const { Title } = Typography
+const { Title, Text } = Typography
+
+const themeConfig: ThemeConfig = {
+  components: {
+    Card: {
+      padding: 0,
+      paddingLG: 0
+    }
+  }
+}
 
 export default function LoginPage() {
-  const [form] = Form.useForm()
+  const {
+    token: { colorPrimary, padding, paddingLG }
+  } = theme.useToken()
 
-  const onFinish = (values: { username: string; password: string }) => {
-    console.log('Login attempt:', values)
+  const heightCard = '70vh'
+  const centerContent = {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 
   return (
-    <div className={styles.loginWrapper}>
-      <Card className={styles.loginCard}>
-        <div className={styles.cardInner}>
-          <div className={styles.leftPane}>
-            <div className={styles.loginHeader}>
-              <Title level={2} style={{ color: '#fff' }}>
-                BusPort
-              </Title>
-              <Title level={3} style={{ color: '#fff' }}>
-                Sistema de Gestión de Buses
-              </Title>
-            </div>
-          </div>
-
-          <div className={styles.rightPane}>
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-              autoComplete="off"
-            >
-              <Form.Item
-                name="username"
-                rules={[
-                  { required: true, message: 'Por favor ingresa tu usuario' }
-                ]}
+    <ConfigProvider theme={themeConfig}>
+      <Row justify={'center'} align={'middle'} style={{ minHeight: '100vh' }}>
+        <Col span={16}>
+          <Card style={{ height: heightCard }}>
+            <Row style={{ height: heightCard }}>
+              <Col
+                span={12}
+                style={{
+                  height: heightCard,
+                  backgroundColor: colorPrimary,
+                  ...centerContent
+                }}
               >
-                <Input
-                  prefix={<UserOutlined />}
-                  placeholder="Usuario"
-                  size="large"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="password"
-                rules={[
-                  { required: true, message: 'Por favor ingresa tu contraseña' }
-                ]}
-              >
-                <Input.Password
-                  prefix={<LockOutlined />}
-                  placeholder="Contraseña"
-                  size="large"
-                />
-              </Form.Item>
-
-              <Form.Item>
-                <Button type="primary" htmlType="submit" block size="large">
-                  Iniciar sesión
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      </Card>
-    </div>
+                <Space orientation="vertical" align="center">
+                  <Title level={1} style={{ color: '#fff' }}>
+                    BusPort
+                  </Title>
+                  <Title
+                    level={3}
+                    type="secondary"
+                    style={{ color: darken('#fff', 20) }}
+                  >
+                    Sistema de Gestión de Buses
+                  </Title>
+                </Space>
+              </Col>
+              <Col span={12} style={centerContent}>
+                <Space orientation="vertical" align="center">
+                  <Title level={4}>Iniciar Sesión</Title>
+                  <LoginForm />
+                </Space>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </ConfigProvider>
   )
 }
