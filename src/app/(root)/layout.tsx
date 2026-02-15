@@ -94,12 +94,12 @@ export default function DashboardLayout({
         {
           key: '5.1',
           icon: <UserOutlined />,
-          label: 'Conductores'
+          label: <Link href="/transport/drivers">Conductores</Link>
         },
         {
           key: '5.2',
           icon: <CarOutlined />,
-          label: 'Carros'
+          label: <Link href="/transport/cars">Vehículos</Link>
         }
       ]
     },
