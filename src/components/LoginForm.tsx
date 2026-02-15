@@ -1,13 +1,16 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Flex, Form, Input } from 'antd'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm()
+  const router = useRouter()
 
   const onFinish = (values: { username: string; password: string }) => {
     console.log('Login attempt:', values)
+    router.push('/')
   }
 
   return (
