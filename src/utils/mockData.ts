@@ -44,7 +44,7 @@ export const employeesData: Employee[] = [
 export const tripData: Trip[] = [
   {
     id: 1,
-    key: '1',
+    key: 1,
     date: '07-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -62,7 +62,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 2,
-    key: '2',
+    key: 2,
     date: '07-02-2026',
     route: 'Ruta 205 - Terminal Sur a Estación Central',
     company: 'Viajes Seguros',
@@ -74,7 +74,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 3,
-    key: '3',
+    key: 3,
     date: '08-02-2026',
     route: 'Ruta 312 - Puerto hasta Zona Industrial Noreste',
     company: 'Transporte Plus',
@@ -92,7 +92,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 4,
-    key: '4',
+    key: 4,
     date: '07-02-2026',
     route: 'Ruta 418 - Campus Universitario a Complejo Deportivo',
     company: 'Viajes Express',
@@ -110,7 +110,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 5,
-    key: '5',
+    key: 5,
     date: '06-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -128,7 +128,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 6,
-    key: '6',
+    key: 6,
     date: '09-02-2026',
     route: 'Ruta 505 - Municipio Vecino a Centro Comercial',
     company: 'Viajes Seguros',
@@ -146,7 +146,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 7,
-    key: '7',
+    key: 7,
     date: '08-02-2026',
     route: 'Ruta 603 - Hospital General a Barrio Residencial Sur',
     company: 'Viajes Express',
@@ -164,7 +164,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 8,
-    key: '8',
+    key: 8,
     date: '07-02-2026',
     route: 'Ruta 204 - Estación Norte hasta Parque Metropolitano',
     company: 'Transporte Plus',
@@ -182,7 +182,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 9,
-    key: '9',
+    key: 9,
     date: '10-02-2026',
     route: 'Ruta 710 - Zona Franca Industrial a Terminal de Carga',
     company: 'Viajes Seguros',
@@ -200,7 +200,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 10,
-    key: '10',
+    key: 10,
     date: '06-02-2026',
     route: 'Ruta 415 - Barrio Antiguo hasta Nuevas Urbanizaciones',
     company: 'Viajes Express',

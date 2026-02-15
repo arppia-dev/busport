@@ -1,8 +1,8 @@
-import { Company } from '@/types/Company'
 import { Trip } from '@/types/Trip'
-import { companiesData, tripData } from '@/utils/mockData'
+import { tripData } from '@/utils/mockData'
 import type { TableColumnsType } from 'antd'
 import { Space, Table, Tag, Typography } from 'antd'
+import React, { useEffect } from 'react'
 
 const { Text } = Typography
 
@@ -112,7 +112,35 @@ const columns: TableColumnsType<Trip> = [
   }
 ]
 
-const TripTable: React.FC = () => {
+interface TripTableProps {
+  expandable?: boolean
+}
+
+const TripTable: React.FC<TripTableProps> = (props) => {
+  const { expandable } = props
+  const [dataExpanded, setDataExpanded] = React.useState<React.Key[]>([])
+
+  useEffect(() => {
+    if (expandable) {
+      const allExpandableKeys = tripData
+        .filter((record) => record.steps && record.steps.length > 0)
+        .map((record) => record.id)
+      setDataExpanded(allExpandableKeys)
+    } else {
+      setDataExpanded([])
+    }
+  }, [expandable])
+
+  const handleExpandRow = (recordId: number) => {
+    setDataExpanded((prev) => {
+      if (prev.includes(recordId)) {
+        return prev.filter((id) => id !== recordId)
+      } else {
+        return [...prev, recordId]
+      }
+    })
+  }
+
   return (
     <Table<Trip>
       columns={columns}
@@ -146,7 +174,12 @@ const TripTable: React.FC = () => {
             </div>
           </Space>
         ),
-        rowExpandable: (record) => record.route !== 'Not Expandable'
+        rowExpandable: (record) =>
+          record.steps !== undefined && record.steps.length > 0,
+        expandedRowKeys: dataExpanded,
+        onExpand: (expanded, record) => {
+          handleExpandRow(record.id)
+        }
       }}
     />
   )
