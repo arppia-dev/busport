@@ -1,6 +1,7 @@
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Flex, Form, Input } from 'antd'
+import Link from 'next/link'
 import React from 'react'
-import { Form, Input, Button } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm()
@@ -33,6 +34,13 @@ const LoginForm: React.FC = () => {
         <Button type="primary" htmlType="submit" block size="large">
           Iniciar sesión
         </Button>
+      </Form.Item>
+
+      <Form.Item name="remember" valuePropName="checked" label={null}>
+        <Flex justify="space-between" align="center">
+          <Checkbox>Recuérdame</Checkbox>
+          <Link href="/forgot-password">¿Olvidaste tu contraseña?</Link>
+        </Flex>
       </Form.Item>
     </Form>
   )

@@ -6,6 +6,7 @@ import {
   Card,
   Col,
   ConfigProvider,
+  Flex,
   Row,
   Space,
   theme,
@@ -65,10 +66,10 @@ export default function LoginPage() {
                 </Space>
               </Col>
               <Col span={12} style={centerContent}>
-                <Space orientation="vertical" align="center">
+                <Flex orientation="vertical" align="center">
                   <Title level={4}>Iniciar Sesión</Title>
                   <LoginForm />
-                </Space>
+                </Flex>
               </Col>
             </Row>
           </Card>
