@@ -1,5 +1,6 @@
 import { Company } from '@/types/Company'
 import { Employee } from '@/types/Employee'
+import { Route } from '@/types/Route'
 import { Trip } from '@/types/Trip'
 
 export const companiesData: Company[] = [
@@ -44,7 +45,6 @@ export const employeesData: Employee[] = [
 export const tripData: Trip[] = [
   {
     id: 1,
-    key: 1,
     date: '07-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -62,7 +62,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 2,
-    key: 2,
     date: '07-02-2026',
     route: 'Ruta 205 - Terminal Sur a Estación Central',
     company: 'Viajes Seguros',
@@ -74,7 +73,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 3,
-    key: 3,
     date: '08-02-2026',
     route: 'Ruta 312 - Puerto hasta Zona Industrial Noreste',
     company: 'Transporte Plus',
@@ -92,7 +90,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 4,
-    key: 4,
     date: '07-02-2026',
     route: 'Ruta 418 - Campus Universitario a Complejo Deportivo',
     company: 'Viajes Express',
@@ -110,7 +107,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 5,
-    key: 5,
     date: '06-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -128,7 +124,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 6,
-    key: 6,
     date: '09-02-2026',
     route: 'Ruta 505 - Municipio Vecino a Centro Comercial',
     company: 'Viajes Seguros',
@@ -146,7 +141,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 7,
-    key: 7,
     date: '08-02-2026',
     route: 'Ruta 603 - Hospital General a Barrio Residencial Sur',
     company: 'Viajes Express',
@@ -164,7 +158,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 8,
-    key: 8,
     date: '07-02-2026',
     route: 'Ruta 204 - Estación Norte hasta Parque Metropolitano',
     company: 'Transporte Plus',
@@ -182,7 +175,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 9,
-    key: 9,
     date: '10-02-2026',
     route: 'Ruta 710 - Zona Franca Industrial a Terminal de Carga',
     company: 'Viajes Seguros',
@@ -200,7 +192,6 @@ export const tripData: Trip[] = [
   },
   {
     id: 10,
-    key: 10,
     date: '06-02-2026',
     route: 'Ruta 415 - Barrio Antiguo hasta Nuevas Urbanizaciones',
     company: 'Viajes Express',
@@ -215,5 +206,92 @@ export const tripData: Trip[] = [
       { startDate: '08:40', endDate: '' },
       { startDate: '08:45', endDate: '' }
     ]
+  }
+]
+
+export const routesData: Route[] = [
+  {
+    id: 1,
+    code: 'R101',
+    status: 'In',
+    name: 'Centro a Aeropuerto',
+    company: 'Transporte Plus',
+    days: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie'],
+    departure: '06:30:00',
+    driver: 'Carlos García',
+    vehicle: '*',
+    published: { driver: false, client: false }
+  },
+  {
+    id: 2,
+    code: 'R205',
+    status: 'Out',
+    name: 'Terminal Sur a Estación Central',
+    company: 'Viajes Seguros',
+    days: ['Lun', 'Mie', 'Vie', 'Dom'],
+    departure: '07:00:00',
+    driver: 'María López',
+    vehicle: 'BUS-2025',
+    published: { driver: true, client: false }
+  },
+  {
+    id: 3,
+    code: 'R312',
+    status: 'In',
+    name: 'Estación Central a Universidad',
+    company: 'Viajes Express',
+    days: ['Mar', 'Jue', 'Vie'],
+    departure: '08:15:00',
+    driver: 'Juan Pérez',
+    vehicle: 'BUS-312',
+    published: { driver: false, client: true }
+  },
+  {
+    id: 4,
+    code: 'R410',
+    status: 'Out',
+    name: 'Aeropuerto a Centro',
+    company: 'Transporte Plus',
+    days: ['Sab', 'Dom'],
+    departure: '09:00:00',
+    driver: 'Carlos García',
+    vehicle: 'VAN-410',
+    published: { driver: false, client: false }
+  },
+  {
+    id: 5,
+    code: 'R520',
+    status: 'In',
+    name: 'Universidad a Terminal Sur',
+    company: 'Viajes Seguros',
+    days: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie'],
+    departure: '10:30:00',
+    driver: 'María López',
+    vehicle: 'BUS-520',
+    published: { driver: true, client: true }
+  },
+  {
+    id: 6,
+    code: 'R601',
+    status: 'Out',
+    name: 'Centro a Estación Central',
+    company: 'Viajes Express',
+    days: ['Vie', 'Sab'],
+    departure: '11:45:00',
+    driver: 'Juan Pérez',
+    vehicle: 'VAN-601',
+    published: { driver: false, client: true }
+  },
+  {
+    id: 7,
+    code: 'R702',
+    status: 'In',
+    name: 'Terminal Sur a Universidad',
+    company: 'Transporte Plus',
+    days: ['Mar', 'Jue', 'Sab'],
+    departure: '12:00:00',
+    driver: 'Carlos García',
+    vehicle: 'BUS-702',
+    published: { driver: true, client: false }
   }
 ]
