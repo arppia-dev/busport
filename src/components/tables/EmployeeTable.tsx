@@ -112,6 +112,7 @@ const employeeColumns: TableColumnsType<Employee> = [
 const EmployeeTable: React.FC = () => {
   return (
     <Table<Employee>
+      rowKey={'id'}
       columns={employeeColumns}
       dataSource={employeesData}
       pagination={{

@@ -1,6 +1,5 @@
 export interface Trip {
   id: number
-  key?: number
   date: string
   route: string
   company: string

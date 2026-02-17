@@ -143,6 +143,7 @@ const TripTable: React.FC<TripTableProps> = (props) => {
 
   return (
     <Table<Trip>
+      rowKey={'id'}
       columns={columns}
       dataSource={tripData}
       pagination={{
