@@ -6,8 +6,8 @@ import { Table, Tag } from 'antd'
 const columns: TableColumnsType<SeatPerson> = [
   {
     title: 'Código Interno',
-    dataIndex: 'codigoInterno',
-    key: 'codigoInterno',
+    dataIndex: 'code',
+    key: 'code',
     width: 100,
     filterSearch: true,
     filters: Array.from(new Set(seatPersonData.map((e) => e.code))).map(
@@ -68,11 +68,16 @@ const columns: TableColumnsType<SeatPerson> = [
   },
   {
     title: 'Fecha de la Reserva',
-    dataIndex: 'fechaReserva',
-    key: 'fechaReserva',
+    dataIndex: 'reservationDate',
+    key: 'reservationDate',
     width: 140
   },
-  { title: 'Reserva en', dataIndex: 'reservaEn', key: 'reservaEn', width: 160 }
+  {
+    title: 'Reserva en',
+    dataIndex: 'reservedAt',
+    key: 'reservedAt',
+    width: 160
+  }
 ]
 
 const SeatPersonTable: React.FC = () => {
