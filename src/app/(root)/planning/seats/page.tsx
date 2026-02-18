@@ -26,7 +26,7 @@ const { Title, Text } = Typography
 
 export default function SeatsPage() {
   const {
-    token: { colorPrimary, colorBgContainer, padding }
+    token: { colorBgContainer, padding }
   } = theme.useToken()
 
   const [selectedWeek, setSelectedWeek] = useState<Date>(() => {
@@ -51,7 +51,7 @@ export default function SeatsPage() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingInline: 24,
+          paddingInline: padding,
           background: colorBgContainer
         }}
       >
