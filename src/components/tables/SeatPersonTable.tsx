@@ -10,54 +10,54 @@ const columns: TableColumnsType<SeatPerson> = [
     key: 'codigoInterno',
     width: 100,
     filterSearch: true,
-    filters: Array.from(
-      new Set(seatPersonData.map((e) => e.codigoInterno))
-    ).map((codigo) => ({ text: codigo, value: codigo })),
-    onFilter: (value, record) => record.codigoInterno === value
+    filters: Array.from(new Set(seatPersonData.map((e) => e.code))).map(
+      (codigo) => ({ text: codigo, value: codigo })
+    ),
+    onFilter: (value, record) => record.code === value
   },
   {
     title: 'Nombre del Pasajero',
-    dataIndex: 'nombrePasajero',
-    key: 'nombrePasajero',
+    dataIndex: 'name',
+    key: 'name',
     width: 180,
     filterSearch: true,
-    filters: Array.from(
-      new Set(seatPersonData.map((e) => e.nombrePasajero))
-    ).map((nombre) => ({ text: nombre, value: nombre })),
-    onFilter: (value, record) => record.nombrePasajero === value
+    filters: Array.from(new Set(seatPersonData.map((e) => e.name))).map(
+      (nombre) => ({ text: nombre, value: nombre })
+    ),
+    onFilter: (value, record) => record.name === value
   },
   {
     title: 'Empresa',
-    dataIndex: 'empresa',
-    key: 'empresa',
+    dataIndex: 'company',
+    key: 'company',
     width: 150,
     filterSearch: true,
-    filters: Array.from(new Set(seatPersonData.map((e) => e.empresa))).map(
-      (empresa) => ({ text: empresa, value: empresa })
+    filters: Array.from(new Set(seatPersonData.map((e) => e.company))).map(
+      (company) => ({ text: company, value: company })
     ),
-    onFilter: (value, record) => record.empresa === value
+    onFilter: (value, record) => record.company === value
   },
   {
     title: 'Título de la Ruta',
-    dataIndex: 'tituloRuta',
-    key: 'tituloRuta',
+    dataIndex: 'routeTitle',
+    key: 'routeTitle',
     width: 150,
     filterSearch: true,
-    filters: Array.from(new Set(seatPersonData.map((e) => e.tituloRuta))).map(
+    filters: Array.from(new Set(seatPersonData.map((e) => e.routeTitle))).map(
       (ruta) => ({ text: ruta, value: ruta })
     ),
-    onFilter: (value, record) => record.tituloRuta === value
+    onFilter: (value, record) => record.routeTitle === value
   },
   {
     title: 'Estado de la Reserva',
-    dataIndex: 'estadoReserva',
-    key: 'estadoReserva',
+    dataIndex: 'reservationStatus',
+    key: 'reservationStatus',
     width: 150,
     filterSearch: true,
     filters: Array.from(
-      new Set(seatPersonData.map((e) => e.estadoReserva))
+      new Set(seatPersonData.map((e) => e.reservationStatus))
     ).map((estado) => ({ text: estado, value: estado })),
-    onFilter: (value, record) => record.estadoReserva === value,
+    onFilter: (value, record) => record.reservationStatus === value,
     render: (estado: string) => {
       let color = 'default'
       if (estado === 'Confirmada') color = 'green'
