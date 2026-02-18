@@ -343,7 +343,7 @@ export const seatRoutesData: SeatRoute[] = [
     days: [
       { day: '2026-02-02', qty: 25 },
       { day: '2026-02-03', qty: 10 },
-      { day: '2026-02-04', qty: 30 },
+      { day: '2026-02-04', qty: 20 },
       { day: '2026-02-05', qty: 0 },
       { day: '2026-02-06', qty: 10 },
       { day: '2026-02-07', qty: 23 },
@@ -357,7 +357,7 @@ export const seatRoutesData: SeatRoute[] = [
     time: '07:00',
     status: 'Publicada',
     company: 'Transporte Plus',
-    capacity: 20,
+    capacity: 45,
     days: [
       { day: '2026-02-02', qty: 25 },
       { day: '2026-02-03', qty: 10 },

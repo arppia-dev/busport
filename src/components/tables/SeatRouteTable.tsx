@@ -1,7 +1,12 @@
 import { SeatRoute } from '@/types/SeatRoute'
 import { seatRoutesData } from '@/utils/mockData'
-import { DownloadOutlined, EditOutlined } from '@ant-design/icons'
-import { Flex, Table, Tag, theme, Typography } from 'antd'
+import {
+  CheckSquareOutlined,
+  ClockCircleOutlined,
+  DownloadOutlined,
+  EditOutlined
+} from '@ant-design/icons'
+import { Flex, Space, Table, Tag, theme, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 
 const { Text } = Typography
@@ -72,7 +77,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
             return (
               <Flex gap={paddingXS}>
                 <Text>
-                  {totalReserved} / {totalCapacity}
+                  {totalReserved}/{totalCapacity}
                 </Text>
                 <EditOutlined
                   style={{
@@ -120,12 +125,40 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
               else if (porcentaje > 40) color = 'orange'
 
               return (
-                <Tag color={color} variant="outlined">
-                  <Flex orientation="vertical" align="center">
-                    <Text>{porcentaje}%</Text>
-                    <Text type="secondary">{dayData.qty} reservas</Text>
-                  </Flex>
-                </Tag>
+                <Tooltip
+                  title={
+                    <Flex orientation="vertical">
+                      <span>{`${porcentaje}% reservado`}</span>
+                      <span>{`capacidad: ${record.capacity}`}</span>
+                      <span>{`reservados: ${dayData.qty}`}</span>
+                      <span>{`disponibles: ${record.capacity - dayData.qty}`}</span>
+                    </Flex>
+                  }
+                >
+                  <Tag color={color} variant="outlined">
+                    <Flex orientation="vertical" align="center">
+                      <Space>
+                        <Text style={{ color: color }}>{porcentaje}%</Text>
+                        <Text type="secondary">
+                          ({dayData.qty}/{record.capacity})
+                        </Text>
+                      </Space>
+                      <Text
+                        type="secondary"
+                        style={{ color: porcentaje === 100 ? 'green' : '' }}
+                      >
+                        <Space>
+                          {record.capacity - dayData.qty}
+                          {porcentaje === 100 ? (
+                            <CheckSquareOutlined />
+                          ) : (
+                            <ClockCircleOutlined />
+                          )}
+                        </Space>
+                      </Text>
+                    </Flex>
+                  </Tag>
+                </Tooltip>
               )
             }
           }))
