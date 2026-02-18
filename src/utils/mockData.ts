@@ -394,42 +394,42 @@ export const seatRoutesData: SeatRoute[] = [
 export const seatPersonData: SeatPerson[] = [
   {
     id: 1,
-    codigoInterno: 'E001',
-    nombrePasajero: 'Carlos García',
-    empresa: 'Transporte Plus',
-    tituloRuta: 'Ruta 101',
-    estadoReserva: 'Confirmada',
-    fechaReserva: '10/02/2026',
-    reservaEn: '10/02/2026 06:11'
+    code: 'E001',
+    name: 'Carlos García',
+    company: 'Transporte Plus',
+    routeTitle: 'Ruta 101',
+    reservationStatus: 'Confirmada',
+    reservationDate: '10/02/2026',
+    reservedAt: '10/02/2026 06:11'
   },
   {
     id: 2,
-    codigoInterno: 'E002',
-    nombrePasajero: 'María López',
-    empresa: 'Viajes Seguros',
-    tituloRuta: 'Ruta 205',
-    estadoReserva: 'Pendiente',
-    fechaReserva: '11/02/2026',
-    reservaEn: '11/02/2026 08:45'
+    code: 'E002',
+    name: 'María López',
+    company: 'Viajes Seguros',
+    routeTitle: 'Ruta 205',
+    reservationStatus: 'Pendiente',
+    reservationDate: '11/02/2026',
+    reservedAt: '11/02/2026 08:45'
   },
   {
     id: 3,
-    codigoInterno: 'E003',
-    nombrePasajero: 'Juan Pérez',
-    empresa: 'Transporte Plus',
-    tituloRuta: 'Ruta 312',
-    estadoReserva: 'Cancelada',
-    fechaReserva: '09/02/2026',
-    reservaEn: '09/02/2026 17:30'
+    code: 'E003',
+    name: 'Juan Pérez',
+    company: 'Transporte Plus',
+    routeTitle: 'Ruta 312',
+    reservationStatus: 'Cancelada',
+    reservationDate: '09/02/2026',
+    reservedAt: '09/02/2026 17:30'
   },
   {
     id: 4,
-    codigoInterno: 'E004',
-    nombrePasajero: 'Ana Torres',
-    empresa: 'Viajes Express',
-    tituloRuta: 'Ruta 700',
-    estadoReserva: 'Confirmada',
-    fechaReserva: '08/02/2026',
-    reservaEn: '08/02/2026 12:00'
+    code: 'E004',
+    name: 'Ana Torres',
+    company: 'Viajes Express',
+    routeTitle: 'Ruta 700',
+    reservationStatus: 'Confirmada',
+    reservationDate: '08/02/2026',
+    reservedAt: '08/02/2026 12:00'
   }
 ]
