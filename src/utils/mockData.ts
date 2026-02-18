@@ -1,6 +1,7 @@
 import { Company } from '@/types/Company'
 import { Employee } from '@/types/Employee'
 import { Route } from '@/types/Route'
+import { SeatPerson } from '@/types/SeatPerson'
 import { SeatRoute } from '@/types/SeatRoute'
 import { Trip } from '@/types/Trip'
 
@@ -384,5 +385,51 @@ export const seatRoutesData: SeatRoute[] = [
       { day: '2026-02-07', qty: 23 },
       { day: '2026-02-08', qty: 2 }
     ]
+  }
+]
+
+/**
+ * Mock data for Seat Person
+ */
+export const seatPersonData: SeatPerson[] = [
+  {
+    id: 1,
+    codigoInterno: 'E001',
+    nombrePasajero: 'Carlos García',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 101',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '10/02/2026',
+    reservaEn: '10/02/2026 06:11'
+  },
+  {
+    id: 2,
+    codigoInterno: 'E002',
+    nombrePasajero: 'María López',
+    empresa: 'Viajes Seguros',
+    tituloRuta: 'Ruta 205',
+    estadoReserva: 'Pendiente',
+    fechaReserva: '11/02/2026',
+    reservaEn: '11/02/2026 08:45'
+  },
+  {
+    id: 3,
+    codigoInterno: 'E003',
+    nombrePasajero: 'Juan Pérez',
+    empresa: 'Transporte Plus',
+    tituloRuta: 'Ruta 312',
+    estadoReserva: 'Cancelada',
+    fechaReserva: '09/02/2026',
+    reservaEn: '09/02/2026 17:30'
+  },
+  {
+    id: 4,
+    codigoInterno: 'E004',
+    nombrePasajero: 'Ana Torres',
+    empresa: 'Viajes Express',
+    tituloRuta: 'Ruta 700',
+    estadoReserva: 'Confirmada',
+    fechaReserva: '08/02/2026',
+    reservaEn: '08/02/2026 12:00'
   }
 ]
