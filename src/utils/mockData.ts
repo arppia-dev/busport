@@ -1,14 +1,21 @@
 import { Company } from '@/types/Company'
 import { Employee } from '@/types/Employee'
 import { Route } from '@/types/Route'
+import { SeatRoute } from '@/types/SeatRoute'
 import { Trip } from '@/types/Trip'
 
+/**
+ * Mock data for Companies
+ */
 export const companiesData: Company[] = [
   { id: 1, name: 'Transporte Plus', code: 'TP001' },
   { id: 2, name: 'Viajes Seguros', code: 'VS002' },
   { id: 3, name: 'Viajes Express', code: 'VE003' }
 ]
 
+/**
+ * Mock data for Employees
+ */
 export const employeesData: Employee[] = [
   {
     id: 1,
@@ -42,6 +49,9 @@ export const employeesData: Employee[] = [
   }
 ]
 
+/**
+ * Mock data for Trips
+ */
 export const tripData: Trip[] = [
   {
     id: 1,
@@ -209,6 +219,9 @@ export const tripData: Trip[] = [
   }
 ]
 
+/**
+ * Mock data for Routes
+ */
 export const routesData: Route[] = [
   {
     id: 1,
@@ -293,5 +306,83 @@ export const routesData: Route[] = [
     driver: 'Carlos García',
     vehicle: 'BUS-702',
     published: { driver: true, client: false }
+  }
+]
+
+/**
+ * Mock data for Seat Routes
+ */
+export const seatRoutesData: SeatRoute[] = [
+  {
+    id: 1,
+    code: 'R700',
+    title: 'Ruta 700',
+    time: '15:00',
+    status: 'Borrador',
+    company: 'Transporte Plus',
+    capacity: 30,
+    days: [
+      { day: '2026-02-02', qty: 25 },
+      { day: '2026-02-03', qty: 10 },
+      { day: '2026-02-04', qty: 30 },
+      { day: '2026-02-05', qty: 0 },
+      { day: '2026-02-06', qty: 10 },
+      { day: '2026-02-07', qty: 23 },
+      { day: '2026-02-08', qty: 2 }
+    ]
+  },
+  {
+    id: 2,
+    code: 'R800',
+    title: 'Ruta 800',
+    time: '16:30',
+    status: 'Publicada',
+    company: 'Viajes Seguros',
+    capacity: 25,
+    days: [
+      { day: '2026-02-02', qty: 25 },
+      { day: '2026-02-03', qty: 10 },
+      { day: '2026-02-04', qty: 30 },
+      { day: '2026-02-05', qty: 0 },
+      { day: '2026-02-06', qty: 10 },
+      { day: '2026-02-07', qty: 23 },
+      { day: '2026-02-08', qty: 2 }
+    ]
+  },
+  {
+    id: 3,
+    code: 'R101',
+    title: 'Ruta 101',
+    time: '07:00',
+    status: 'Publicada',
+    company: 'Transporte Plus',
+    capacity: 20,
+    days: [
+      { day: '2026-02-02', qty: 25 },
+      { day: '2026-02-03', qty: 10 },
+      { day: '2026-02-04', qty: 30 },
+      { day: '2026-02-05', qty: 15 },
+      { day: '2026-02-06', qty: 10 },
+      { day: '2026-02-07', qty: 23 },
+      { day: '2026-02-08', qty: 2 }
+    ]
+  },
+  {
+    id: 4,
+    code: 'R205',
+    title: 'Ruta 205',
+    time: '08:30',
+    status: 'Borrador',
+    company: 'Viajes Seguros',
+    capacity: 60,
+    days: [
+      { day: '2026-02-02', qty: 25 },
+      { day: '2026-02-03', qty: 0 },
+      { day: '2026-02-04', qty: 30 },
+      { day: '2026-02-05', qty: 15 },
+      { day: '2026-02-06', qty: 10 },
+      { day: '2026-02-07', qty: 23 },
+      { day: '2026-02-08', qty: 2 }
+    ]
   }
 ]

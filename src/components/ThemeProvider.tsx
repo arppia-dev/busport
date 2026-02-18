@@ -2,7 +2,14 @@
 
 import { themeConfig } from '@/config/theme'
 import { ConfigProvider, theme as antdTheme } from 'antd'
+import esES from 'antd/es/locale/es_ES'
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+import updateLocale from 'dayjs/plugin/updateLocale'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+
+dayjs.extend(updateLocale)
+dayjs.updateLocale('es', { weekStart: 1 })
 
 type ThemeContextType = {
   isDark: boolean
@@ -40,7 +47,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ isDark, setIsDark }}>
-      <ConfigProvider theme={cfg}>{children}</ConfigProvider>
+      <ConfigProvider theme={cfg} locale={esES}>
+        {children}
+      </ConfigProvider>
     </ThemeContext.Provider>
   )
 }
