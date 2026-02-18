@@ -24,6 +24,10 @@ const { Text } = Typography
 
 const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const [selectedRoute, setSelectedRoute] = useState<{
+    route: SeatRoute
+    day: { day: string; qty: number }
+  } | null>(null)
   const {
     token: { paddingXS }
   } = theme.useToken()
@@ -160,6 +164,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
                         showDrawer()
+                        setSelectedRoute({ route: record, day: dayData })
                       }}
                     >
                       <Flex orientation="vertical" align="center">
@@ -206,7 +211,12 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
         onClose={showDrawer}
         open={openDrawer}
       >
-        <BusLayout capacity={40} reserved={20} />
+        {selectedRoute && (
+          <BusLayout
+            capacity={selectedRoute.route.capacity}
+            reserved={selectedRoute.day.qty!}
+          />
+        )}
       </Drawer>
     </>
   )

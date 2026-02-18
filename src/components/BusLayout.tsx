@@ -12,10 +12,10 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
 
   // Estilo del contenedor del bus
   const busStyle: React.CSSProperties = {
-    width: '300px',
+    width: '240px',
     background: '#9E9E9E',
-    borderRadius: '20px',
-    padding: '20px 15px',
+    borderRadius: '16px',
+    padding: '15px 12px',
     position: 'relative',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
   }
@@ -23,28 +23,28 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
   // Estilo de los retrovisores
   const mirrorStyle: React.CSSProperties = {
     position: 'absolute',
-    top: '60px',
-    width: '30px',
-    height: '15px',
+    top: '50px',
+    width: '25px',
+    height: '12px',
     background: '#333',
-    borderRadius: '5px'
+    borderRadius: '4px'
   }
 
   // Estilo de la cabina del conductor
   const cabinStyle: React.CSSProperties = {
     background: '#6B6B6B',
-    borderRadius: '10px 10px 0 0',
-    padding: '15px 10px',
-    marginBottom: '10px',
+    borderRadius: '8px 8px 0 0',
+    padding: '12px 8px',
+    marginBottom: '8px',
     position: 'relative'
   }
 
   // Estilo del parabrisas
   const windshieldStyle: React.CSSProperties = {
     background: '#B0BEC5',
-    height: '30px',
-    borderRadius: '8px',
-    marginBottom: '10px',
+    height: '25px',
+    borderRadius: '6px',
+    marginBottom: '8px',
     border: '2px solid #78909C'
   }
 
@@ -52,41 +52,47 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
   const seatsAreaStyle: React.CSSProperties = {
     background: colorBgContainer,
     borderRadius: '5px',
-    padding: '15px 10px',
-    minHeight: '400px'
+    padding: '12px 8px',
+    minHeight: '350px'
   }
 
   // Estilo de cada asiento
   const seatStyle = (isReserved: boolean): React.CSSProperties => ({
-    width: '45px',
-    height: '45px',
-    background: isReserved ? colorPrimary : '#1976D2',
-    border: `3px solid ${isReserved ? '#003D82' : '#000'}`,
-    borderRadius: '8px',
+    width: '38px',
+    height: '38px',
+    background: isReserved ? '#52c41a' : '#1976D2',
+    border: `2px solid ${isReserved ? '#237804' : '#000'}`,
+    borderRadius: '6px',
     cursor: 'pointer',
-    transition: 'all 0.3s'
+    transition: 'all 0.3s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#fff',
+    fontSize: '11px',
+    fontWeight: 'bold'
   })
 
   // Estilo del asiento del conductor
   const driverSeatStyle: React.CSSProperties = {
-    width: '45px',
-    height: '45px',
+    width: '38px',
+    height: '38px',
     background: '#FFD54F',
-    border: '3px solid #000',
-    borderRadius: '8px',
+    border: '2px solid #000',
+    borderRadius: '6px',
     marginRight: 'auto'
   }
 
   // Estilo del volante
   const steeringWheelStyle: React.CSSProperties = {
-    width: '30px',
-    height: '30px',
-    border: '3px solid #616161',
+    width: '25px',
+    height: '25px',
+    border: '2px solid #616161',
     borderRadius: '50%',
     background: '#9E9E9E',
     position: 'absolute',
     top: '50%',
-    left: '20px',
+    left: '16px',
     transform: 'translateY(-50%)',
     display: 'flex',
     alignItems: 'center',
@@ -94,8 +100,8 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
   }
 
   const steeringWheelCenterStyle: React.CSSProperties = {
-    width: '10px',
-    height: '10px',
+    width: '8px',
+    height: '8px',
     background: '#FFD54F',
     borderRadius: '50%'
   }
@@ -123,7 +129,7 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
           {/* Parabrisas */}
 
           {/* Área del conductor */}
-          <div style={{ position: 'relative', minHeight: '50px' }}>
+          <div style={{ position: 'relative', minHeight: '45px' }}>
             <div style={driverSeatStyle} />
             <div style={steeringWheelStyle}>
               <div style={steeringWheelCenterStyle} />
@@ -133,28 +139,36 @@ const BusLayout: React.FC<BusLayoutProps> = ({ capacity, reserved = 0 }) => {
 
         {/* Área de asientos */}
         <div style={seatsAreaStyle}>
-          <Flex vertical gap={10}>
+          <Flex vertical gap={8}>
             {Array.from({ length: rows }).map((_, rowIndex) => {
               const startIdx = rowIndex * 4
               return (
-                <Flex key={rowIndex} gap={10} justify="space-between">
+                <Flex key={rowIndex} gap={8} justify="space-between">
                   {/* Lado izquierdo - 2 asientos */}
-                  <Flex gap={8}>
+                  <Flex gap={6}>
                     {startIdx < capacity && (
-                      <div style={seatStyle(seats[startIdx])} />
+                      <div style={seatStyle(seats[startIdx])}>
+                        {startIdx + 1}
+                      </div>
                     )}
                     {startIdx + 1 < capacity && (
-                      <div style={seatStyle(seats[startIdx + 1])} />
+                      <div style={seatStyle(seats[startIdx + 1])}>
+                        {startIdx + 2}
+                      </div>
                     )}
                   </Flex>
 
                   {/* Lado derecho - 2 asientos */}
-                  <Flex gap={8}>
+                  <Flex gap={6}>
                     {startIdx + 2 < capacity && (
-                      <div style={seatStyle(seats[startIdx + 2])} />
+                      <div style={seatStyle(seats[startIdx + 2])}>
+                        {startIdx + 3}
+                      </div>
                     )}
                     {startIdx + 3 < capacity && (
-                      <div style={seatStyle(seats[startIdx + 3])} />
+                      <div style={seatStyle(seats[startIdx + 3])}>
+                        {startIdx + 4}
+                      </div>
                     )}
                   </Flex>
                 </Flex>
