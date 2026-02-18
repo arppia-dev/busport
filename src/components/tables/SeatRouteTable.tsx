@@ -1,12 +1,16 @@
 import { SeatRoute } from '@/types/SeatRoute'
 import { seatRoutesData } from '@/utils/mockData'
 import { DownloadOutlined, EditOutlined } from '@ant-design/icons'
-import { Flex, Table, Tag, Typography } from 'antd'
+import { Flex, Table, Tag, theme, Typography } from 'antd'
 import dayjs from 'dayjs'
 
 const { Text } = Typography
 
 const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
+  const {
+    token: { paddingXS }
+  } = theme.useToken()
+
   return (
     <Table<SeatRoute>
       rowKey={'id'}
@@ -14,7 +18,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
         {
           title: 'Título de la Ruta',
           key: 'title',
-          width: 220,
+          width: 500,
           filters: Array.from(new Set(seatRoutesData.map((r) => r.title))).map(
             (title) => ({ text: title, value: title })
           ),
@@ -26,7 +30,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
           )
         },
         {
-          title: '',
+          title: 'Estado',
           key: 'estado',
           width: 50,
           filters: [
@@ -44,7 +48,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
           title: 'Empresa',
           dataIndex: 'company',
           key: 'company',
-          width: 180,
+          width: 200,
           filters: Array.from(
             new Set(seatRoutesData.map((r) => r.company))
           ).map((company) => ({ text: company, value: company })),
@@ -54,7 +58,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
           title: 'Reservados',
           dataIndex: 'reserved',
           key: 'reserved',
-          width: 140,
+          width: 150,
           render: (_: any, record: SeatRoute) => {
             const totalReserved = record.days.reduce(
               (sum, d) => sum + (d.qty > 0 ? d.qty : 0),
@@ -66,7 +70,7 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
             )
 
             return (
-              <Flex>
+              <Flex gap={paddingXS}>
                 <Text>
                   {totalReserved} / {totalCapacity}
                 </Text>
@@ -112,12 +116,8 @@ const SeatRouteTable: React.FC<{ weekDates: Date[] }> = ({ weekDates }) => {
               )
 
               let color = 'green'
-
-              if (porcentaje > 50) {
-                color = 'red'
-              } else if (porcentaje > 40) {
-                color = 'orange'
-              }
+              if (porcentaje > 50) color = 'red'
+              else if (porcentaje > 40) color = 'orange'
 
               return (
                 <Tag color={color} variant="outlined">
