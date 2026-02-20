@@ -1,11 +1,10 @@
 import { Company } from '@/types/Company'
 import { Payload } from '@/types/Payload'
-import { buildStrapiQuery } from '@/utils/buildStrapiQuery'
 import { fetcher } from '@/utils/fetcher'
 import { companiesData } from '@/utils/mockData'
-import type { PaginationProps, TableColumnsType } from 'antd'
+import { useStrapiTableQuery } from '@/utils/useStrapiTableQuery'
+import type { TableColumnsType } from 'antd'
 import { Table } from 'antd'
-import { useState } from 'react'
 import useSWR from 'swr'
 
 const companyColumns: TableColumnsType<Company> = [
@@ -45,13 +44,7 @@ const companyColumns: TableColumnsType<Company> = [
 ]
 
 const CompanyTable: React.FC = () => {
-  const [pagination, setPagination] = useState({ page: 1, pageSize: 1 })
-
-  const query = buildStrapiQuery({
-    pagination: {
-      page: pagination.page,
-      pageSize: pagination.pageSize
-    },
+  const { query, pagination, updatePagination } = useStrapiTableQuery({
     sort: ['createdAt:desc']
   })
 
@@ -59,16 +52,6 @@ const CompanyTable: React.FC = () => {
     `${process.env.NEXT_PUBLIC_API_URL}/companies${query}`,
     fetcher
   )
-
-  const onChangePagination: PaginationProps['onChange'] = (
-    page: number,
-    pageSize: number
-  ) => {
-    setPagination({
-      page,
-      pageSize
-    })
-  }
 
   const isLoading = !companyData && !errorCompany
 
@@ -85,7 +68,7 @@ const CompanyTable: React.FC = () => {
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '20', '50'],
-        onChange: onChangePagination
+        onChange: updatePagination
       }}
       scroll={{ x: 600 }}
     />
