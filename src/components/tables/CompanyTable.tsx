@@ -21,9 +21,9 @@ const companyColumns: TableColumnsType<Company> = [
     key: 'code',
     width: 100,
     filterSearch: true,
-    filters: companiesData.map((company) => ({
-      text: company.code,
-      value: company.code
+    filters: ['ACP', 'TEST', 'DELL'].map((code) => ({
+      text: code,
+      value: code
     })),
     onFilter: (value, record) => record.code === value,
     sorter: (a, b) => a.code.localeCompare(b.code)
@@ -34,9 +34,9 @@ const companyColumns: TableColumnsType<Company> = [
     key: 'name',
     width: 200,
     filterSearch: true,
-    filters: companiesData.map((company) => ({
-      text: company.name,
-      value: company.name
+    filters: ['Test', 'DELL', 'Autoridad del Canal de Panama'].map((code) => ({
+      text: code,
+      value: code
     })),
     onFilter: (value, record) => record.name === value,
     sorter: (a, b) => a.name.localeCompare(b.name)
@@ -44,9 +44,10 @@ const companyColumns: TableColumnsType<Company> = [
 ]
 
 const CompanyTable: React.FC = () => {
-  const { query, pagination, updatePagination } = useStrapiTableQuery({
-    sort: ['createdAt:desc']
-  })
+  const { query, pagination, updatePagination, handleTableChange } =
+    useStrapiTableQuery({
+      sort: ['createdAt:desc']
+    })
 
   const { data: companyData, error: errorCompany } = useSWR<Payload<Company[]>>(
     `${process.env.NEXT_PUBLIC_API_URL}/companies${query}`,
@@ -71,6 +72,7 @@ const CompanyTable: React.FC = () => {
         onChange: updatePagination
       }}
       scroll={{ x: 600 }}
+      onChange={handleTableChange}
     />
   )
 }
