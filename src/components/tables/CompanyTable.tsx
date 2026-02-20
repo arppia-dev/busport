@@ -1,7 +1,10 @@
 import { Company } from '@/types/Company'
+import { Payload } from '@/types/Payload'
+import { fetcher } from '@/utils/fetcher'
 import { companiesData } from '@/utils/mockData'
 import type { TableColumnsType } from 'antd'
 import { Table } from 'antd'
+import useSWR from 'swr'
 
 const companyColumns: TableColumnsType<Company> = [
   {
@@ -40,14 +43,22 @@ const companyColumns: TableColumnsType<Company> = [
 ]
 
 const CompanyTable: React.FC = () => {
+  const { data: companyData, error: errorCompany } = useSWR<Payload<Company[]>>(
+    `${process.env.NEXT_PUBLIC_API_URL}/companies`,
+    fetcher
+  )
+
+  const isLoading = !companyData && !errorCompany
+
   return (
     <Table<Company>
       rowKey={'id'}
       columns={companyColumns}
-      dataSource={companiesData}
+      dataSource={companyData?.data || []}
+      loading={isLoading}
       pagination={{
         pageSize: 5,
-        total: companiesData.length,
+        total: companyData?.meta?.pagination?.total || 0,
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '20', '50']
