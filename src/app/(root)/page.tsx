@@ -1,7 +1,9 @@
 'use client'
 
-import OpenLayersMap from '@/components/OpenLayersMap'
+import OpenLayersMap, { CoordsProps } from '@/components/OpenLayersMap'
+import { socket } from '@/utils/socketClient'
 import {
+  Button,
   Col,
   Divider,
   Flex,
@@ -9,10 +11,10 @@ import {
   Row,
   Select,
   Space,
-  Tag,
   theme,
   Typography
 } from 'antd'
+import { useEffect, useState } from 'react'
 import styles from './page.module.css'
 
 const { Header, Content } = Layout
@@ -23,61 +25,26 @@ export default function DashboardPage() {
     token: { colorBgContainer, padding }
   } = theme.useToken()
 
-  const columns = [
-    {
-      title: 'Ruta',
-      dataIndex: 'route',
-      key: 'route'
-    },
-    {
-      title: 'Bus',
-      dataIndex: 'bus',
-      key: 'bus'
-    },
-    {
-      title: 'Pasajeros',
-      dataIndex: 'passengers',
-      key: 'passengers',
-      align: 'center' as const
-    },
-    {
-      title: 'Estado',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => {
-        const colors = {
-          'En ruta': 'blue',
-          Disponible: 'green',
-          Mantenimiento: 'red'
-        }
-        return <Tag color={colors[status as keyof typeof colors]}>{status}</Tag>
-      }
-    }
-  ]
+  const [busCoords, setBusCoords] = useState<CoordsProps[]>([])
 
-  const data = [
-    {
-      key: '1',
-      route: 'Ruta 1 - Centro',
-      bus: 'BS-001',
-      passengers: 45,
-      status: 'En ruta'
-    },
-    {
-      key: '2',
-      route: 'Ruta 2 - Norte',
-      bus: 'BS-002',
-      passengers: 50,
-      status: 'En ruta'
-    },
-    {
-      key: '3',
-      route: 'Ruta 3 - Sur',
-      bus: 'BS-003',
-      passengers: 38,
-      status: 'Disponible'
+  useEffect(() => {
+    socket.on('message', (data: any) => {
+      console.log('Received bus data:', data)
+      setBusCoords((prev: CoordsProps[]) => {
+        const idx = prev.findIndex((b: CoordsProps) => b.node === data.node)
+        if (idx !== -1) {
+          const updated = [...prev]
+          updated[idx] = data
+          return updated
+        } else {
+          return [...prev, data]
+        }
+      })
+    })
+    return () => {
+      socket.off('message')
     }
-  ]
+  }, [])
 
   return (
     <div className={styles.dashboardPage}>
@@ -90,64 +57,9 @@ export default function DashboardPage() {
         <Col span={24} style={{ flex: 8 }}>
           <div style={{ height: '100%' }}>
             <OpenLayersMap
-              center={[-79.510298, 9.008566]}
+              center={[-79.5566249, 8.9688727]}
               zoom={13}
-              coords={[
-                {
-                  node: 'Bus-001',
-                  date: new Date(),
-                  coords: {
-                    latitude: 9.008566,
-                    longitude: -79.510298,
-                    accuracy: 10
-                  }
-                },
-                {
-                  node: 'Bus-002',
-                  date: new Date(),
-                  coords: {
-                    latitude: 8.9954,
-                    longitude: -79.532,
-                    accuracy: 10
-                  }
-                },
-                {
-                  node: 'Bus-003',
-                  date: new Date(),
-                  coords: {
-                    latitude: 8.9694,
-                    longitude: -79.508,
-                    accuracy: 10
-                  }
-                },
-                {
-                  node: 'Bus-004',
-                  date: new Date(),
-                  coords: {
-                    latitude: 8.9944,
-                    longitude: -79.506,
-                    accuracy: 10
-                  }
-                },
-                {
-                  node: 'Bus-005',
-                  date: new Date(),
-                  coords: {
-                    latitude: 8.9704,
-                    longitude: -79.534,
-                    accuracy: 10
-                  }
-                },
-                {
-                  node: 'Bus-006',
-                  date: new Date(),
-                  coords: {
-                    latitude: 8.9714,
-                    longitude: -79.507,
-                    accuracy: 10
-                  }
-                }
-              ]}
+              coords={busCoords}
             />
           </div>
         </Col>

@@ -43,7 +43,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     if (!mapRef.current) return
 
     const view = new View({
-      center: center ? center : [0, 0],
+      center: center ? fromLonLat(center) : fromLonLat([0, 0]),
       zoom: zoom ?? 2
     })
 
@@ -112,8 +112,6 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     const vectorSource = vectorLayer.getSource() as VectorSource
     vectorSource.clear()
     vectorSource.addFeatures(features)
-
-    map.getView().setCenter(positions[0])
   }, [coords])
 
   useEffect(() => {
