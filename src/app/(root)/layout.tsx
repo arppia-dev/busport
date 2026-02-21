@@ -22,11 +22,13 @@ import {
   Layout as AntLayout,
   Breadcrumb,
   Button,
+  Col,
   Divider,
   Dropdown,
   Flex,
   Menu,
   MenuProps,
+  Row,
   Space,
   Switch,
   theme,
@@ -166,8 +168,8 @@ export default function DashboardLayout({
           className={styles.header}
           style={{ background: colorBgContainer }}
         >
-          <Flex justify="space-between" align="center">
-            <Flex align="center" gap={padding}>
+          <Row align="middle" gutter={padding}>
+            <Col flex="none">
               <Button
                 type="text"
                 icon={
@@ -179,6 +181,8 @@ export default function DashboardLayout({
                 }
                 onClick={() => setCollapsed(!collapsed)}
               />
+            </Col>
+            <Col flex="none" xs={0} md={12}>
               {breadcrumbItems.length > 1 && (
                 <Breadcrumb
                   items={[
@@ -190,14 +194,16 @@ export default function DashboardLayout({
                   ]}
                 />
               )}
-            </Flex>
-            <Space>
+            </Col>
+            <Col flex="none" style={{ marginLeft: 'auto' }}>
               <Switch
                 checked={isDark}
                 onChange={(checked) => setIsDark(checked)}
                 checkedChildren={<MoonOutlined />}
                 unCheckedChildren={<SunOutlined />}
               />
+            </Col>
+            <Col flex="none" xs={0} lg={12}>
               <Dropdown
                 menu={{ items: items }}
                 placement="bottomRight"
@@ -210,8 +216,8 @@ export default function DashboardLayout({
                   </Space>
                 </a>
               </Dropdown>
-            </Space>
-          </Flex>
+            </Col>
+          </Row>
         </Header>
 
         <Content className={styles.content} style={{ padding: padding }}>
