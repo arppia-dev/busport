@@ -9,9 +9,27 @@ import { Trip } from '@/types/Trip'
  * Mock data for Companies
  */
 export const companiesData: Company[] = [
-  { id: 1, name: 'Transporte Plus', code: 'TP001' },
-  { id: 2, name: 'Viajes Seguros', code: 'VS002' },
-  { id: 3, name: 'Viajes Express', code: 'VE003' }
+  {
+    id: 1,
+    name: 'Transporte Plus',
+    code: 'TP001',
+    address: '',
+    accessByCode: false
+  },
+  {
+    id: 2,
+    name: 'Viajes Seguros',
+    code: 'VS002',
+    address: '',
+    accessByCode: false
+  },
+  {
+    id: 3,
+    name: 'Viajes Express',
+    code: 'VE003',
+    address: '',
+    accessByCode: false
+  }
 ]
 
 /**
