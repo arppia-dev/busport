@@ -126,6 +126,18 @@ const OpenLayersMap2: React.FC<Props> = ({
         const data: CoordsProps = feature.get('data')
 
         if (now.diff(dayjs(data.date), 'second') > 10) {
+          feature.setStyle(
+            new Style({
+              image: new Icon({
+                src: './point-disconnect.svg',
+                scale: 0.05,
+                anchor: [0.5, 1]
+              })
+            })
+          )
+        }
+
+        if (now.diff(dayjs(data.date), 'second') > 20) {
           source.removeFeature(feature)
         }
       })
