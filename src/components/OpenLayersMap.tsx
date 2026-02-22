@@ -113,20 +113,21 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
       fromLonLat([coord.coords.longitude, coord.coords.latitude])
     )
 
-    const features = positions.map((pos, index) => {
-      const coord = coords[index]
-      const features = vectorSource.getFeatures()
-      const feature = new Feature(new Point(pos))
-      feature.setStyle(createMarkerStyle(coord.node))
-      return feature
-    })
-
     const map = mapInstance.current
     const vectorLayer = getVectorLayer(map)
+    const vectorSource = vectorLayer!.getSource() as VectorSource
+    const existingFeatures = vectorSource.getFeatures()
 
-    if (!vectorLayer) return
+    const features =
+      existingFeatures.length <= 0
+        ? existingFeatures
+        : positions.map((pos, index) => {
+            const coord = coords[index]
+            const feature = new Feature(new Point(pos))
+            feature.setStyle(createMarkerStyle(coord.node))
+            return feature
+          })
 
-    const vectorSource = vectorLayer.getSource() as VectorSource
     vectorSource.clear()
     vectorSource.addFeatures(features)
   }, [coords, scale])
