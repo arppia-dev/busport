@@ -12,7 +12,7 @@ import 'ol/ol.css'
 import { fromLonLat } from 'ol/proj'
 import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
-import { Icon, Style } from 'ol/style'
+import { Icon, Style, Text } from 'ol/style'
 import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
@@ -89,7 +89,8 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
       fromLonLat([coord.coords.longitude, coord.coords.latitude])
     )
 
-    const features = positions.map((pos) => {
+    const features = positions.map((pos, index) => {
+      const coord = coords[index]
       const feature = new Feature(new Point(pos))
       feature.setStyle(
         new Style({
@@ -97,6 +98,13 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
             src: './point.svg',
             scale: scale,
             anchor: [0.5, 1]
+          }),
+          text: new Text({
+            text: coord.node,
+            offsetX: 15,
+            offsetY: -10,
+            font: '14px bold Arial',
+            padding: [2, 4, 2, 4]
           })
         })
       )
@@ -128,15 +136,23 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     const vectorSource = vectorLayer.getSource() as VectorSource
     const features = vectorSource.getFeatures()
 
-    features.forEach((feature) => {
+    features.forEach((feature, index) => {
       const style = feature.getStyle()
       if (style) {
+        const coord = coords ? coords[index] : null
         feature.setStyle(
           new Style({
             image: new Icon({
               src: './point.svg',
               scale: scale,
               anchor: [0.5, 1]
+            }),
+            text: new Text({
+              text: coord ? coord.node : '',
+              offsetX: 15,
+              offsetY: -10,
+              font: '14px bold Arial',
+              padding: [2, 4, 2, 4]
             })
           })
         )
