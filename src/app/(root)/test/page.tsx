@@ -26,7 +26,7 @@ interface BusState {
   pathIndex: number
 }
 
-const INTERMEDIATE_POINTS = 100
+const INTERMEDIATE_POINTS = 50
 
 const generatePath = (
   start: LatLng,
