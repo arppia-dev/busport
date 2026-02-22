@@ -95,6 +95,7 @@ const OpenLayersMap2: React.FC<Props> = ({
         existingFeature?.setGeometry(feature.getGeometry())
       } else {
         feature.setId(node)
+        feature.set('data', data)
         source.addFeature(feature)
       }
     })
@@ -112,6 +113,27 @@ const OpenLayersMap2: React.FC<Props> = ({
     return () => document.removeEventListener('fullscreenchange', handler)
   }, [])
 
+  // Delete features that haven't been updated for more than 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!mapInstance.current || !vectorLayerInstance.current) return
+
+      const source = vectorLayerInstance!.current.getSource()
+      if (!source) return
+
+      const now = dayjs()
+      source.getFeatures().forEach((feature) => {
+        const data: CoordsProps = feature.get('data')
+
+        if (now.diff(dayjs(data.date), 'second') > 10) {
+          source.removeFeature(feature)
+        }
+      })
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div
       ref={mapRef}
@@ -124,25 +146,18 @@ const OpenLayersMap2: React.FC<Props> = ({
       <div
         style={{
           position: 'absolute',
-          top: 12,
-          right: 12,
-          zIndex: 1000
+          top: 10,
+          right: 10,
+          zIndex: 99
         }}
       >
         <Button
-          size="large"
           onClick={async () => {
             if (!mapRef.current) return
-            try {
-              if (!document.fullscreenElement) {
-                await mapRef.current.requestFullscreen()
-              } else {
-                await document.exitFullscreen()
-              }
-            } catch (e) {
-              // eslint-disable-next-line no-console
-              console.error('Fullscreen error', e)
-            }
+
+            !document.fullscreenElement
+              ? await mapRef.current.requestFullscreen()
+              : await document.exitFullscreen()
           }}
           icon={
             isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />
