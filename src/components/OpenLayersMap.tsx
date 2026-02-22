@@ -101,8 +101,8 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
           }),
           text: new Text({
             text: coord.node,
-            offsetX: 15,
-            offsetY: -10,
+            offsetX: 0,
+            offsetY: -60,
             font: '14px bold Arial',
             padding: [2, 4, 2, 4]
           })
@@ -149,8 +149,8 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
             }),
             text: new Text({
               text: coord ? coord.node : '',
-              offsetX: 15,
-              offsetY: -10,
+              offsetX: 0,
+              offsetY: -60,
               font: '14px bold Arial',
               padding: [2, 4, 2, 4]
             })
