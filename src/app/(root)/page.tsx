@@ -55,54 +55,6 @@ export default function DashboardPage() {
       >
         <Col span={24} style={{ flex: 8 }}>
           <div style={{ height: '100%' }}>
-            <pre>
-              {busCoords
-                .map(
-                  (coord) =>
-                    `${coord.node}: ${coord.coords.latitude}, ${coord.coords.longitude}`
-                )
-                .join('\n')}
-            </pre>
-            <Flex gap={10}>
-              <Button
-                type="primary"
-                onClick={() => {
-                  const randomLat = 8.95 + Math.random() * 0.08
-                  const randomLng = -79.54 + Math.random() * 0.04
-                  const busData: CoordsProps = {
-                    node: 'Bus-001',
-                    date: new Date(),
-                    coords: {
-                      latitude: randomLat,
-                      longitude: randomLng,
-                      accuracy: 10
-                    }
-                  }
-                  socket.emit('message', busData)
-                }}
-              >
-                Bus 1
-              </Button>
-              <Button
-                type="primary"
-                onClick={() => {
-                  const randomLat = 8.95 + Math.random() * 0.08
-                  const randomLng = -79.54 + Math.random() * 0.04
-                  const busData: CoordsProps = {
-                    node: 'Bus-002',
-                    date: new Date(),
-                    coords: {
-                      latitude: randomLat,
-                      longitude: randomLng,
-                      accuracy: 10
-                    }
-                  }
-                  socket.emit('message', busData)
-                }}
-              >
-                Bus 2
-              </Button>
-            </Flex>
             <OpenLayersMap
               center={[-79.5566249, 8.9688727]}
               zoom={13}
