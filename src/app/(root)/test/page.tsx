@@ -43,8 +43,8 @@ export default function TestPage() {
           // Mover cada bus un poco aleatoriamente
           const newBus = {
             ...bus,
-            lat: bus.lat + (Math.random() * 0.001 - 0.0005),
-            lng: bus.lng + (Math.random() * 0.001 - 0.0005)
+            lat: bus.lat + (Math.random() * 0.005 - 0.0025),
+            lng: bus.lng + (Math.random() * 0.005 - 0.0025)
           }
 
           // Emitir datos del bus

@@ -57,7 +57,7 @@ export default function DashboardPage() {
           <div style={{ height: '100%' }}>
             <OpenLayersMap
               center={[-79.5566249, 8.9688727]}
-              zoom={13}
+              zoom={10}
               coords={busCoords}
             />
           </div>

@@ -39,6 +39,30 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [scale, setScale] = useState(1 / (zoom ?? 2))
 
+  const createMarkerStyle = (nodeName: string): Style => {
+    return new Style({
+      image: new Icon({
+        src: './point.svg',
+        scale: scale,
+        anchor: [0.5, 1]
+      }),
+      text: new Text({
+        text: nodeName,
+        offsetX: 0,
+        offsetY: -60,
+        font: '14px bold Arial',
+        padding: [2, 4, 2, 4]
+      })
+    })
+  }
+
+  const getVectorLayer = (map: Map): VectorLayer | null => {
+    return map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer instanceof VectorLayer) as VectorLayer | null
+  }
+
   useEffect(() => {
     if (!mapRef.current) return
 
@@ -64,7 +88,9 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
 
     view.on('change:resolution', () => {
       const currentZoom = view.getZoom() || 2
-      setScale(1 / currentZoom)
+      if (currentZoom > 10) {
+        setScale(1 / currentZoom)
+      }
     })
 
     return () => {
@@ -81,9 +107,7 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
   }, [])
 
   useEffect(() => {
-    if (!coords || !mapInstance.current) return
-
-    if (!coords.length) return
+    if (!coords || !coords.length || !mapInstance.current) return
 
     const positions = coords.map((coord) =>
       fromLonLat([coord.coords.longitude, coord.coords.latitude])
@@ -91,74 +115,21 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
 
     const features = positions.map((pos, index) => {
       const coord = coords[index]
+      const features = vectorSource.getFeatures()
       const feature = new Feature(new Point(pos))
-      feature.setStyle(
-        new Style({
-          image: new Icon({
-            src: './point.svg',
-            scale: scale,
-            anchor: [0.5, 1]
-          }),
-          text: new Text({
-            text: coord.node,
-            offsetX: 0,
-            offsetY: -60,
-            font: '14px bold Arial',
-            padding: [2, 4, 2, 4]
-          })
-        })
-      )
+      feature.setStyle(createMarkerStyle(coord.node))
       return feature
     })
 
     const map = mapInstance.current
-    const vectorLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer instanceof VectorLayer) as VectorLayer
-
-    const vectorSource = vectorLayer.getSource() as VectorSource
-    vectorSource.clear()
-    vectorSource.addFeatures(features)
-  }, [coords])
-
-  useEffect(() => {
-    if (!mapInstance.current) return
-
-    const map = mapInstance.current
-    const vectorLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer instanceof VectorLayer) as VectorLayer
+    const vectorLayer = getVectorLayer(map)
 
     if (!vectorLayer) return
 
     const vectorSource = vectorLayer.getSource() as VectorSource
-    const features = vectorSource.getFeatures()
-
-    features.forEach((feature, index) => {
-      const style = feature.getStyle()
-      if (style) {
-        const coord = coords ? coords[index] : null
-        feature.setStyle(
-          new Style({
-            image: new Icon({
-              src: './point.svg',
-              scale: scale,
-              anchor: [0.5, 1]
-            }),
-            text: new Text({
-              text: coord ? coord.node : '',
-              offsetX: 0,
-              offsetY: -60,
-              font: '14px bold Arial',
-              padding: [2, 4, 2, 4]
-            })
-          })
-        )
-      }
-    })
-  }, [scale])
+    vectorSource.clear()
+    vectorSource.addFeatures(features)
+  }, [coords, scale])
 
   return (
     <div
