@@ -13,26 +13,75 @@ export interface CoordsProps {
   }
 }
 
-interface BusData {
-  name: string
+interface LatLng {
   lat: number
   lng: number
 }
 
+interface BusState {
+  name: string
+  start: LatLng
+  end: LatLng
+  path: LatLng[]
+  pathIndex: number
+}
+
+const INTERMEDIATE_POINTS = 100
+
+const generatePath = (
+  start: LatLng,
+  end: LatLng,
+  intermediateCount: number
+): LatLng[] => {
+  const points: LatLng[] = [start]
+  const jitter = 0.001
+
+  for (let i = 1; i <= intermediateCount; i += 1) {
+    const t = i / (intermediateCount + 1)
+    const lat =
+      start.lat + (end.lat - start.lat) * t + (Math.random() - 0.5) * jitter
+    const lng =
+      start.lng + (end.lng - start.lng) * t + (Math.random() - 0.5) * jitter
+
+    points.push({ lat, lng })
+  }
+
+  points.push(end)
+  return points
+}
+
 export default function TestPage() {
   const [isEmitting, setIsEmitting] = useState(false)
-  const [buses, setBuses] = useState<BusData[]>([
-    { name: 'Bus-501', lat: 8.9824, lng: -79.5199 },
-    { name: 'Bus-502', lat: 9.05, lng: -79.5 },
-    { name: 'Bus-503', lat: 8.95, lng: -79.45 },
-    { name: 'Bus-504', lat: 9.0, lng: -79.65 },
-    { name: 'Bus-505', lat: 8.98, lng: -79.52 },
-    { name: 'Bus-506', lat: 9.02, lng: -79.48 },
-    { name: 'Bus-507', lat: 8.97, lng: -79.55 },
-    { name: 'Bus-508', lat: 9.03, lng: -79.5 },
-    { name: 'Bus-509', lat: 8.96, lng: -79.6 },
-    { name: 'Bus-510', lat: 9.01, lng: -79.46 }
-  ])
+  const [buses, setBuses] = useState<BusState[]>(() => {
+    const baseBuses = [
+      {
+        name: 'Bus-501',
+        start: { lat: 8.9824, lng: -79.5199 },
+        end: { lat: 9.02, lng: -79.48 }
+      },
+      {
+        name: 'Bus-502',
+        start: { lat: 9.05, lng: -79.5 },
+        end: { lat: 9.0, lng: -79.65 }
+      },
+      {
+        name: 'Bus-503',
+        start: { lat: 8.95, lng: -79.45 },
+        end: { lat: 8.9, lng: -79.55 }
+      },
+      {
+        name: 'Bus-504',
+        start: { lat: 9.0, lng: -79.65 },
+        end: { lat: 8.96, lng: -79.6 }
+      }
+    ]
+
+    return baseBuses.map((bus) => ({
+      ...bus,
+      path: generatePath(bus.start, bus.end, INTERMEDIATE_POINTS),
+      pathIndex: 0
+    }))
+  })
 
   useEffect(() => {
     if (!isEmitting) return
@@ -40,20 +89,18 @@ export default function TestPage() {
     const interval = setInterval(() => {
       setBuses((prevBuses) =>
         prevBuses.map((bus) => {
-          // Mover cada bus un poco aleatoriamente
-          const newBus = {
-            ...bus,
-            lat: bus.lat + (Math.random() * 0.005 - 0.0025),
-            lng: bus.lng + (Math.random() * 0.005 - 0.0025)
-          }
+          const nextIndex =
+            bus.pathIndex < bus.path.length - 1
+              ? bus.pathIndex + 1
+              : bus.pathIndex
+          const currentPoint = bus.path[nextIndex]
 
-          // Emitir datos del bus
           const busData: CoordsProps = {
-            node: newBus.name,
+            node: bus.name,
             date: new Date(),
             coords: {
-              latitude: newBus.lat,
-              longitude: newBus.lng,
+              latitude: currentPoint.lat,
+              longitude: currentPoint.lng,
               accuracy: Math.floor(Math.random() * 20) + 5
             }
           }
@@ -61,10 +108,13 @@ export default function TestPage() {
           socket.emit('message', busData)
           console.log('Enviado:', busData)
 
-          return newBus
+          return {
+            ...bus,
+            pathIndex: nextIndex
+          }
         })
       )
-    }, 500)
+    }, 1000)
 
     return () => clearInterval(interval)
   }, [isEmitting])
@@ -118,21 +168,24 @@ export default function TestPage() {
       >
         <h3>Posiciones Actuales de los Buses:</h3>
         <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-          {buses.map((bus, idx) => (
-            <div
-              key={idx}
-              style={{
-                padding: '12px',
-                margin: '8px 0',
-                backgroundColor: '#fff',
-                borderLeft: '4px solid #2196F3',
-                borderRadius: '4px'
-              }}
-            >
-              <strong>{bus.name}</strong> - Lat: {bus.lat.toFixed(6)}, Lng:{' '}
-              {bus.lng.toFixed(6)}
-            </div>
-          ))}
+          {buses.map((bus, idx) => {
+            const currentPoint = bus.path[bus.pathIndex]
+            return (
+              <div
+                key={idx}
+                style={{
+                  padding: '12px',
+                  margin: '8px 0',
+                  backgroundColor: '#fff',
+                  borderLeft: '4px solid #2196F3',
+                  borderRadius: '4px'
+                }}
+              >
+                <strong>{bus.name}</strong> - Lat: {currentPoint.lat.toFixed(6)}
+                , Lng: {currentPoint.lng.toFixed(6)}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
