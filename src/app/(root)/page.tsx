@@ -32,7 +32,18 @@ export default function DashboardPage() {
       >
         <Col span={24} style={{ flex: 8 }}>
           <div style={{ height: '100%' }}>
-            <OpenLayersMap2 center={[-79.5566249, 8.9688727]} zoom={10} />
+            <OpenLayersMap2
+              center={[-79.5566249, 8.9688727]}
+              zoom={10}
+              routeCoords={[
+                { latitude: 8.9735408, longitude: -79.7006662 },
+                { latitude: 8.9630279, longitude: -79.6940572 },
+                { latitude: 8.9584416, longitude: -79.6874482 },
+                { latitude: 8.9520831, longitude: -79.6808392 },
+                { latitude: 8.9412657, longitude: -79.6650124 },
+                { latitude: 8.9285934, longitude: -79.6480456 }
+              ]}
+            />
           </div>
         </Col>
         <Col span={24} style={{ flex: 2 }}>
