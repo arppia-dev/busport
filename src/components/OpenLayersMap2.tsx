@@ -31,13 +31,13 @@ export interface CoordsProps {
 interface Props {
   center?: [number, number]
   zoom?: number
-  routeCoords?: Array<{ latitude: number; longitude: number }>
+  routes?: Array<Array<{ latitude: number; longitude: number }>>
 }
 
 const OpenLayersMap2: React.FC<Props> = ({
   center = [0, 0],
   zoom = 2,
-  routeCoords = []
+  routes = []
 }: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<Map | null>(null)
@@ -175,7 +175,7 @@ const OpenLayersMap2: React.FC<Props> = ({
     return () => clearInterval(interval)
   }, [])
 
-  // Draw route from OSRM and squares with index
+  // Draw multiple routes from OSRM and squares with index
   useEffect(() => {
     if (!mapInstance.current || !vectorLayerInstance.current) return
     const source = vectorLayerInstance.current.getSource()
@@ -188,55 +188,72 @@ const OpenLayersMap2: React.FC<Props> = ({
       }
     })
 
-    if (routeCoords.length < 2) return
+    if (!routes || routes.length === 0) return
 
-    const coordsStr = routeCoords
-      .map((p) => `${p.longitude},${p.latitude}`)
-      .join(';')
-    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
+    routes.forEach((routeCoords, routeIdx) => {
+      if (!routeCoords || routeCoords.length < 2) return
 
-    fetch(osrmUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.routes || !data.routes[0]) return
-        const routeGeo = data.routes[0].geometry.coordinates
-        const line = new Feature({
-          geometry: new LineString(routeGeo.map((c: any) => fromLonLat(c))),
-          type: 'route'
-        })
-        line.setStyle(
-          new Style({
-            stroke: new Stroke({ color: '#07529F', width: 4 })
+      const coordsStr = routeCoords
+        .map((p) => `${p.longitude},${p.latitude}`)
+        .join(';')
+      const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
+
+      fetch(osrmUrl)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.routes || !data.routes[0]) return
+          const routeGeo = data.routes[0].geometry.coordinates
+          const line = new Feature({
+            geometry: new LineString(routeGeo.map((c: any) => fromLonLat(c))),
+            type: 'route'
           })
-        )
-        source.addFeature(line)
-
-        routeCoords.forEach((p, idx) => {
-          const feature = new Feature({
-            geometry: new Point(fromLonLat([p.longitude, p.latitude])),
-            type: 'route-point'
-          })
-          feature.setStyle(
+          line.setStyle(
             new Style({
-              image: new Icon({
-                src: './square.svg',
-                scale: 0.06,
-                anchor: [0.5, 1]
-              }),
-              text: new Text({
-                text: `${idx}`,
-                offsetY: -20,
-                fill: new Fill({ color: '#fff' }),
-                padding: [4, 4, 4, 4]
+              stroke: new Stroke({
+                /*color: ['#07529F', '#FF6600', '#00C853', '#D50000'][
+                  routeIdx % 4
+                ], */
+                color: `#${Math.floor(Math.random() * 16777215)
+                  .toString(16)
+                  .padStart(6, '0')}`,
+                width: 4
               })
             })
           )
+          source.addFeature(line)
 
-          source.addFeature(feature)
+          routeCoords.forEach((p, idx) => {
+            const feature = new Feature({
+              geometry: new Point(fromLonLat([p.longitude, p.latitude])),
+              type: 'route-point'
+            })
+            feature.setStyle(
+              new Style({
+                image: new Icon({
+                  src: './square.svg',
+                  scale: 0.06,
+                  anchor: [0.5, 1]
+                }),
+                text: new Text({
+                  text: `${idx}`,
+                  offsetY: -20,
+                  fill: new Fill({ color: '#fff' }),
+                  padding: [4, 4, 4, 4],
+                  backgroundFill: new Fill({
+                    /* color: ['#07529F', '#FF6600', '#00C853', '#D50000'][
+                      routeIdx % 4
+                    ] */
+                    color: '#07529F'
+                  })
+                })
+              })
+            )
+            source.addFeature(feature)
+          })
         })
-      })
-      .catch(() => {})
-  }, [routeCoords])
+        .catch(() => {})
+    })
+  }, [routes])
 
   return (
     <div
