@@ -16,6 +16,8 @@ import { fromLonLat } from 'ol/proj'
 import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style'
+import CircleStyle from 'ol/style/Circle'
+import randomColor from 'randomcolor'
 import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
@@ -197,11 +199,15 @@ const OpenLayersMap2: React.FC<Props> = ({
         .map((p) => `${p.longitude},${p.latitude}`)
         .join(';')
       const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
+      const color = randomColor({
+        luminosity: 'dark'
+      })
 
       fetch(osrmUrl)
         .then((res) => res.json())
         .then((data) => {
           if (!data.routes || !data.routes[0]) return
+
           const routeGeo = data.routes[0].geometry.coordinates
           const line = new Feature({
             geometry: new LineString(routeGeo.map((c: any) => fromLonLat(c))),
@@ -210,12 +216,7 @@ const OpenLayersMap2: React.FC<Props> = ({
           line.setStyle(
             new Style({
               stroke: new Stroke({
-                /*color: ['#07529F', '#FF6600', '#00C853', '#D50000'][
-                  routeIdx % 4
-                ], */
-                color: `#${Math.floor(Math.random() * 16777215)
-                  .toString(16)
-                  .padStart(6, '0')}`,
+                color: color,
                 width: 4
               })
             })
@@ -229,22 +230,14 @@ const OpenLayersMap2: React.FC<Props> = ({
             })
             feature.setStyle(
               new Style({
-                image: new Icon({
-                  src: './square.svg',
-                  scale: 0.06,
-                  anchor: [0.5, 1]
+                image: new CircleStyle({
+                  radius: 14,
+                  fill: new Fill({ color: color }),
+                  stroke: new Stroke({ color: '#000', width: 2 })
                 }),
                 text: new Text({
-                  text: `${idx}`,
-                  offsetY: -20,
-                  fill: new Fill({ color: '#fff' }),
-                  padding: [4, 4, 4, 4],
-                  backgroundFill: new Fill({
-                    /* color: ['#07529F', '#FF6600', '#00C853', '#D50000'][
-                      routeIdx % 4
-                    ] */
-                    color: '#07529F'
-                  })
+                  text: `${idx + 1}`,
+                  fill: new Fill({ color: '#fff' })
                 })
               })
             )
