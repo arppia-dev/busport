@@ -1,25 +1,56 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Flex, Form, Input } from 'antd'
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
+import { Alert, Button, Checkbox, Flex, Form, Input } from 'antd'
+import Password from 'antd/es/input/Password'
+import { on } from 'events'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 const LoginForm: React.FC = () => {
-  const [form] = Form.useForm()
   const router = useRouter()
+  const [form] = Form.useForm()
+  const [errorLogin, setErrorLogin] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const onFinish = (values: { username: string; password: string }) => {
-    console.log('Login attempt:', values)
-    router.push('/')
+  const onFinish = async (values: { email: string; password: string }) => {
+    setLoading(true)
+
+    const response = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false
+    })
+
+    if (response?.error) {
+      setErrorLogin(response.error)
+    } else {
+      router.push('/profile')
+    }
+
+    setLoading(false)
   }
 
   return (
     <Form form={form} layout="vertical" onFinish={onFinish} autoComplete="off">
+      {errorLogin && (
+        <Alert
+          description={errorLogin}
+          type="error"
+          closable={{
+            closeIcon: true,
+            onClose: () => setErrorLogin(null),
+            'aria-label': 'close'
+          }}
+        />
+      )}
       <Form.Item
-        name="username"
-        rules={[{ required: true, message: 'Por favor ingresa tu usuario' }]}
+        name="email"
+        rules={[
+          { required: true, message: 'Por favor ingresa tu correo electrónico' }
+        ]}
       >
-        <Input prefix={<UserOutlined />} placeholder="Usuario" size="large" />
+        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
       </Form.Item>
 
       <Form.Item
@@ -34,7 +65,13 @@ const LoginForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" block size="large">
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          size="large"
+          loading={loading}
+        >
           Iniciar sesión
         </Button>
       </Form.Item>

@@ -27,7 +27,7 @@ const themeConfig: ThemeConfig = {
 
 export default function LoginPage() {
   const {
-    token: { colorPrimary, padding, paddingLG }
+    token: { colorPrimary }
   } = theme.useToken()
 
   const heightCard = '70vh'
