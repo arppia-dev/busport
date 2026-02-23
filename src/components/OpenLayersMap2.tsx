@@ -143,7 +143,7 @@ const OpenLayersMap2: React.FC<Props> = ({
 
         if (!data) return
 
-        if (now.diff(dayjs(data!.date), 'second') > 10) {
+        if (now.diff(dayjs(data!.date), 'second') > 30) {
           feature.setStyle(
             new Style({
               image: new Icon({
@@ -166,7 +166,7 @@ const OpenLayersMap2: React.FC<Props> = ({
           )
         }
 
-        if (now.diff(dayjs(data!.date), 'second') > 20) {
+        if (now.diff(dayjs(data!.date), 'second') > 40) {
           source.removeFeature(feature)
         }
       })
