@@ -1,9 +1,7 @@
 'use client'
 
-import OpenLayersMap, { CoordsProps } from '@/components/OpenLayersMap'
-import { socket } from '@/utils/socketClient'
+import OpenLayersMap2 from '@/components/OpenLayersMap2'
 import {
-  Button,
   Col,
   Divider,
   Flex,
@@ -14,7 +12,6 @@ import {
   theme,
   Typography
 } from 'antd'
-import { useEffect, useState } from 'react'
 import styles from './page.module.css'
 
 const { Header, Content } = Layout
@@ -24,26 +21,6 @@ export default function DashboardPage() {
   const {
     token: { colorBgContainer, padding }
   } = theme.useToken()
-
-  const [busCoords, setBusCoords] = useState<CoordsProps[]>([])
-
-  useEffect(() => {
-    socket.on('message', (data: any) => {
-      setBusCoords((prev: CoordsProps[]) => {
-        const idx = prev.findIndex((b: CoordsProps) => b.node === data.node)
-        if (idx !== -1) {
-          const updated = [...prev]
-          updated[idx] = data
-          return updated
-        } else {
-          return [...prev, data]
-        }
-      })
-    })
-    return () => {
-      socket.off('message')
-    }
-  }, [])
 
   return (
     <div className={styles.dashboardPage}>
@@ -55,11 +32,7 @@ export default function DashboardPage() {
       >
         <Col span={24} style={{ flex: 8 }}>
           <div style={{ height: '100%' }}>
-            <OpenLayersMap
-              center={[-79.5566249, 8.9688727]}
-              zoom={10}
-              coords={busCoords}
-            />
+            <OpenLayersMap2 center={[-79.5566249, 8.9688727]} zoom={10} />
           </div>
         </Col>
         <Col span={24} style={{ flex: 2 }}>
