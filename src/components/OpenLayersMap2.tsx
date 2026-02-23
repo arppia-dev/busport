@@ -14,7 +14,7 @@ import 'ol/ol.css'
 import { fromLonLat } from 'ol/proj'
 import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
-import { Icon, Style, Text } from 'ol/style'
+import { Fill, Icon, Style, Text } from 'ol/style'
 import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
@@ -84,8 +84,19 @@ const OpenLayersMap2: React.FC<Props> = ({
         new Style({
           image: new Icon({
             src: './point.svg',
-            scale: 0.05,
+            scale: 0.06,
             anchor: [0.5, 1]
+          }),
+          text: new Text({
+            text: `${data.node}`,
+            offsetY: -55,
+            fill: new Fill({
+              color: [255, 255, 255, 1]
+            }),
+            backgroundFill: new Fill({
+              color: [7, 82, 159, 1]
+            }),
+            padding: [5, 5, 5, 5]
           })
         })
       )
@@ -130,8 +141,19 @@ const OpenLayersMap2: React.FC<Props> = ({
             new Style({
               image: new Icon({
                 src: './point-disconnect.svg',
-                scale: 0.05,
+                scale: 0.06,
                 anchor: [0.5, 1]
+              }),
+              text: new Text({
+                text: `${data.node} Disconnected`,
+                offsetY: -55,
+                fill: new Fill({
+                  color: [255, 255, 255, 1]
+                }),
+                backgroundFill: new Fill({
+                  color: [176, 0, 32, 1]
+                }),
+                padding: [5, 5, 5, 5]
               })
             })
           )
