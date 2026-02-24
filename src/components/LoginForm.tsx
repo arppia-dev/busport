@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     if (response?.error) {
       setErrorLogin(response.error)
     } else {
-      router.push('/profile')
+      router.push('/')
     }
 
     setLoading(false)

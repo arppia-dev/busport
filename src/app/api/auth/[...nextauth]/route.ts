@@ -15,7 +15,7 @@ const handler = nextAuth({
       },
       async authorize(credentials) {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`,
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/local`,
           {
             method: 'POST',
             headers: {
