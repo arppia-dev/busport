@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
   }
 
   return (
-    <Form form={form} layout="vertical" onFinish={onFinish} autoComplete="off">
+    <Form form={form} layout="vertical" onFinish={onFinish}>
       {errorLogin && (
         <Alert
           description={errorLogin}
