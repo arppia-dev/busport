@@ -36,24 +36,31 @@ export default function DashboardPage() {
               center={[-79.5566249, 8.9688727]}
               zoom={10}
               routes={[
-                [
-                  { latitude: 8.9735408, longitude: -79.7006662 },
-                  { latitude: 8.9630279, longitude: -79.6940572 },
-                  { latitude: 8.9584416, longitude: -79.6874482 },
-                  { latitude: 8.9520831, longitude: -79.6808392 },
-                  { latitude: 8.9412657, longitude: -79.6650124 },
-                  { latitude: 8.9285934, longitude: -79.6480456 }
-                ],
-                [
-                  { latitude: 9.096278, longitude: -79.351124 },
-                  { latitude: 9.082998, longitude: -79.398875 },
-                  { latitude: 8.986442, longitude: -79.507372 }
-                ],
-                [
-                  { latitude: 8.897242, longitude: -79.751692 },
-                  { latitude: 9.03543, longitude: -79.57787 },
-                  { latitude: 9.115209, longitude: -79.57717 }
-                ]
+                {
+                  coords: [
+                    { latitude: 8.9735408, longitude: -79.7006662 },
+                    { latitude: 8.9630279, longitude: -79.6940572 },
+                    { latitude: 8.9584416, longitude: -79.6874482 },
+                    { latitude: 8.9520831, longitude: -79.6808392 },
+                    { latitude: 8.9412657, longitude: -79.6650124 },
+                    { latitude: 8.9285934, longitude: -79.6480456 }
+                  ]
+                },
+
+                {
+                  coords: [
+                    { latitude: 9.096278, longitude: -79.351124 },
+                    { latitude: 9.082998, longitude: -79.398875 },
+                    { latitude: 8.986442, longitude: -79.507372 }
+                  ]
+                },
+                {
+                  coords: [
+                    { latitude: 8.897242, longitude: -79.751692 },
+                    { latitude: 9.03543, longitude: -79.57787 },
+                    { latitude: 9.115209, longitude: -79.57717 }
+                  ]
+                }
               ]}
             />
           </div>

@@ -6,7 +6,7 @@ import {
   FullscreenExitOutlined,
   FullscreenOutlined
 } from '@ant-design/icons'
-import { Button, Flex } from 'antd'
+import { FloatButton, theme } from 'antd'
 import dayjs from 'dayjs'
 import Feature from 'ol/Feature'
 import Map from 'ol/Map'
@@ -37,7 +37,10 @@ export interface CoordsProps {
 interface Props {
   center?: [number, number]
   zoom?: number
-  routes?: Array<Array<{ latitude: number; longitude: number }>>
+  routes?: Array<{
+    color?: string
+    coords: Array<{ latitude: number; longitude: number }>
+  }>
 }
 
 const OpenLayersMap2: React.FC<Props> = ({
@@ -49,6 +52,10 @@ const OpenLayersMap2: React.FC<Props> = ({
   const mapInstance = useRef<Map | null>(null)
   const vectorLayerInstance = useRef<VectorLayer<VectorSource> | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const {
+    token: { colorPrimary }
+  } = theme.useToken()
 
   // Initialize the map when the component mounts
   useEffect(() => {
@@ -196,16 +203,17 @@ const OpenLayersMap2: React.FC<Props> = ({
 
     if (!routes || routes.length === 0) return
 
-    routes.forEach((routeCoords, routeIdx) => {
-      if (!routeCoords || routeCoords.length < 2) return
+    routes.forEach((routeCoords, index) => {
+      if (!routeCoords || routeCoords.coords.length < 2) return
 
-      const coordsStr = routeCoords
+      const coordsStr = routeCoords.coords
         .map((p) => `${p.longitude},${p.latitude}`)
         .join(';')
       const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
       const color = randomColor({
         luminosity: 'dark'
       })
+      routes[index].color = color
 
       fetch(osrmUrl)
         .then((res) => res.json())
@@ -227,7 +235,7 @@ const OpenLayersMap2: React.FC<Props> = ({
           )
           source.addFeature(line)
 
-          routeCoords.forEach((p, idx) => {
+          routeCoords.coords.forEach((p, idx) => {
             const feature = new Feature({
               geometry: new Point(fromLonLat([p.longitude, p.latitude])),
               type: 'route-point'
@@ -252,6 +260,51 @@ const OpenLayersMap2: React.FC<Props> = ({
     })
   }, [routes])
 
+  const handleFullScreen = async () => {
+    if (!mapRef.current) return
+
+    !document.fullscreenElement
+      ? await mapRef.current.requestFullscreen()
+      : await document.exitFullscreen()
+  }
+
+  const handleCenterMap = () => {
+    if (!mapInstance.current) return
+
+    const view = mapInstance.current.getView()
+    view.setCenter(fromLonLat(center))
+    view.setZoom(zoom)
+  }
+
+  const handleViewRoute = (index: number) => {
+    if (!mapInstance.current || !routes.length || !routes[0].coords.length)
+      return
+
+    // Obtener los puntos de la ruta actual
+    const currentRoute = routes[index]
+    const lats = currentRoute.coords.map((p) => p.latitude)
+    const lons = currentRoute.coords.map((p) => p.longitude)
+    const minLat = Math.min(...lats)
+    const maxLat = Math.max(...lats)
+    const minLon = Math.min(...lons)
+    const maxLon = Math.max(...lons)
+
+    // Calcular el centro
+    const centerLat = (minLat + maxLat) / 2
+    const centerLon = (minLon + maxLon) / 2
+
+    // Ajustar el centro del mapa
+    const view = mapInstance.current.getView()
+    view.setCenter(fromLonLat([centerLon, centerLat]))
+
+    // Ajustar el zoom para mostrar toda la ruta actual
+    const extent = [fromLonLat([minLon, minLat]), fromLonLat([maxLon, maxLat])]
+    view.fit([extent[0][0], extent[0][1], extent[1][0], extent[1][1]], {
+      padding: [60, 60, 60, 60], // Menos padding para acercar
+      maxZoom: 20 // Permitir mayor zoom
+    })
+  }
+
   return (
     <div
       ref={mapRef}
@@ -261,90 +314,36 @@ const OpenLayersMap2: React.FC<Props> = ({
         height: '100%'
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 99
-        }}
+      <FloatButton.Group
+        shape="square"
+        style={{ position: 'absolute', top: 10, right: 15 }}
       >
-        <Flex orientation="vertical" justify="flex-end" gap={5} align="end">
-          <Button
-            onClick={async () => {
-              if (!mapRef.current) return
+        <FloatButton
+          icon={
+            isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />
+          }
+          onClick={handleFullScreen}
+        />
+        <FloatButton icon={<AimOutlined />} onClick={handleCenterMap} />
+      </FloatButton.Group>
 
-              !document.fullscreenElement
-                ? await mapRef.current.requestFullscreen()
-                : await document.exitFullscreen()
-            }}
-            icon={
-              isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />
-            }
+      <FloatButton.Group
+        shape="square"
+        trigger="click"
+        placement="left"
+        badge={{ count: routes.length, color: colorPrimary }}
+        style={{ position: 'absolute', top: 110, right: 15 }}
+        icon={<AimOutlined />}
+      >
+        {routes.map((route, idx) => (
+          <FloatButton
+            icon={<AimOutlined />}
+            // style={{ backgroundColor: route.color }}
+
+            onClick={() => handleViewRoute(idx)}
           />
-          <Button
-            onClick={async () => {
-              if (!mapInstance.current) return
-
-              const view = mapInstance.current.getView()
-              view.setCenter(fromLonLat([-79.5566249, 8.9688727]))
-              view.setZoom(10)
-            }}
-          >
-            Centrar
-          </Button>
-          {routes.length && (
-            <>
-              {routes.map((route, idx) => (
-                <Button
-                  key={idx}
-                  onClick={async () => {
-                    if (
-                      !mapInstance.current ||
-                      !routes.length ||
-                      !routes[0].length
-                    )
-                      return
-
-                    // Obtener los puntos de la ruta actual
-                    const currentRoute = routes[idx]
-                    const lats = currentRoute.map((p) => p.latitude)
-                    const lons = currentRoute.map((p) => p.longitude)
-                    const minLat = Math.min(...lats)
-                    const maxLat = Math.max(...lats)
-                    const minLon = Math.min(...lons)
-                    const maxLon = Math.max(...lons)
-
-                    // Calcular el centro
-                    const centerLat = (minLat + maxLat) / 2
-                    const centerLon = (minLon + maxLon) / 2
-
-                    // Ajustar el centro del mapa
-                    const view = mapInstance.current.getView()
-                    view.setCenter(fromLonLat([centerLon, centerLat]))
-
-                    // Ajustar el zoom para mostrar toda la ruta actual
-                    const extent = [
-                      fromLonLat([minLon, minLat]),
-                      fromLonLat([maxLon, maxLat])
-                    ]
-                    view.fit(
-                      [extent[0][0], extent[0][1], extent[1][0], extent[1][1]],
-                      {
-                        padding: [60, 60, 60, 60], // Menos padding para acercar
-                        maxZoom: 20 // Permitir mayor zoom
-                      }
-                    )
-                  }}
-                  icon={<AimOutlined />}
-                >
-                  Ruta {idx + 1}
-                </Button>
-              ))}
-            </>
-          )}
-        </Flex>
-      </div>
+        ))}
+      </FloatButton.Group>
     </div>
   )
 }
