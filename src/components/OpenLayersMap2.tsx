@@ -21,7 +21,6 @@ import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style'
 import CircleStyle from 'ol/style/Circle'
-import randomColor from 'randomcolor'
 import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
@@ -210,10 +209,6 @@ const OpenLayersMap2: React.FC<Props> = ({
         .map((p) => `${p.longitude},${p.latitude}`)
         .join(';')
       const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
-      const color = randomColor({
-        luminosity: 'dark'
-      })
-      routes[index].color = color
 
       fetch(osrmUrl)
         .then((res) => res.json())
@@ -228,7 +223,7 @@ const OpenLayersMap2: React.FC<Props> = ({
           line.setStyle(
             new Style({
               stroke: new Stroke({
-                color: color,
+                color: routeCoords.color,
                 width: 4
               })
             })
@@ -244,7 +239,7 @@ const OpenLayersMap2: React.FC<Props> = ({
               new Style({
                 image: new CircleStyle({
                   radius: 14,
-                  fill: new Fill({ color: color }),
+                  fill: new Fill({ color: routeCoords.color }),
                   stroke: new Stroke({ color: '#000', width: 2 })
                 }),
                 text: new Text({
@@ -329,9 +324,11 @@ const OpenLayersMap2: React.FC<Props> = ({
 
       <FloatButton.Group
         shape="square"
-        trigger="click"
-        placement="left"
-        badge={{ count: routes.length, color: colorPrimary }}
+        {...(routes.length > 1 && {
+          badge: { count: routes.length, color: colorPrimary },
+          trigger: 'click',
+          placement: 'left'
+        })}
         style={{ position: 'absolute', top: 110, right: 15 }}
         icon={<AimOutlined />}
       >

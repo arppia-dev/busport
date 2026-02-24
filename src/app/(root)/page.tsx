@@ -13,6 +13,7 @@ import {
   Typography
 } from 'antd'
 import styles from './page.module.css'
+import randomColor from 'randomcolor'
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
@@ -21,6 +22,7 @@ export default function DashboardPage() {
   const {
     token: { colorBgContainer, padding }
   } = theme.useToken()
+  const color = () => randomColor({ luminosity: 'dark' })
 
   return (
     <div className={styles.dashboardPage}>
@@ -37,6 +39,7 @@ export default function DashboardPage() {
               zoom={10}
               routes={[
                 {
+                  color: color(),
                   coords: [
                     { latitude: 8.9735408, longitude: -79.7006662 },
                     { latitude: 8.9630279, longitude: -79.6940572 },
@@ -46,8 +49,8 @@ export default function DashboardPage() {
                     { latitude: 8.9285934, longitude: -79.6480456 }
                   ]
                 },
-
                 {
+                  color: color(),
                   coords: [
                     { latitude: 9.096278, longitude: -79.351124 },
                     { latitude: 9.082998, longitude: -79.398875 },
@@ -55,6 +58,7 @@ export default function DashboardPage() {
                   ]
                 },
                 {
+                  color: color(),
                   coords: [
                     { latitude: 8.897242, longitude: -79.751692 },
                     { latitude: 9.03543, longitude: -79.57787 },
