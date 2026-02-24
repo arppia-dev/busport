@@ -25,7 +25,6 @@ import {
   Col,
   Divider,
   Dropdown,
-  Flex,
   Menu,
   MenuProps,
   Row,
@@ -34,6 +33,7 @@ import {
   theme,
   Typography
 } from 'antd'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -130,6 +130,7 @@ export default function DashboardLayout({
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Cerrar sesión',
+      onClick: () => signOut(),
       danger: true
     }
   ]
