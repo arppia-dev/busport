@@ -1,14 +1,12 @@
 'use client'
 
 import LoginForm from '@/components/LoginForm'
-import { darken } from '@/utils/colors'
 import {
   Card,
   Col,
   ConfigProvider,
   Flex,
   Row,
-  Space,
   theme,
   ThemeConfig,
   Typography
@@ -27,46 +25,70 @@ const themeConfig: ThemeConfig = {
 
 export default function LoginPage() {
   const {
-    token: { colorPrimary }
+    token: { colorPrimary, margin }
   } = theme.useToken()
 
   const heightCard = '70vh'
-  const centerContent = {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 
   return (
     <ConfigProvider theme={themeConfig}>
       <Row justify={'center'} align={'middle'} style={{ minHeight: '100vh' }}>
-        <Col span={16}>
+        <Col xs={22} md={16}>
           <Card style={{ height: heightCard }}>
             <Row style={{ height: heightCard }}>
               <Col
-                span={12}
+                xs={0}
+                lg={12}
                 style={{
-                  height: heightCard,
-                  backgroundColor: colorPrimary,
-                  ...centerContent
+                  height: heightCard
                 }}
               >
-                <Space orientation="vertical" align="center">
-                  <Title level={1} style={{ color: '#fff' }}>
-                    BusPort
-                  </Title>
-                  <Title
-                    level={3}
-                    type="secondary"
-                    style={{ color: darken('#fff', 20) }}
-                  >
-                    Sistema de Gestión de Buses
-                  </Title>
-                </Space>
+                <Flex
+                  orientation="vertical"
+                  justify="center"
+                  align="center"
+                  style={{ backgroundColor: colorPrimary, height: heightCard }}
+                >
+                  <div style={{ width: '70%', height: 'auto' }}>
+                    <img
+                      src="/logo.svg"
+                      alt="BusPort Logo"
+                      style={{
+                        width: '100%',
+                        filter: 'invert(1) brightness(10)'
+                      }}
+                    />
+                  </div>
+                </Flex>
               </Col>
-              <Col span={12} style={centerContent}>
-                <Flex orientation="vertical" align="center">
+              <Col
+                xs={24}
+                lg={12}
+                style={{
+                  height: heightCard
+                }}
+              >
+                <Flex
+                  orientation="vertical"
+                  justify="center"
+                  align="center"
+                  style={{ height: heightCard }}
+                >
+                  <Row
+                    justify="center"
+                    align="middle"
+                    style={{ marginBottom: margin }}
+                  >
+                    <Col lg={0}>
+                      <img
+                        src="/logo.svg"
+                        alt="BusPort Logo"
+                        style={{
+                          width: '150px'
+                        }}
+                      />
+                    </Col>
+                  </Row>
                   <Title level={4}>Iniciar Sesión</Title>
                   <LoginForm />
                 </Flex>
