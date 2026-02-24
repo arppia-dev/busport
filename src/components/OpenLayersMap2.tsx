@@ -332,11 +332,13 @@ const OpenLayersMap2: React.FC<Props> = ({
         style={{ position: 'absolute', top: 110, right: 15 }}
         icon={<AimOutlined />}
       >
-        {routes.map((route, idx) => (
+        {routes.map((route, index) => (
           <FloatButton
             icon={<AimOutlined />}
-            style={{ backgroundColor: route.color }}
-            onClick={() => handleViewRoute(idx)}
+            {...(routes.length > 1 && {
+              style: { backgroundColor: route.color }
+            })}
+            onClick={() => handleViewRoute(index)}
           />
         ))}
       </FloatButton.Group>
