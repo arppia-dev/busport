@@ -6,6 +6,7 @@ import esES from 'antd/es/locale/es_ES'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import updateLocale from 'dayjs/plugin/updateLocale'
+import { SessionProvider } from 'next-auth/react'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 dayjs.extend(updateLocale)
@@ -46,11 +47,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     : themeConfig
 
   return (
-    <ThemeContext.Provider value={{ isDark, setIsDark }}>
-      <ConfigProvider theme={cfg} locale={esES}>
-        {children}
-      </ConfigProvider>
-    </ThemeContext.Provider>
+    <SessionProvider>
+      <ThemeContext.Provider value={{ isDark, setIsDark }}>
+        <ConfigProvider theme={cfg} locale={esES}>
+          {children}
+        </ConfigProvider>
+      </ThemeContext.Provider>
+    </SessionProvider>
   )
 }
 

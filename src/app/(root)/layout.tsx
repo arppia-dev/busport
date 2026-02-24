@@ -33,7 +33,7 @@ import {
   theme,
   Typography
 } from 'antd'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -51,6 +51,8 @@ export default function DashboardLayout({
   const breadcrumbItems = getBreadcrumbData(pathname)
   const [collapsed, setCollapsed] = useState(false)
   const { isDark, setIsDark } = useTheme()
+  const { data: session } = useSession()
+
   const {
     token: { colorBgContainer, padding }
   } = theme.useToken()
@@ -212,7 +214,10 @@ export default function DashboardLayout({
               >
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <Text>Bienvenido, SAIRO CARVA (Usuario)</Text>
+                    <Text>
+                      Bienvenido, {session?.user?.name}{' '}
+                      {session?.user?.lastname}
+                    </Text>
                     <DownOutlined />
                   </Space>
                 </a>
