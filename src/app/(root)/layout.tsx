@@ -36,7 +36,7 @@ import {
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './page.module.css'
 
 const { Header, Sider, Content, Footer } = AntLayout
@@ -49,9 +49,14 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const breadcrumbItems = getBreadcrumbData(pathname)
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState<boolean>(false)
   const { isDark, setIsDark } = useTheme()
   const { data: session } = useSession()
+
+  useEffect(() => {
+    const isCollapsed = localStorage.getItem('isCollapsed')
+    setCollapsed(isCollapsed ? JSON.parse(isCollapsed) : false)
+  }, [])
 
   const {
     token: { colorBgContainer, padding }
@@ -182,7 +187,13 @@ export default function DashboardLayout({
                     <MenuFoldOutlined style={{ fontSize: '1.2rem' }} />
                   )
                 }
-                onClick={() => setCollapsed(!collapsed)}
+                onClick={() => {
+                  setCollapsed(!collapsed)
+                  localStorage.setItem(
+                    'isCollapsed',
+                    JSON.stringify(!collapsed)
+                  )
+                }}
               />
             </Col>
             <Col flex="none" xs={0} md={12}>
