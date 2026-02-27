@@ -37,7 +37,7 @@ import {
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './page.module.css'
 
 const { Header, Sider, Content, Footer } = AntLayout
@@ -57,6 +57,28 @@ export default function DashboardLayout({
   useEffect(() => {
     const isCollapsed = localStorage.getItem('isCollapsed')
     setCollapsed(isCollapsed ? JSON.parse(isCollapsed) : false)
+  }, [])
+
+  const inactivityTimeout = useRef<NodeJS.Timeout | null>(null)
+  useEffect(() => {
+    const logoutAfterInactivity = () => {
+      signOut()
+    }
+    const resetTimer = () => {
+      if (inactivityTimeout.current) clearTimeout(inactivityTimeout.current)
+      inactivityTimeout.current = setTimeout(
+        logoutAfterInactivity,
+        5 * 60 * 1000
+      )
+    }
+
+    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll']
+    events.forEach((event) => window.addEventListener(event, resetTimer))
+    resetTimer()
+    return () => {
+      if (inactivityTimeout.current) clearTimeout(inactivityTimeout.current)
+      events.forEach((event) => window.removeEventListener(event, resetTimer))
+    }
   }, [])
 
   const {
