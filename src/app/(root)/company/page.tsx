@@ -10,7 +10,7 @@ const { Title, Text } = Typography
 
 export default function ClientsPage() {
   const {
-    token: { colorPrimary, colorBgContainer, padding }
+    token: { colorBgContainer, padding }
   } = theme.useToken()
 
   return (

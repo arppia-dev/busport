@@ -3,6 +3,7 @@
 import { useTheme } from '@/components/ThemeProvider'
 import { getBreadcrumbData } from '@/utils/getBreadcrumbData'
 import {
+  BuildOutlined,
   CarOutlined,
   ControlOutlined,
   DashboardOutlined,
@@ -98,8 +99,8 @@ export default function DashboardLayout({
     },
     {
       key: '3',
-      icon: <UserOutlined />,
-      label: <Link href="/clients">Clientes</Link>
+      icon: <BuildOutlined />,
+      label: <Link href="/company">Empresas</Link>
     },
     {
       key: '4',
