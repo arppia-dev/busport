@@ -30,9 +30,7 @@ const handler = nextAuth({
 
         const data = await response.json()
 
-        if (data && data.error) {
-          throw Error('Could not sign in, please try again later.')
-        }
+        if (data.error) throw Error(data.error.message)
 
         return {
           id: data.user.id,

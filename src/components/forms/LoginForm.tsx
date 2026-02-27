@@ -32,15 +32,17 @@ const LoginForm: React.FC = () => {
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
       {errorLogin && (
-        <Alert
-          description={errorLogin}
-          type="error"
-          closable={{
-            closeIcon: true,
-            onClose: () => setErrorLogin(null),
-            'aria-label': 'close'
-          }}
-        />
+        <Form.Item>
+          <Alert
+            description={errorLogin}
+            type="error"
+            closable={{
+              closeIcon: true,
+              onClose: () => setErrorLogin(null),
+              'aria-label': 'close'
+            }}
+          />
+        </Form.Item>
       )}
       <Form.Item
         name="email"
