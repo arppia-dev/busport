@@ -64,6 +64,13 @@ export default function DashboardPage() {
                     { latitude: 9.03543, longitude: -79.57787 },
                     { latitude: 9.115209, longitude: -79.57717 }
                   ]
+                },
+                {
+                  color: color(),
+                  coords: [
+                    { latitude: 8.976036, longitude: -79.558174 },
+                    { latitude: 8.918423, longitude: -79.596793 }
+                  ]
                 }
               ]}
             />
