@@ -171,7 +171,9 @@ export default function DashboardLayout({
         trigger={null}
         collapsible
         collapsed={collapsed}
-        className={styles.sider}
+        className={
+          collapsed ? `${styles.sider} ${styles.siderCollapsed}` : styles.sider
+        }
       >
         <div className={styles.logo}>
           {!collapsed ? (

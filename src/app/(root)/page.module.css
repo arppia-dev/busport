@@ -36,7 +36,7 @@
 }
 
 @media (max-width: 768px) {
-  .sider {
+  .siderCollapsed {
     display: none !important;
   }
 }
