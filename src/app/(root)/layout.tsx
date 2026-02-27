@@ -23,13 +23,14 @@ import {
   Breadcrumb,
   Button,
   Col,
+  ConfigProvider,
   Divider,
   Dropdown,
   Menu,
   MenuProps,
   Row,
+  Segmented,
   Space,
-  Switch,
   theme,
   Typography
 } from 'antd'
@@ -59,7 +60,7 @@ export default function DashboardLayout({
   }, [])
 
   const {
-    token: { colorBgContainer, padding }
+    token: { colorPrimary, colorBgContainer, padding }
   } = theme.useToken()
 
   const menuItems: MenuProps['items'] = [
@@ -210,12 +211,27 @@ export default function DashboardLayout({
               )}
             </Col>
             <Col flex="none" style={{ marginLeft: 'auto' }}>
-              <Switch
-                checked={isDark}
-                onChange={(checked) => setIsDark(checked)}
-                checkedChildren={<MoonOutlined />}
-                unCheckedChildren={<SunOutlined />}
-              />
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Segmented: {
+                      itemSelectedColor: '#fff',
+                      itemSelectedBg: colorPrimary
+                    }
+                  }
+                }}
+              >
+                <Segmented
+                  size={'small'}
+                  shape="round"
+                  value={isDark ? 'false' : 'true'}
+                  onChange={() => setIsDark(!isDark)}
+                  options={[
+                    { value: 'true', icon: <SunOutlined /> },
+                    { value: 'false', icon: <MoonOutlined /> }
+                  ]}
+                />
+              </ConfigProvider>
             </Col>
             <Col flex="none" xs={0} lg={12}>
               <Dropdown
