@@ -1,7 +1,5 @@
-import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
 import { Alert, Button, Checkbox, Flex, Form, Input } from 'antd'
-import Password from 'antd/es/input/Password'
-import { on } from 'events'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -22,13 +20,13 @@ const LoginForm: React.FC = () => {
       redirect: false
     })
 
+    setLoading(false)
+
     if (response?.error) {
-      setErrorLogin(response.error)
-    } else {
-      router.push('/')
+      return setErrorLogin(response.error)
     }
 
-    setLoading(false)
+    router.push('/')
   }
 
   return (
@@ -52,7 +50,6 @@ const LoginForm: React.FC = () => {
       >
         <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
       </Form.Item>
-
       <Form.Item
         name="password"
         rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
@@ -63,7 +60,6 @@ const LoginForm: React.FC = () => {
           size="large"
         />
       </Form.Item>
-
       <Form.Item>
         <Button
           type="primary"
@@ -75,7 +71,6 @@ const LoginForm: React.FC = () => {
           Iniciar sesión
         </Button>
       </Form.Item>
-
       <Form.Item name="remember" valuePropName="checked" label={null}>
         <Flex justify="space-between" align="center">
           <Checkbox>Recuérdame</Checkbox>
