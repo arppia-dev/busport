@@ -19,7 +19,7 @@ export default function DashboardPage() {
       gap={padding}
       style={{ height: `calc(100vh  - ${padding * 6}px)` }}
     >
-      <div style={{ flex: 1, overflowY: 'hidden', background: colorPrimary }}>
+      <div style={{ flex: 1, overflowY: 'hidden' }}>
         <OpenLayersMap
           center={[-79.5566249, 8.9688727]}
           zoom={10}
