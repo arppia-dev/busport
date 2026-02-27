@@ -1,10 +1,17 @@
 'use client'
 
-import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
+import { socket } from '@/utils/socketClient'
+import {
+  AimOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined
+} from '@ant-design/icons'
+import { FloatButton, theme } from 'antd'
+import dayjs from 'dayjs'
 import Feature from 'ol/Feature'
 import Map from 'ol/Map'
 import View from 'ol/View'
+import { LineString } from 'ol/geom'
 import Point from 'ol/geom/Point'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -12,7 +19,8 @@ import 'ol/ol.css'
 import { fromLonLat } from 'ol/proj'
 import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
-import { Icon, Style, Text } from 'ol/style'
+import { Fill, Icon, Stroke, Style, Text } from 'ol/style'
+import CircleStyle from 'ol/style/Circle'
 import React, { useEffect, useRef, useState } from 'react'
 
 export interface CoordsProps {
@@ -26,78 +34,103 @@ export interface CoordsProps {
 }
 
 interface Props {
-  coords: CoordsProps[] | null
   center?: [number, number]
   zoom?: number
+  routes?: Array<{
+    color?: string
+    coords: Array<{ latitude: number; longitude: number }>
+  }>
 }
 
-const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
+const OpenLayersMap: React.FC<Props> = ({
+  center = [0, 0],
+  zoom = 2,
+  routes = []
+}: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<Map | null>(null)
-  const viewRef = useRef<View | null>(null)
-  const pointFeature = useRef<Feature>(new Feature())
+  const vectorLayerInstance = useRef<VectorLayer<VectorSource> | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [scale, setScale] = useState(1 / (zoom ?? 2))
 
-  const createMarkerStyle = (nodeName: string): Style => {
-    return new Style({
-      image: new Icon({
-        src: './point.svg',
-        scale: scale,
-        anchor: [0.5, 1]
-      }),
-      text: new Text({
-        text: nodeName,
-        offsetX: 0,
-        offsetY: -60,
-        font: '14px bold Arial',
-        padding: [2, 4, 2, 4]
-      })
-    })
-  }
+  const {
+    token: { colorPrimary }
+  } = theme.useToken()
 
-  const getVectorLayer = (map: Map): VectorLayer | null => {
-    return map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer instanceof VectorLayer) as VectorLayer | null
-  }
-
+  // Initialize the map when the component mounts
   useEffect(() => {
-    if (!mapRef.current) return
+    if (!mapRef.current || mapInstance.current) return
 
-    const view = new View({
-      center: center ? fromLonLat(center) : fromLonLat([0, 0]),
-      zoom: zoom ?? 2
-    })
-
-    const vectorLayer = new VectorLayer({
-      source: new VectorSource({
-        features: [pointFeature.current]
-      })
-    })
+    const vectorSource = new VectorSource()
+    const vectorLayer = new VectorLayer({ source: vectorSource })
 
     const map = new Map({
       target: mapRef.current,
       layers: [new TileLayer({ source: new OSM() }), vectorLayer],
-      view: view
+      view: new View({
+        center: fromLonLat(center),
+        zoom: zoom
+      })
     })
 
     mapInstance.current = map
-    viewRef.current = view
-
-    view.on('change:resolution', () => {
-      const currentZoom = view.getZoom() || 2
-      if (currentZoom > 10) {
-        setScale(1 / currentZoom)
-      }
-    })
+    vectorLayerInstance.current = vectorLayer
 
     return () => {
-      map.setTarget(undefined)
+      mapInstance.current = null
+      vectorLayerInstance.current = null
     }
-  }, [center, zoom])
+  }, [])
 
+  // Get coords from websocket and update the map
+  useEffect(() => {
+    socket.on('message', (data: CoordsProps) => {
+      const { node, coords } = data
+      const { latitude, longitude } = coords
+
+      if (!mapInstance.current || !vectorLayerInstance.current) return
+
+      const source = vectorLayerInstance!.current.getSource()
+      if (!source) return
+
+      const feature = new Feature({
+        geometry: new Point(fromLonLat([longitude, latitude]))
+      })
+      feature.setStyle(
+        new Style({
+          image: new Icon({
+            src: './point.svg',
+            scale: 0.06,
+            anchor: [0.5, 1]
+          }),
+          text: new Text({
+            text: `${data.node}`,
+            offsetY: -55,
+            fill: new Fill({
+              color: [255, 255, 255, 1]
+            }),
+            backgroundFill: new Fill({
+              color: [7, 82, 159, 1]
+            }),
+            padding: [5, 5, 5, 5]
+          })
+        })
+      )
+
+      if (source.getFeatureById(node)) {
+        const existingFeature = source.getFeatureById(node)
+        existingFeature?.setGeometry(feature.getGeometry())
+      } else {
+        feature.setId(node)
+        feature.set('data', data)
+        source.addFeature(feature)
+      }
+    })
+    return () => {
+      socket.off('message')
+    }
+  }, [])
+
+  // Handle fullscreen change
   useEffect(() => {
     const handler = () => {
       setIsFullscreen(Boolean(document.fullscreenElement))
@@ -106,31 +139,166 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
     return () => document.removeEventListener('fullscreenchange', handler)
   }, [])
 
+  // Delete features that haven't been updated for more than 10 seconds
   useEffect(() => {
-    if (!coords || !coords.length || !mapInstance.current) return
+    const interval = setInterval(() => {
+      if (!mapInstance.current || !vectorLayerInstance.current) return
 
-    const positions = coords.map((coord) =>
-      fromLonLat([coord.coords.longitude, coord.coords.latitude])
-    )
+      const source = vectorLayerInstance!.current.getSource()
+      if (!source) return
 
-    const map = mapInstance.current
-    const vectorLayer = getVectorLayer(map)
-    const vectorSource = vectorLayer!.getSource() as VectorSource
-    const existingFeatures = vectorSource.getFeatures()
+      if (source.getFeatures().length === 0) return
 
-    const features =
-      existingFeatures.length <= 0
-        ? existingFeatures
-        : positions.map((pos, index) => {
-            const coord = coords[index]
-            const feature = new Feature(new Point(pos))
-            feature.setStyle(createMarkerStyle(coord.node))
-            return feature
+      const now = dayjs()
+      source.getFeatures().forEach((feature) => {
+        const data: CoordsProps = feature.get('data')
+
+        if (!data) return
+
+        if (now.diff(dayjs(data!.date), 'second') > 30) {
+          feature.setStyle(
+            new Style({
+              image: new Icon({
+                src: './point-disconnect.svg',
+                scale: 0.06,
+                anchor: [0.5, 1]
+              }),
+              text: new Text({
+                text: `${data.node} Disconnected`,
+                offsetY: -55,
+                fill: new Fill({
+                  color: [255, 255, 255, 1]
+                }),
+                backgroundFill: new Fill({
+                  color: [176, 0, 32, 1]
+                }),
+                padding: [5, 5, 5, 5]
+              })
+            })
+          )
+        }
+
+        if (now.diff(dayjs(data!.date), 'second') > 40) {
+          source.removeFeature(feature)
+        }
+      })
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Draw multiple routes from OSRM and squares with index
+  useEffect(() => {
+    if (!mapInstance.current || !vectorLayerInstance.current) return
+    const source = vectorLayerInstance.current.getSource()
+    if (!source) return
+
+    // Remove previous route features
+    source.getFeatures().forEach((f) => {
+      if (f.get('type') === 'route' || f.get('type') === 'route-point') {
+        source.removeFeature(f)
+      }
+    })
+
+    if (!routes || routes.length === 0) return
+
+    routes.forEach((routeCoords, index) => {
+      if (!routeCoords || routeCoords.coords.length < 2) return
+
+      const coordsStr = routeCoords.coords
+        .map((p) => `${p.longitude},${p.latitude}`)
+        .join(';')
+      const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
+
+      fetch(osrmUrl)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.routes || !data.routes[0]) return
+
+          const routeGeo = data.routes[0].geometry.coordinates
+          const line = new Feature({
+            geometry: new LineString(routeGeo.map((c: any) => fromLonLat(c))),
+            type: 'route'
           })
+          line.setStyle(
+            new Style({
+              stroke: new Stroke({
+                color: routeCoords.color,
+                width: 4
+              })
+            })
+          )
+          source.addFeature(line)
 
-    vectorSource.clear()
-    vectorSource.addFeatures(features)
-  }, [coords, scale])
+          routeCoords.coords.forEach((p, idx) => {
+            const feature = new Feature({
+              geometry: new Point(fromLonLat([p.longitude, p.latitude])),
+              type: 'route-point'
+            })
+            feature.setStyle(
+              new Style({
+                image: new CircleStyle({
+                  radius: 14,
+                  fill: new Fill({ color: routeCoords.color }),
+                  stroke: new Stroke({ color: '#000', width: 2 })
+                }),
+                text: new Text({
+                  text: `${idx + 1}`,
+                  fill: new Fill({ color: '#fff' })
+                })
+              })
+            )
+            source.addFeature(feature)
+          })
+        })
+        .catch(() => {})
+    })
+  }, [routes])
+
+  const handleFullScreen = async () => {
+    if (!mapRef.current) return
+
+    !document.fullscreenElement
+      ? await mapRef.current.requestFullscreen()
+      : await document.exitFullscreen()
+  }
+
+  const handleCenterMap = () => {
+    if (!mapInstance.current) return
+
+    const view = mapInstance.current.getView()
+    view.setCenter(fromLonLat(center))
+    view.setZoom(zoom)
+  }
+
+  const handleViewRoute = (index: number) => {
+    if (!mapInstance.current || !routes.length || !routes[0].coords.length)
+      return
+
+    // Obtener los puntos de la ruta actual
+    const currentRoute = routes[index]
+    const lats = currentRoute.coords.map((p) => p.latitude)
+    const lons = currentRoute.coords.map((p) => p.longitude)
+    const minLat = Math.min(...lats)
+    const maxLat = Math.max(...lats)
+    const minLon = Math.min(...lons)
+    const maxLon = Math.max(...lons)
+
+    // Calcular el centro
+    const centerLat = (minLat + maxLat) / 2
+    const centerLon = (minLon + maxLon) / 2
+
+    // Ajustar el centro del mapa
+    const view = mapInstance.current.getView()
+    view.setCenter(fromLonLat([centerLon, centerLat]))
+
+    // Ajustar el zoom para mostrar toda la ruta actual
+    const extent = [fromLonLat([minLon, minLat]), fromLonLat([maxLon, maxLat])]
+    view.fit([extent[0][0], extent[0][1], extent[1][0], extent[1][1]], {
+      padding: [60, 60, 60, 60], // Menos padding para acercar
+      maxZoom: 20 // Permitir mayor zoom
+    })
+  }
 
   return (
     <div
@@ -141,34 +309,39 @@ const OpenLayersMap: React.FC<Props> = ({ coords, center, zoom }: Props) => {
         height: '100%'
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: 12,
-          right: 12,
-          zIndex: 1000
-        }}
+      <FloatButton.Group
+        shape="square"
+        style={{ position: 'absolute', top: 10, right: 15 }}
       >
-        <Button
-          size="large"
-          onClick={async () => {
-            if (!mapRef.current) return
-            try {
-              if (!document.fullscreenElement) {
-                await mapRef.current.requestFullscreen()
-              } else {
-                await document.exitFullscreen()
-              }
-            } catch (e) {
-              // eslint-disable-next-line no-console
-              console.error('Fullscreen error', e)
-            }
-          }}
+        <FloatButton
           icon={
             isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />
           }
+          onClick={handleFullScreen}
         />
-      </div>
+        <FloatButton icon={<AimOutlined />} onClick={handleCenterMap} />
+      </FloatButton.Group>
+
+      <FloatButton.Group
+        shape="square"
+        {...(routes.length > 1 && {
+          badge: { count: routes.length, color: colorPrimary },
+          trigger: 'click',
+          placement: 'left'
+        })}
+        style={{ position: 'absolute', top: 110, right: 15 }}
+        icon={<AimOutlined />}
+      >
+        {routes.map((route, index) => (
+          <FloatButton
+            icon={<AimOutlined />}
+            {...(routes.length > 1 && {
+              style: { backgroundColor: route.color }
+            })}
+            onClick={() => handleViewRoute(index)}
+          />
+        ))}
+      </FloatButton.Group>
     </div>
   )
 }
