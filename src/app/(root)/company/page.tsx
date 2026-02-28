@@ -4,11 +4,14 @@ import CompanyTable from '@/components/tables/CompanyTable'
 import EmployeeTable from '@/components/tables/EmployeeTable'
 import { PlusOutlined } from '@ant-design/icons'
 import { Button, Divider, Layout, Space, Tabs, theme, Typography } from 'antd'
+import { useRouter } from 'next/navigation'
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography
 
-export default function ClientsPage() {
+export default function CompanyPage() {
+  const router = useRouter()
+
   const {
     token: { colorBgContainer, padding }
   } = theme.useToken()
@@ -28,10 +31,18 @@ export default function ClientsPage() {
           Lista de Clientes
         </Title>
         <Space>
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => router.push('/company/new')}
+          >
             Añadir Empresa
           </Button>
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => router.push('/employee/new')}
+          >
             Añadir Empleado
           </Button>
         </Space>

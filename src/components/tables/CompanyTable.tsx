@@ -1,20 +1,12 @@
 import { Company } from '@/types/Company'
 import { Payload } from '@/types/Payload'
 import { fetcher } from '@/utils/fetcher'
-import { companiesData } from '@/utils/mockData'
 import { useStrapiTableQuery } from '@/utils/useStrapiTableQuery'
 import type { TableColumnsType } from 'antd'
-import { Table } from 'antd'
+import { Switch, Table } from 'antd'
 import useSWR from 'swr'
 
 const companyColumns: TableColumnsType<Company> = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
-    width: 10,
-    sorter: (a, b) => a.id - b.id
-  },
   {
     title: 'Código ',
     dataIndex: 'code',
@@ -40,6 +32,20 @@ const companyColumns: TableColumnsType<Company> = [
     })),
     onFilter: (value, record) => record.name === value,
     sorter: (a, b) => a.name.localeCompare(b.name)
+  },
+  {
+    title: 'Acceso por Código QR',
+    dataIndex: 'accessByCode',
+    key: 'accessByCode',
+    width: 1,
+    render: (pub: boolean, record: Company) => <Switch checked={pub} />,
+    filterSearch: true,
+    filters: ['Activo', 'Inactivo'].map((code) => ({
+      text: code,
+      value: code === 'Activo'
+    })),
+    onFilter: (value, record) => record.accessByCode === value,
+    sorter: (a, b) => (a.accessByCode ? 1 : 0) - (b.accessByCode ? 1 : 0)
   }
 ]
 

@@ -1,18 +1,45 @@
-import { Form, Input, Checkbox, Button, Row, Col } from 'antd'
+'use client'
+
 import { Company } from '@/types/Company'
+import {
+  Button,
+  Checkbox,
+  Col,
+  Divider,
+  Flex,
+  Form,
+  Input,
+  Row,
+  theme
+} from 'antd'
+import { useState } from 'react'
+import OpenLayersMap from '../OpenLayersMap'
 
 interface CompanyFormProps {
-  onFinish?: (values: Omit<Company, 'id'>) => void
+  id?: string
   initialValues?: Omit<Company, 'id'>
-  loading?: boolean
 }
 
-const CompanyForm: React.FC<CompanyFormProps> = ({
-  onFinish,
-  initialValues,
-  loading = false
-}) => {
+const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [coords, setCoords] = useState<[number, number] | null>(null)
+
+  const {
+    token: { padding }
+  } = theme.useToken()
+
+  const onFinish = async (values: Company) => {
+    setLoading(true)
+
+    if (id) {
+      console.log('Updating company with ID:', id, 'and values:', values)
+    } else {
+      console.log('Creating new company with values:', values)
+    }
+
+    setLoading(false)
+  }
 
   return (
     <Form
@@ -21,7 +48,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({
       onFinish={onFinish}
       initialValues={initialValues}
     >
-      <Row gutter={[16, 16]}>
+      <Row gutter={padding}>
         <Col xs={24} sm={12}>
           <Form.Item
             label="Nombre"
@@ -31,10 +58,9 @@ const CompanyForm: React.FC<CompanyFormProps> = ({
               { min: 3, message: 'El nombre debe tener al menos 3 caracteres' }
             ]}
           >
-            <Input placeholder="Nombre de la empresa" />
+            <Input placeholder="Nombre" />
           </Form.Item>
         </Col>
-
         <Col xs={24} sm={12}>
           <Form.Item
             label="Código"
@@ -44,44 +70,45 @@ const CompanyForm: React.FC<CompanyFormProps> = ({
               { min: 2, message: 'El código debe tener al menos 2 caracteres' }
             ]}
           >
-            <Input placeholder="Código de la empresa" />
+            <Input placeholder="Código" />
           </Form.Item>
         </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
-        <Col xs={24}>
+        <Col xs={24} md={12}>
           <Form.Item
             label="Dirección"
             name="address"
-            rules={[
-              { required: true, message: 'La dirección es requerida' },
-              {
-                min: 5,
-                message: 'La dirección debe tener al menos 5 caracteres'
-              }
-            ]}
+            rules={[{ required: true, message: 'La dirección es requerida' }]}
           >
-            <Input placeholder="Dirección de la empresa" />
+            <div style={{ width: '100%', height: '300px' }}>
+              <OpenLayersMap center={[-79.5566249, 8.9688727]} zoom={10} />
+            </div>
           </Form.Item>
         </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
         <Col xs={24}>
-          Forzar el uso del código de acceso *Los pasajeros deberán ingresar el
-          ID de acceso Activar
-          <Form.Item name="accessByCode" valuePropName="checked">
-            <Checkbox>Acceso por código</Checkbox>
+          <Form.Item
+            name="accessByCode"
+            label="Acceso por código QR"
+            valuePropName="checked"
+            help={
+              <Flex orientation="vertical">
+                <span>Control de acceso a la app para pasajeros</span>
+                <span>
+                  Se les solicitará a los usuarios que ingresen su ID de
+                  pasajero
+                </span>
+              </Flex>
+            }
+          >
+            <Checkbox>Activar</Checkbox>
           </Form.Item>
         </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
+        <Divider />
         <Col xs={24}>
-          <Button type="primary" htmlType="submit" loading={loading} block>
-            Guardar
-          </Button>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block loading={loading}>
+              {id ? 'Actualizar' : 'Guardar'}
+            </Button>
+          </Form.Item>
         </Col>
       </Row>
     </Form>
