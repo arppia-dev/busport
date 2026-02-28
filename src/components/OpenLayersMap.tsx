@@ -100,7 +100,7 @@ const OpenLayersMap: React.FC<Props> = ({
       feature.setStyle(
         new Style({
           image: new Icon({
-            src: './point.svg',
+            src: '/point.svg',
             scale: 0.06,
             anchor: [0.5, 1]
           }),
@@ -161,7 +161,7 @@ const OpenLayersMap: React.FC<Props> = ({
           feature.setStyle(
             new Style({
               image: new Icon({
-                src: './point-disconnect.svg',
+                src: '/point-disconnect.svg',
                 scale: 0.06,
                 anchor: [0.5, 1]
               }),
@@ -283,16 +283,11 @@ const OpenLayersMap: React.FC<Props> = ({
       feature.set('type', 'clicked-point')
       feature.setStyle(
         new Style({
-          image: new CircleStyle({
-            radius: 8,
-            fill: new Fill({ color: colorPrimary }),
-            stroke: new Stroke({ color: '#000', width: 1 })
-          })
-          /* image: new Icon({
-            src: './point.svg',
+          image: new Icon({
+            src: '/point.svg',
             scale: 0.06,
             anchor: [0.5, 1]
-          }) */
+          })
         })
       )
 

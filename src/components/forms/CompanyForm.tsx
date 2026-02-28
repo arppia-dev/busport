@@ -13,6 +13,7 @@ import {
   Input,
   Row,
   Skeleton,
+  Tag,
   theme
 } from 'antd'
 import { useSession } from 'next-auth/react'
@@ -34,7 +35,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
   const [error, setError] = useState<string | null>(null)
 
   const {
-    token: { padding }
+    token: { colorPrimary, padding }
   } = theme.useToken()
 
   const { data: companyData } = useSWR(
@@ -64,8 +65,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
     setLoading(true)
 
     try {
-      values.address = 'Panama City, Panama'
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/companies/${id ? id : ''}`,
         {
@@ -149,18 +148,35 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
           <Form.Item
             label="Dirección"
             name="address"
-            // rules={[{ required: true, message: 'La dirección es requerida' }]}
+            rules={[{ required: true, message: 'La dirección es requerida' }]}
           >
-            <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
-              <OpenLayersMap
-                center={[-79.5566249, 8.9688727]}
-                zoom={10}
-                onCallback={(selectedCoords) => {
-                  setCoords(selectedCoords)
-                  console.log('Coordenadas seleccionadas:', selectedCoords)
-                }}
-              />
-            </div>
+            <Flex gap="small" wrap>
+              <div
+                style={{ width: '100%', height: '300px', overflow: 'hidden' }}
+              >
+                <OpenLayersMap
+                  center={[-79.5566249, 8.9688727]}
+                  zoom={10}
+                  onCallback={(selectedCoords) => {
+                    setCoords(selectedCoords)
+                    form.setFieldValue(
+                      'address',
+                      JSON.stringify({
+                        coordinates: {
+                          latitude: selectedCoords[1],
+                          longitude: selectedCoords[0]
+                        }
+                      })
+                    )
+                  }}
+                />
+              </div>
+              {coords && (
+                <Tag color={colorPrimary}>
+                  {`Lat: ${coords[1].toFixed(6)}, Lon: ${coords[0].toFixed(6)}`}
+                </Tag>
+              )}
+            </Flex>
           </Form.Item>
         </Col>
         <Col xs={24}>
