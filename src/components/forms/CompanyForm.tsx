@@ -119,18 +119,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="Nombre"
-            name="name"
-            rules={[
-              { required: true, message: 'El nombre es requerido' },
-              { min: 3, message: 'El nombre debe tener al menos 3 caracteres' }
-            ]}
-          >
-            <Input placeholder="Nombre" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} sm={12}>
-          <Form.Item
             label="Código"
             name="code"
             rules={[
@@ -143,6 +131,18 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
             ]}
           >
             <Input placeholder="Código" />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={12}>
+          <Form.Item
+            label="Nombre"
+            name="name"
+            rules={[
+              { required: true, message: 'El nombre es requerido' },
+              { min: 3, message: 'El nombre debe tener al menos 3 caracteres' }
+            ]}
+          >
+            <Input placeholder="Nombre" />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
