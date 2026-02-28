@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 const LoginForm: React.FC = () => {
   const router = useRouter()
   const [form] = Form.useForm()
-  const [errorLogin, setErrorLogin] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
   const onFinish = async (values: { email: string; password: string }) => {
@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
     setLoading(false)
 
     if (response?.error) {
-      return setErrorLogin(response.error)
+      return setError(response.error)
     }
 
     router.push('/')
@@ -31,14 +31,14 @@ const LoginForm: React.FC = () => {
 
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
-      {errorLogin && (
+      {error && (
         <Form.Item>
           <Alert
-            description={errorLogin}
+            description={error}
             type="error"
             closable={{
               closeIcon: true,
-              onClose: () => setErrorLogin(null),
+              onClose: () => setError(null),
               'aria-label': 'close'
             }}
           />
