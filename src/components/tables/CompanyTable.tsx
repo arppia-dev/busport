@@ -4,6 +4,7 @@ import { fetcher } from '@/utils/fetcher'
 import { useStrapiTableQuery } from '@/utils/useStrapiTableQuery'
 import type { TableColumnsType } from 'antd'
 import { Switch, Table } from 'antd'
+import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
 const companyColumns: TableColumnsType<Company> = [
@@ -50,6 +51,7 @@ const companyColumns: TableColumnsType<Company> = [
 ]
 
 const CompanyTable: React.FC = () => {
+  const router = useRouter()
   const { query, pagination, updatePagination, handleTableChange } =
     useStrapiTableQuery({
       sort: ['createdAt:desc']
@@ -79,6 +81,11 @@ const CompanyTable: React.FC = () => {
       }}
       scroll={{ x: 600 }}
       onChange={handleTableChange}
+      onRow={(record) => ({
+        onClick: () => {
+          router.push(`/company/${record.id}`)
+        }
+      })}
     />
   )
 }
