@@ -83,7 +83,7 @@ const CompanyTable: React.FC = () => {
       onChange={handleTableChange}
       onRow={(record) => ({
         onClick: () => {
-          router.push(`/company/${record.id}`)
+          router.push(`/company/${record.documentId}`)
         }
       })}
     />

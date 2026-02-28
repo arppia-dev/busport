@@ -1,6 +1,7 @@
 'use client'
 
 import { Company } from '@/types/Company'
+import { fetcherToken } from '@/utils/fetcher'
 import {
   Alert,
   Button,
@@ -11,20 +12,21 @@ import {
   Form,
   Input,
   Row,
+  Skeleton,
   theme
 } from 'antd'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import useSWR from 'swr'
 import OpenLayersMap from '../OpenLayersMap'
 
 interface CompanyFormProps {
   id?: string
-  initialValues?: Omit<Company, 'id'>
 }
 
-const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
-  const { data: session, status } = useSession()
+const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
+  const { data: session } = useSession()
   const router = useRouter()
   const [form] = Form.useForm()
   const [coords, setCoords] = useState<[number, number] | null>(null)
@@ -35,36 +37,56 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
     token: { padding }
   } = theme.useToken()
 
+  const { data: companyData } = useSWR(
+    id && session?.user.token
+      ? [
+          `${process.env.NEXT_PUBLIC_API_URL}/companies/${id}`,
+          session.user.token as string
+        ]
+      : null,
+    ([url, token]: [string, string]) => fetcherToken(url, token)
+  )
+
+  if (!companyData) {
+    return <Skeleton />
+  }
+
+  if (companyData?.error) {
+    return (
+      <Alert
+        description="No se pudo cargar los datos. Inténtalo más tarde."
+        type="error"
+      />
+    )
+  }
+
   const onFinish = async (values: Company) => {
     setLoading(true)
 
     try {
-      if (id) {
-        console.log('Updating company with ID:', id, 'and values:', values)
-      } else {
-        console.log('Creating new company with values:', values)
-        values.address = 'Panama City, Panama'
+      values.address = 'Panama City, Panama'
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/companies`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${session?.user.token}`
-            },
-            body: JSON.stringify({
-              data: values
-            })
-          }
-        )
-
-        if (!response.ok) {
-          throw new Error('No se pudo crear la empresa. Inténtalo más tarde.')
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/companies/${id ? id : ''}`,
+        {
+          method: id ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.user.token as string}`
+          },
+          body: JSON.stringify({
+            data: values
+          })
         }
+      )
 
-        router.push('/company')
+      if (!response.ok) {
+        throw new Error(
+          `No se pudo ${id ? 'actualizar' : 'guardar'} el registro. Inténtalo más tarde.`
+        )
       }
+
+      router.push('/company')
     } catch (error: any) {
       setError(error.message)
     } finally {
@@ -77,7 +99,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
       form={form}
       layout="vertical"
       onFinish={onFinish}
-      initialValues={initialValues}
+      initialValues={id ? companyData?.data : undefined}
     >
       <Row gutter={padding}>
         <Col xs={24}>
