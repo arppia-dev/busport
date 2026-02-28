@@ -2,6 +2,7 @@
 
 import { Company } from '@/types/Company'
 import {
+  Alert,
   Button,
   Checkbox,
   Col,
@@ -12,6 +13,8 @@ import {
   Row,
   theme
 } from 'antd'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import OpenLayersMap from '../OpenLayersMap'
 
@@ -21,9 +24,12 @@ interface CompanyFormProps {
 }
 
 const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState<boolean>(false)
   const [coords, setCoords] = useState<[number, number] | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const {
     token: { padding }
@@ -32,13 +38,38 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
   const onFinish = async (values: Company) => {
     setLoading(true)
 
-    if (id) {
-      console.log('Updating company with ID:', id, 'and values:', values)
-    } else {
-      console.log('Creating new company with values:', values)
-    }
+    try {
+      if (id) {
+        console.log('Updating company with ID:', id, 'and values:', values)
+      } else {
+        console.log('Creating new company with values:', values)
+        values.address = 'Panama City, Panama'
 
-    setLoading(false)
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/companies`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session?.user.token}`
+            },
+            body: JSON.stringify({
+              data: values
+            })
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error('No se pudo crear la empresa. Inténtalo más tarde.')
+        }
+
+        router.push('/company')
+      }
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -49,6 +80,21 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
       initialValues={initialValues}
     >
       <Row gutter={padding}>
+        <Col xs={24}>
+          {error && (
+            <Form.Item>
+              <Alert
+                description={error}
+                type="error"
+                closable={{
+                  closeIcon: true,
+                  onClose: () => setError(null),
+                  'aria-label': 'close'
+                }}
+              />
+            </Form.Item>
+          )}
+        </Col>
         <Col xs={24} sm={12}>
           <Form.Item
             label="Nombre"
@@ -67,7 +113,11 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
             name="code"
             rules={[
               { required: true, message: 'El código es requerido' },
-              { min: 2, message: 'El código debe tener al menos 2 caracteres' }
+              { min: 2, message: 'El código debe tener al menos 2 caracteres' },
+              {
+                max: 5,
+                message: 'El código no puede tener más de 5 caracteres'
+              }
             ]}
           >
             <Input placeholder="Código" />
@@ -77,7 +127,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id, initialValues }) => {
           <Form.Item
             label="Dirección"
             name="address"
-            rules={[{ required: true, message: 'La dirección es requerida' }]}
+            // rules={[{ required: true, message: 'La dirección es requerida' }]}
           >
             <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
               <OpenLayersMap center={[-79.5566249, 8.9688727]} zoom={10} />
