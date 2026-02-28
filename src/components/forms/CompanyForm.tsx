@@ -152,7 +152,14 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
             // rules={[{ required: true, message: 'La dirección es requerida' }]}
           >
             <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
-              <OpenLayersMap center={[-79.5566249, 8.9688727]} zoom={10} />
+              <OpenLayersMap
+                center={[-79.5566249, 8.9688727]}
+                zoom={10}
+                onCallback={(selectedCoords) => {
+                  setCoords(selectedCoords)
+                  console.log('Coordenadas seleccionadas:', selectedCoords)
+                }}
+              />
             </div>
           </Form.Item>
         </Col>

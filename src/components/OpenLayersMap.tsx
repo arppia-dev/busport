@@ -259,18 +259,45 @@ const OpenLayersMap: React.FC<Props> = ({
 
   // Handle map click to get coordinates
   useEffect(() => {
-    if (!mapInstance.current || !onCallback) return
+    if (!mapInstance.current || !vectorLayerInstance.current || !onCallback)
+      return
+
+    const source = vectorLayerInstance!.current.getSource()
+    if (!source) return
 
     const handleClick = (event: any) => {
-      const clickCoordinate = mapInstance.current!.getCoordinateFromPixel(
-        event.pixel
-      )
+      const clickCoordinate = event.coordinate
       if (!clickCoordinate) return
 
-      // Transform from map projection (Web Mercator) to lon/lat (WGS84)
-      const [lon, lat] = toLonLat(clickCoordinate)
+      const [longitude, latitude] = toLonLat(clickCoordinate)
 
-      onCallback([lon, lat])
+      source.getFeatures().forEach((f) => {
+        if (f.get('type') === 'clicked-point') {
+          source.removeFeature(f)
+        }
+      })
+
+      const feature = new Feature({
+        geometry: new Point(clickCoordinate)
+      })
+      feature.set('type', 'clicked-point')
+      feature.setStyle(
+        new Style({
+          image: new CircleStyle({
+            radius: 8,
+            fill: new Fill({ color: colorPrimary }),
+            stroke: new Stroke({ color: '#000', width: 1 })
+          })
+          /* image: new Icon({
+            src: './point.svg',
+            scale: 0.06,
+            anchor: [0.5, 1]
+          }) */
+        })
+      )
+
+      source.addFeature(feature)
+      onCallback([longitude, latitude])
     }
 
     mapInstance.current.on('click', handleClick)
