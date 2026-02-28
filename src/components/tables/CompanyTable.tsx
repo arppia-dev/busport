@@ -1,9 +1,10 @@
 import { Company } from '@/types/Company'
 import { Payload } from '@/types/Payload'
-import { fetcher } from '@/utils/fetcher'
+import { fetcherToken } from '@/utils/fetcher'
 import { useStrapiTableQuery } from '@/utils/useStrapiTableQuery'
 import type { TableColumnsType } from 'antd'
 import { Switch, Table } from 'antd'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
@@ -51,18 +52,22 @@ const companyColumns: TableColumnsType<Company> = [
 ]
 
 const CompanyTable: React.FC = () => {
+  const { data: session } = useSession()
   const router = useRouter()
   const { query, pagination, updatePagination, handleTableChange } =
     useStrapiTableQuery({
       sort: ['createdAt:desc']
     })
 
-  const { data: companyData, error: errorCompany } = useSWR<Payload<Company[]>>(
-    `${process.env.NEXT_PUBLIC_API_URL}/companies${query}`,
-    fetcher
+  const { data: companyData } = useSWR<Payload<Company[]>>(
+    [
+      `${process.env.NEXT_PUBLIC_API_URL}/companies${query}`,
+      session?.user.token!
+    ],
+    ([url, token]) => fetcherToken(url, token as string)
   )
 
-  const isLoading = !companyData && !errorCompany
+  const isLoading = !companyData
 
   return (
     <Table<Company>
