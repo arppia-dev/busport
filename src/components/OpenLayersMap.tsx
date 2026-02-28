@@ -16,7 +16,7 @@ import Point from 'ol/geom/Point'
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import 'ol/ol.css'
-import { fromLonLat } from 'ol/proj'
+import { fromLonLat, toLonLat } from 'ol/proj'
 import OSM from 'ol/source/OSM'
 import VectorSource from 'ol/source/Vector'
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style'
@@ -40,12 +40,14 @@ interface Props {
     color?: string
     coords: Array<{ latitude: number; longitude: number }>
   }>
+  onCallback?: (coords: [number, number]) => void
 }
 
 const OpenLayersMap: React.FC<Props> = ({
   center = [0, 0],
   zoom = 2,
-  routes = []
+  routes = [],
+  onCallback
 }: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<Map | null>(null)
@@ -254,6 +256,31 @@ const OpenLayersMap: React.FC<Props> = ({
         .catch(() => {})
     })
   }, [routes])
+
+  // Handle map click to get coordinates
+  useEffect(() => {
+    if (!mapInstance.current || !onCallback) return
+
+    const handleClick = (event: any) => {
+      const clickCoordinate = mapInstance.current!.getCoordinateFromPixel(
+        event.pixel
+      )
+      if (!clickCoordinate) return
+
+      // Transform from map projection (Web Mercator) to lon/lat (WGS84)
+      const [lon, lat] = toLonLat(clickCoordinate)
+
+      onCallback([lon, lat])
+    }
+
+    mapInstance.current.on('click', handleClick)
+
+    return () => {
+      if (mapInstance.current) {
+        mapInstance.current.un('click', handleClick)
+      }
+    }
+  }, [onCallback])
 
   const handleFullScreen = async () => {
     if (!mapRef.current) return
