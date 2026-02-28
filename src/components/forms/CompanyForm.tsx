@@ -47,11 +47,11 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
     ([url, token]: [string, string]) => fetcherToken(url, token)
   )
 
-  if (!companyData) {
+  if (id && !companyData) {
     return <Skeleton />
   }
 
-  if (companyData?.error) {
+  if (id && companyData?.error) {
     return (
       <Alert
         description="No se pudo cargar los datos. Inténtalo más tarde."
