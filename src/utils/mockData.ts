@@ -11,6 +11,7 @@ import { Trip } from '@/types/Trip'
 export const companiesData: Company[] = [
   {
     id: 1,
+    documentId: 123456789,
     name: 'Transporte Plus',
     code: 'TP001',
     address: '',
@@ -18,6 +19,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 2,
+    documentId: 987654321,
     name: 'Viajes Seguros',
     code: 'VS002',
     address: '',
@@ -25,6 +27,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 3,
+    documentId: 555555555,
     name: 'Viajes Express',
     code: 'VE003',
     address: '',
