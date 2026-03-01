@@ -40,6 +40,7 @@ interface Props {
     color?: string
     coords: Array<{ latitude: number; longitude: number }>
   }>
+  points?: Array<{ latitude: number; longitude: number }>
   onCallback?: (coords: [number, number]) => void
 }
 
@@ -47,6 +48,7 @@ const OpenLayersMap: React.FC<Props> = ({
   center = [0, 0],
   zoom = 2,
   routes = [],
+  points = [],
   onCallback
 }: Props) => {
   const mapRef = useRef<HTMLDivElement | null>(null)
@@ -77,7 +79,10 @@ const OpenLayersMap: React.FC<Props> = ({
     mapInstance.current = map
     vectorLayerInstance.current = vectorLayer
 
+    map.updateSize()
+
     return () => {
+      map.setTarget(undefined)
       mapInstance.current = null
       vectorLayerInstance.current = null
     }
@@ -256,6 +261,40 @@ const OpenLayersMap: React.FC<Props> = ({
         .catch(() => {})
     })
   }, [routes])
+
+  // Draw points on the map
+  useEffect(() => {
+    if (!mapInstance.current || !vectorLayerInstance.current) return
+    const source = vectorLayerInstance!.current.getSource()
+    if (!source) return
+
+    source.getFeatures().forEach((f) => {
+      if (f.get('type') === 'point') {
+        source.removeFeature(f)
+      }
+    })
+
+    if (!points || points.length === 0) return
+
+    points.forEach((point) => {
+      if (!point) return
+
+      const feature = new Feature({
+        geometry: new Point(fromLonLat([point.longitude, point.latitude]))
+      })
+      feature.set('type', 'point')
+      feature.setStyle(
+        new Style({
+          image: new CircleStyle({
+            radius: 8,
+            fill: new Fill({ color: '#0752A0' }),
+            stroke: new Stroke({ color: '#fff', width: 2 })
+          })
+        })
+      )
+      source.addFeature(feature)
+    })
+  }, [points])
 
   // Handle map click to get coordinates
   useEffect(() => {

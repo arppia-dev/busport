@@ -18,7 +18,7 @@ import {
 } from 'antd'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import OpenLayersMap from '../OpenLayersMap'
 
@@ -47,6 +47,21 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
       : null,
     ([url, token]: [string, string]) => fetcherToken(url, token)
   )
+
+  useEffect(() => {
+    const company: Company = companyData?.data
+
+    if (company?.address && company.address.coordinates) {
+      setCoords([
+        company.address.coordinates.longitude,
+        company.address.coordinates.latitude
+      ])
+      form.setFieldValue(
+        'address',
+        JSON.stringify({ coordinates: company.address.coordinates })
+      )
+    }
+  }, [companyData])
 
   if (id && !companyData) {
     return <Skeleton />
@@ -155,8 +170,18 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ id }) => {
                 style={{ width: '100%', height: '300px', overflow: 'hidden' }}
               >
                 <OpenLayersMap
-                  center={[-79.5566249, 8.9688727]}
+                  center={coords ?? [-79.5566249, 8.9688727]}
                   zoom={10}
+                  points={
+                    coords
+                      ? [
+                          {
+                            latitude: coords[1],
+                            longitude: coords[0]
+                          }
+                        ]
+                      : undefined
+                  }
                   onCallback={(selectedCoords) => {
                     setCoords(selectedCoords)
                     form.setFieldValue(
