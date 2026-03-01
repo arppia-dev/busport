@@ -14,7 +14,12 @@ export const companiesData: Company[] = [
     documentId: 123456789,
     name: 'Transporte Plus',
     code: 'TP001',
-    address: '',
+    address: {
+      coordinates: {
+        longitude: -79.5566249,
+        latitude: 8.9688727
+      }
+    },
     accessByCode: false
   },
   {
@@ -22,7 +27,12 @@ export const companiesData: Company[] = [
     documentId: 987654321,
     name: 'Viajes Seguros',
     code: 'VS002',
-    address: '',
+    address: {
+      coordinates: {
+        longitude: -79.5566249,
+        latitude: 8.9688727
+      }
+    },
     accessByCode: false
   },
   {
@@ -30,7 +40,12 @@ export const companiesData: Company[] = [
     documentId: 555555555,
     name: 'Viajes Express',
     code: 'VE003',
-    address: '',
+    address: {
+      coordinates: {
+        longitude: -79.5566249,
+        latitude: 8.9688727
+      }
+    },
     accessByCode: false
   }
 ]
