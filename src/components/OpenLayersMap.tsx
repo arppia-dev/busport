@@ -285,15 +285,20 @@ const OpenLayersMap: React.FC<Props> = ({
       feature.set('type', 'point')
       feature.setStyle(
         new Style({
-          image: new CircleStyle({
-            radius: 8,
-            fill: new Fill({ color: '#0752A0' }),
-            stroke: new Stroke({ color: '#fff', width: 2 })
+          image: new Icon({
+            src: '/point.svg',
+            scale: 0.06,
+            anchor: [0.5, 1]
           })
         })
       )
       source.addFeature(feature)
     })
+
+    if (points.length === 1) {
+      const view = mapInstance.current.getView()
+      view.setCenter(fromLonLat([points[0].longitude, points[0].latitude]))
+    }
   }, [points])
 
   // Handle map click to get coordinates
