@@ -3,6 +3,11 @@ export interface Company {
   documentId: number
   name: string
   code: string
-  address: string
+  address: {
+    coordinates?: {
+      latitude: number
+      longitude: number
+    }
+  }
   accessByCode: boolean
 }
