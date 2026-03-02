@@ -1,6 +1,6 @@
-export interface Company {
-  id: number
-  documentId: number
+import { BaseEntity } from './BaseEntity'
+
+export interface Company extends BaseEntity {
   name: string
   code: string
   address: {
