@@ -50,26 +50,16 @@ const LoginForm: React.FC = () => {
           { required: true, message: 'Por favor ingresa tu correo electrónico' }
         ]}
       >
-        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
+        <Input prefix={<MailOutlined />} placeholder="Email" />
       </Form.Item>
       <Form.Item
         name="password"
         rules={[{ required: true, message: 'Por favor ingresa tu contraseña' }]}
       >
-        <Input.Password
-          prefix={<LockOutlined />}
-          placeholder="Contraseña"
-          size="large"
-        />
+        <Input.Password prefix={<LockOutlined />} placeholder="Contraseña" />
       </Form.Item>
       <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          block
-          size="large"
-          loading={loading}
-        >
+        <Button type="primary" htmlType="submit" block loading={loading}>
           Iniciar sesión
         </Button>
       </Form.Item>
