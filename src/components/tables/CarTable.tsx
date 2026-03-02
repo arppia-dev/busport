@@ -3,7 +3,7 @@ import { Payload } from '@/types/Payload'
 import { fetcherToken } from '@/utils/fetcher'
 import { useStrapiTableQuery } from '@/utils/useStrapiTableQuery'
 import type { TableColumnsType } from 'antd'
-import { Table } from 'antd'
+import { Space, Table, Tag } from 'antd'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
@@ -23,7 +23,7 @@ const columns: TableColumnsType<Car> = [
   },
   {
     title: 'Tipo de Vehículo',
-    dataIndex: 'type',
+    dataIndex: ['type', 'name'],
     key: 'type',
     filterSearch: true,
     filters: ['Car', 'Van', 'Bus'].map((code) => ({
@@ -38,6 +38,18 @@ const columns: TableColumnsType<Car> = [
     dataIndex: 'capacity',
     key: 'capacity',
     sorter: (a, b) => a.capacity - b.capacity
+  },
+  {
+    title: 'Empresas autorizadas',
+    dataIndex: ['companies', 'code'],
+    key: 'company',
+    render: (_, record) => (
+      <Space wrap>
+        {record.companies.splice(0, 5).map((c) => (
+          <Tag key={c.code}>{c.code}</Tag>
+        ))}
+      </Space>
+    )
   }
 ]
 
@@ -46,7 +58,15 @@ const CarTable: React.FC = () => {
   const router = useRouter()
   const { query, pagination, updatePagination, handleTableChange } =
     useStrapiTableQuery({
-      sort: ['createdAt:desc']
+      sort: ['createdAt:desc'],
+      populate: {
+        type: {
+          fields: ['name']
+        },
+        companies: {
+          fields: ['name', 'code']
+        }
+      }
     })
 
   const { data: carData } = useSWR<Payload<Car[]>>(

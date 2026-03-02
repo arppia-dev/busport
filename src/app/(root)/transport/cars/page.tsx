@@ -26,11 +26,11 @@ export default function CarsPage() {
         }}
       >
         <Title level={4} style={{ margin: 0 }}>
-          Lista de vehículos
+          Lista de carros
         </Title>
         <Space>
           <Button type="primary" icon={<PlusOutlined />}>
-            Añadir Vehículo
+            Añadir Carro
           </Button>
         </Space>
       </Header>
