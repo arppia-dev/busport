@@ -1,5 +1,6 @@
-export interface Trip {
-  id: number
+import { BaseEntity } from './BaseEntity'
+
+export interface Trip extends BaseEntity {
   date: string
   route: string
   company: string

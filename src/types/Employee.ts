@@ -1,5 +1,6 @@
-export interface Employee {
-  id: number
+import { BaseEntity } from './BaseEntity'
+
+export interface Employee extends BaseEntity {
   code: string
   name: string
   company: string

@@ -26,6 +26,9 @@ export function useStrapiTableQuery(initial: StrapiQuery) {
   const [sort, setSort] = useState<string | string[]>(
     initial.sort || ['createdAt:desc']
   )
+  const [populate, setPopulate] = useState<StrapiQuery['populate']>(
+    initial.populate ?? '*'
+  )
 
   const updatePagination = (page: number, pageSize: number) => {
     setPagination({ page, pageSize })
@@ -44,7 +47,8 @@ export function useStrapiTableQuery(initial: StrapiQuery) {
     ...initial,
     pagination,
     filters,
-    sort
+    sort,
+    populate
   })
 
   const handleTableChange = (
@@ -64,9 +68,14 @@ export function useStrapiTableQuery(initial: StrapiQuery) {
   return {
     pagination,
     query,
+    populate,
     updatePagination,
     updateFilters,
     updateSort,
+    updatePopulate: (newPopulate: StrapiQuery['populate']) => {
+      setPopulate(newPopulate)
+      setPagination({ ...pagination, page: 1 })
+    },
     handleTableChange
   }
 }
