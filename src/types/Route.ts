@@ -1,5 +1,6 @@
-export interface Route {
-  id: number
+import { BaseEntity } from './BaseEntity'
+
+export interface Route extends BaseEntity {
   code: string
   status: 'In' | 'Out'
   name: string
