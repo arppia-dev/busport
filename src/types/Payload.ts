@@ -1,5 +1,6 @@
 export interface Payload<T> {
   data: T
+  error: any
   meta?: {
     pagination?: {
       page: number

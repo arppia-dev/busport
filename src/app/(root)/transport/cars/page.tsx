@@ -1,15 +1,16 @@
 'use client'
 
-import { PlusOutlined } from '@ant-design/icons'
-import type { TableColumnsType } from 'antd'
-import { Button, Divider, Layout, Space, Table, theme, Typography } from 'antd'
-import styles from './page.module.css'
 import CarTable from '@/components/tables/CarTable'
+import { PlusOutlined } from '@ant-design/icons'
+import { Button, Divider, Layout, Space, theme, Typography } from 'antd'
+import { useRouter } from 'next/navigation'
 
 const { Header, Content } = Layout
 const { Title } = Typography
 
 export default function CarsPage() {
+  const router = useRouter()
+
   const {
     token: { colorPrimary, colorBgContainer, padding }
   } = theme.useToken()
@@ -29,7 +30,11 @@ export default function CarsPage() {
           Lista de carros
         </Title>
         <Space>
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => router.push('/transport/cars/new')}
+          >
             Añadir Carro
           </Button>
         </Space>

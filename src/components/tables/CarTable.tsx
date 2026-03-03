@@ -13,6 +13,7 @@ const columns: TableColumnsType<Car> = [
     title: 'Matricula',
     dataIndex: 'plate',
     key: 'plate',
+    width: 100,
     filterSearch: true,
     filters: ['filtro1', 'filtro2', 'filtro3'].map((code) => ({
       text: code,
@@ -25,6 +26,7 @@ const columns: TableColumnsType<Car> = [
     title: 'Tipo de Vehículo',
     dataIndex: ['type', 'name'],
     key: 'type',
+    width: 100,
     filterSearch: true,
     filters: ['Car', 'Van', 'Bus'].map((code) => ({
       text: code,
@@ -33,21 +35,25 @@ const columns: TableColumnsType<Car> = [
     onFilter: (value, record) => record.type.name === value,
     sorter: (a, b) => a.type.name.localeCompare(b.type.name)
   },
+
   {
     title: 'Capacidad',
     dataIndex: 'capacity',
     key: 'capacity',
+    width: 20,
     sorter: (a, b) => a.capacity - b.capacity
   },
   {
     title: 'Empresas autorizadas',
     dataIndex: ['companies', 'code'],
     key: 'company',
+    width: 20,
     render: (_, record) => (
       <Space wrap>
         {record.companies.splice(0, 5).map((c) => (
           <Tag key={c.code}>{c.code}</Tag>
         ))}
+        {record.companies.length > 1 ? ' ...' : ''}
       </Space>
     )
   }
@@ -94,8 +100,8 @@ const CarTable: React.FC = () => {
       scroll={{ x: 600 }}
       onChange={handleTableChange}
       onRow={(record) => ({
-        onClick: () => {
-          router.push(`/car/${record.documentId}`)
+        onDoubleClick: () => {
+          router.push(`/transport/cars/${record.documentId}`)
         }
       })}
     />
