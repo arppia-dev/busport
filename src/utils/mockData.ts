@@ -56,6 +56,7 @@ export const companiesData: Company[] = [
 export const employeesData: Employee[] = [
   {
     id: 1,
+    documentId: 111222333,
     code: 'E001',
     name: 'Carlos García',
     company: 'Transporte Plus',
@@ -66,6 +67,7 @@ export const employeesData: Employee[] = [
   },
   {
     id: 2,
+    documentId: 444555666,
     code: 'E002',
     name: 'María López',
     company: 'Viajes Seguros',
@@ -76,6 +78,7 @@ export const employeesData: Employee[] = [
   },
   {
     id: 3,
+    documentId: 777888999,
     code: 'E003',
     name: 'Juan Pérez',
     company: 'Transporte Plus',
@@ -92,6 +95,7 @@ export const employeesData: Employee[] = [
 export const tripData: Trip[] = [
   {
     id: 1,
+    documentId: 123456789,
     date: '07-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -109,6 +113,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 2,
+    documentId: 987654321,
     date: '07-02-2026',
     route: 'Ruta 205 - Terminal Sur a Estación Central',
     company: 'Viajes Seguros',
@@ -120,6 +125,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 3,
+    documentId: 555555555,
     date: '08-02-2026',
     route: 'Ruta 312 - Puerto hasta Zona Industrial Noreste',
     company: 'Transporte Plus',
@@ -137,6 +143,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 4,
+    documentId: 111222333,
     date: '07-02-2026',
     route: 'Ruta 418 - Campus Universitario a Complejo Deportivo',
     company: 'Viajes Express',
@@ -154,6 +161,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 5,
+    documentId: 444555666,
     date: '06-02-2026',
     route: 'Ruta 101 - Centro a Aeropuerto Internacional',
     company: 'Transporte Plus',
@@ -171,6 +179,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 6,
+    documentId: 777888999,
     date: '09-02-2026',
     route: 'Ruta 505 - Municipio Vecino a Centro Comercial',
     company: 'Viajes Seguros',
@@ -188,6 +197,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 7,
+    documentId: 111222333,
     date: '08-02-2026',
     route: 'Ruta 603 - Hospital General a Barrio Residencial Sur',
     company: 'Viajes Express',
@@ -205,6 +215,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 8,
+    documentId: 444555666,
     date: '07-02-2026',
     route: 'Ruta 204 - Estación Norte hasta Parque Metropolitano',
     company: 'Transporte Plus',
@@ -222,6 +233,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 9,
+    documentId: 777888999,
     date: '10-02-2026',
     route: 'Ruta 710 - Zona Franca Industrial a Terminal de Carga',
     company: 'Viajes Seguros',
@@ -239,6 +251,7 @@ export const tripData: Trip[] = [
   },
   {
     id: 10,
+    documentId: 111222333,
     date: '06-02-2026',
     route: 'Ruta 415 - Barrio Antiguo hasta Nuevas Urbanizaciones',
     company: 'Viajes Express',
@@ -262,6 +275,7 @@ export const tripData: Trip[] = [
 export const routesData: Route[] = [
   {
     id: 1,
+    documentId: 123456789,
     code: 'R101',
     status: 'In',
     name: 'Centro a Aeropuerto',
@@ -274,6 +288,7 @@ export const routesData: Route[] = [
   },
   {
     id: 2,
+    documentId: 987654321,
     code: 'R205',
     status: 'Out',
     name: 'Terminal Sur a Estación Central',
@@ -286,6 +301,7 @@ export const routesData: Route[] = [
   },
   {
     id: 3,
+    documentId: 555555555,
     code: 'R312',
     status: 'In',
     name: 'Estación Central a Universidad',
@@ -298,6 +314,7 @@ export const routesData: Route[] = [
   },
   {
     id: 4,
+    documentId: 111222333,
     code: 'R410',
     status: 'Out',
     name: 'Aeropuerto a Centro',
@@ -310,6 +327,7 @@ export const routesData: Route[] = [
   },
   {
     id: 5,
+    documentId: 444555666,
     code: 'R520',
     status: 'In',
     name: 'Universidad a Terminal Sur',
@@ -322,6 +340,7 @@ export const routesData: Route[] = [
   },
   {
     id: 6,
+    documentId: 777888999,
     code: 'R601',
     status: 'Out',
     name: 'Centro a Estación Central',
@@ -334,6 +353,7 @@ export const routesData: Route[] = [
   },
   {
     id: 7,
+    documentId: 111222333,
     code: 'R702',
     status: 'In',
     name: 'Terminal Sur a Universidad',
