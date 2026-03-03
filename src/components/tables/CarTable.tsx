@@ -76,8 +76,13 @@ const CarTable: React.FC = () => {
     })
 
   const { data: carData } = useSWR<Payload<Car[]>>(
-    [`${process.env.NEXT_PUBLIC_API_URL}/cars${query}`, session?.user.token!],
-    ([url, token]) => fetcherToken(url, token as string)
+    session?.user.token
+      ? [
+          `${process.env.NEXT_PUBLIC_API_URL}/cars${query}`,
+          session?.user.token as string
+        ]
+      : null,
+    ([url, token]: [string, string]) => fetcherToken(url, token as string)
   )
 
   const isLoading = !carData
