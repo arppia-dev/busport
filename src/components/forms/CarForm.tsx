@@ -160,15 +160,24 @@ const CarForm: React.FC<CarFormProps> = ({ id }) => {
     console.log('target:', e.target)
   }
 
+  const normalizeCarData = (data: Car | undefined) => {
+    if (!data) return undefined
+
+    return {
+      ...data,
+      type: data.type?.documentId,
+      companies: data.companies?.map((c) => c.documentId)
+    }
+  }
+
   return (
     <Form
       form={form}
       layout="vertical"
       onFinish={onFinish}
-      initialValues={id ? carData?.data : undefined}
+      initialValues={id ? normalizeCarData(carData?.data) : undefined}
     >
       <Row gutter={padding}>
-        <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
         <Col xs={24}>
           {error && (
             <Form.Item>
@@ -189,8 +198,6 @@ const CarForm: React.FC<CarFormProps> = ({ id }) => {
             label="Tipo"
             name="type"
             rules={[{ required: true, message: 'El tipo es requerido' }]}
-            getValueProps={(value) => ({ value: value?.documentId ?? value })}
-            normalize={(value) => value?.documentId ?? value}
           >
             <Select
               placeholder="Tipo"
@@ -232,6 +239,8 @@ const CarForm: React.FC<CarFormProps> = ({ id }) => {
             name="companies"
             label="Empresa"
             help="Restringir el acceso a los datos (viajes, planificación, etc.) pertenecientes a las empresas que se indican a continuación."
+            valuePropName="targetKeys"
+            getValueFromEvent={(nextTargetKeys) => nextTargetKeys}
           >
             {isLoadingCompany ? (
               <Skeleton.Input style={{ width: 200 }} active />
@@ -245,9 +254,12 @@ const CarForm: React.FC<CarFormProps> = ({ id }) => {
                   })) || []
                 }
                 titles={['Sin Acceso', 'Con Acceso']}
-                targetKeys={targetKeys}
+                targetKeys={form.getFieldValue('companies') || []}
                 selectedKeys={selectedKeys}
-                onChange={onChange}
+                onChange={(nextTargetKeys) => {
+                  setTargetKeys(nextTargetKeys)
+                  form.setFieldsValue({ companies: nextTargetKeys })
+                }}
                 onSelectChange={onSelectChange}
                 onScroll={onScroll}
                 render={(item) => (
